@@ -1,6 +1,7 @@
 import { Flex, GridItem } from '@chakra-ui/react'
 import { Content, Header, Main, Sidebar } from '@/components'
 import { Earnings } from './components'
+import { tabsData } from './constants'
 
 export const Home = () => {
   return (
@@ -10,7 +11,7 @@ export const Home = () => {
         <Header />
         <Content>
           <GridItem rowSpan={2} colSpan={3} h='full'>
-            <Earnings />
+            <Earnings data={tabsData} />
           </GridItem>
         </Content>
       </Main>

@@ -7,7 +7,7 @@ import {
   Grid,
 } from '@chakra-ui/react'
 
-type StatProps = {
+export type StatProps = {
   label: string
   value: number
   percentage: number
