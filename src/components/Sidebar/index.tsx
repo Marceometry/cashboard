@@ -9,6 +9,7 @@ export const Sidebar = () => {
       align='center'
       direction='column'
       maxW='container.lg'
+      minW='300px'
       shadow='lg'
       p='8'
       bg={bg}
