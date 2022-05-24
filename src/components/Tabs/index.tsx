@@ -4,6 +4,7 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  TabsProps,
   Flex,
 } from '@chakra-ui/react'
 
@@ -12,13 +13,13 @@ type Tab = {
   content: React.ReactNode
 }
 
-type TabsProps = {
+type Props = Omit<TabsProps, 'children'> & {
   tabs: Tab[]
 }
 
-export const Tabs = ({ tabs }: TabsProps) => {
+export const Tabs = ({ tabs, ...props }: Props) => {
   return (
-    <ChakraTabs isFitted>
+    <ChakraTabs isFitted {...props}>
       <TabList mb='4'>
         {tabs.map((tab) => (
           <Tab>{tab.label}</Tab>

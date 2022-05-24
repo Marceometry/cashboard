@@ -1,7 +1,7 @@
 import { Flex, GridItem } from '@chakra-ui/react'
-import { Card, Content, Header, Main, Sidebar, Table } from '@/components'
-import { Earnings } from './components'
-import { tabsData, columns, data } from './constants'
+import { Content, Header, Main, Sidebar } from '@/components'
+import { CategoryCosts, Earnings, RecentTransactions } from './components'
+import { tabsData } from './constants'
 
 export const Home = () => {
   return (
@@ -10,17 +10,16 @@ export const Home = () => {
       <Main>
         <Header />
         <Content>
-          <GridItem rowSpan={2} colSpan={3} h='full'>
+          <GridItem rowSpan={2} colSpan={3}>
             <Earnings data={tabsData} />
           </GridItem>
-          <GridItem rowSpan={2} colSpan={3} h='full'>
-            <Card>
-              <Table
-                caption='Transações Recentes'
-                columns={columns}
-                data={data}
-              />
-            </Card>
+
+          <GridItem rowSpan={2} colSpan={3}>
+            <RecentTransactions />
+          </GridItem>
+
+          <GridItem rowSpan={3} colSpan={4}>
+            <CategoryCosts />
           </GridItem>
         </Content>
       </Main>

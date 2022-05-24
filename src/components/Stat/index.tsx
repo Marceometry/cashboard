@@ -29,7 +29,7 @@ export const Stat = ({
         <StatNumber fontSize='3xl' my='2'>
           R$ {value.toLocaleString()}
         </StatNumber>
-        <StatHelpText>
+        <StatHelpText mb='0'>
           <StatArrow
             type={increase ? 'increase' : 'decrease'}
             transform={isSpent ? 'rotate(180deg)' : ''}

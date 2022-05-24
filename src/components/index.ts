@@ -1,4 +1,5 @@
 export * from './Card'
+export * from './Chart'
 export * from './Content'
 export * from './Sidebar'
 export * from './Header'

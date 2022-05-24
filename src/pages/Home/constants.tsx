@@ -8,7 +8,7 @@ export const tabsContents = [
       increase: true,
     },
     spent: {
-      value: 9103.7,
+      value: 2704.15,
       percentage: 23.36,
     },
   },
@@ -57,7 +57,7 @@ export const columns = [
     field: 'isSpent',
     customRender: ({ isSpent }: any) => (
       <Center>
-        <StatArrow type={isSpent ? 'increase' : 'decrease'} />
+        <StatArrow type={isSpent ? 'decrease' : 'increase'} />
       </Center>
     ),
   },
@@ -86,17 +86,28 @@ export const data = [
     description: 'Memória RAM',
     value: `R$ ${(253.23).toLocaleString()}`,
     date: new Date().toLocaleString(),
+    isSpent: true,
   },
   {
     description: 'Pratos hi-hat',
     value: `R$ ${(50).toLocaleString()}`,
     date: new Date().toLocaleString(),
-    isSpent: true,
   },
   {
     description: 'Carpete',
     value: `R$ ${(75).toLocaleString()}`,
     date: new Date().toLocaleString(),
     isSpent: true,
+  },
+  {
+    description: 'Mesa de som',
+    value: `R$ ${(4500).toLocaleString()}`,
+    date: new Date().toLocaleString(),
+    isSpent: true,
+  },
+  {
+    description: 'Ingresso Metallica',
+    value: `R$ ${(190).toLocaleString()}`,
+    date: new Date().toLocaleString(),
   },
 ]

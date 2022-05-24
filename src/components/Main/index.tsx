@@ -1,11 +1,11 @@
-import { Flex } from '@chakra-ui/react'
+import { Grid } from '@chakra-ui/react'
 
 type Props = { children: React.ReactNode }
 
 export const Main = ({ children }: Props) => {
   return (
-    <Flex as='main' w='full' h='full' p='8' gap='8' direction='column'>
+    <Grid as='main' w='full' h='full' p='6' gap='6'>
       {children}
-    </Flex>
+    </Grid>
   )
 }

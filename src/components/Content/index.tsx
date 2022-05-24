@@ -9,8 +9,8 @@ export const Content = ({ children }: Props) => {
     <Grid
       templateRows='repeat(6, 1fr)'
       templateColumns='repeat(6, 1fr)'
+      maxH='calc(100vh - 112px)'
       gap='4'
-      h='full'
     >
       {children}
     </Grid>

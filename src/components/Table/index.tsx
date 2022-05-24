@@ -1,5 +1,6 @@
 import {
   Table as ChakraTable,
+  TableProps,
   TableContainer,
   TableCaption,
   Thead,
@@ -13,45 +14,45 @@ import {
 type Column = {
   label: string
   field: string
-  customRender?: (data: any) => JSX.Element
+  customRender?: (data: any) => JSX.Element | string
 }
 
-type TableProps = {
-  caption: string
-  columns: Column[]
+type Props = TableProps & {
   data: any[]
+  columns: Column[]
+  caption?: string
 }
 
-export const Table = ({ caption, columns, data }: TableProps) => {
+export const Table = ({ caption, columns, data, ...props }: Props) => {
   return (
-    <TableContainer>
-      <ChakraTable size='sm'>
-        <TableCaption fontSize='large' placement='top' mb='6' mt='0' p='0'>
+    <ChakraTable {...props}>
+      {caption && (
+        <TableCaption fontSize='large' placement='top' mb='4' mt='0' p='0'>
           {caption}
         </TableCaption>
-        <Thead>
-          <Tr>
-            {columns.map((column) => (
-              <Th>{column.label}</Th>
-            ))}
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data.map((item) => (
-            <Tr key={item[columns[0].field]}>
-              {columns.map((column) => {
-                if (column.customRender) {
-                  return <Td>{column.customRender(item)}</Td>
-                }
-                return <Td>{item[column.field]}</Td>
-              })}
-            </Tr>
+      )}
+      <Thead>
+        <Tr>
+          {columns.map((column) => (
+            <Th bg='gray.800'>{column.label}</Th>
           ))}
-        </Tbody>
-        <Tfoot>
-          <Tr></Tr>
-        </Tfoot>
-      </ChakraTable>
-    </TableContainer>
+        </Tr>
+      </Thead>
+      <Tbody overflow='auto'>
+        {data.map((item) => (
+          <Tr key={item[columns[0].field]} bg='gray.600'>
+            {columns.map((column) => {
+              if (column.customRender) {
+                return <Td>{column.customRender(item)}</Td>
+              }
+              return <Td>{item[column.field]}</Td>
+            })}
+          </Tr>
+        ))}
+      </Tbody>
+      <Tfoot>
+        <Tr></Tr>
+      </Tfoot>
+    </ChakraTable>
   )
 }
