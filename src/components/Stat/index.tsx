@@ -25,11 +25,11 @@ export const Stat = ({
   return (
     <ChakraStat>
       <Grid placeItems='center'>
-        <StatLabel fontSize='lg'>{label}</StatLabel>
-        <StatNumber fontSize='3xl' my='2'>
+        <StatLabel fontSize='2xl'>{label}</StatLabel>
+        <StatNumber fontSize='4xl' my='2'>
           R$ {value.toLocaleString()}
         </StatNumber>
-        <StatHelpText mb='0'>
+        <StatHelpText fontSize='lg' mb='0'>
           <StatArrow
             type={increase ? 'increase' : 'decrease'}
             transform={isSpent ? 'rotate(180deg)' : ''}

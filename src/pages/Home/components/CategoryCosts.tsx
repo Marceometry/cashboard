@@ -60,18 +60,18 @@ const data = [
 export const CategoryCosts = () => {
   return (
     <Card>
+      <Center>
+        <Heading size='lg'>Gastos por categoria</Heading>
+      </Center>
       <Grid templateColumns='3fr 2fr' gap='4' h='full'>
         <GridItem>
-          <Center>
-            <Heading size='lg'>Gastos por categoria</Heading>
-          </Center>
           <Center h='full'>
             <Chart />
           </Center>
         </GridItem>
         <GridItem>
           <Center h='full'>
-            <Table h='full' columns={columns} data={data} />
+            <Table columns={columns} data={data} />
           </Center>
         </GridItem>
       </Grid>

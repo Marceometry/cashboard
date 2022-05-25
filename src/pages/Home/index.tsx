@@ -1,6 +1,11 @@
 import { Flex, GridItem } from '@chakra-ui/react'
 import { Content, Header, Main, Sidebar } from '@/components'
-import { CategoryCosts, Earnings, RecentTransactions } from './components'
+import {
+  CategoryCosts,
+  Earnings,
+  Invested,
+  RecentTransactions,
+} from './components'
 import { tabsData } from './constants'
 
 export const Home = () => {
@@ -20,6 +25,12 @@ export const Home = () => {
 
           <GridItem rowSpan={3} colSpan={4}>
             <CategoryCosts />
+          </GridItem>
+
+          <GridItem rowSpan={3} colSpan={2}>
+            <Invested
+              balance={{ value: 1470.3, percentage: 12, increase: true }}
+            />
           </GridItem>
         </Content>
       </Main>

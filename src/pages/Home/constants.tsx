@@ -105,9 +105,24 @@ export const data = [
     date: new Date().toLocaleString(),
     isSpent: true,
   },
-  {
-    description: 'Ingresso Metallica',
-    value: `R$ ${(190).toLocaleString()}`,
-    date: new Date().toLocaleString(),
-  },
+  // {
+  //   description: 'Ingresso Metallica',
+  //   value: `R$ ${(190).toLocaleString()}`,
+  //   date: new Date().toLocaleString(),
+  // },
+  // {
+  //   description: 'Ingresso Metallica',
+  //   value: `R$ ${(190).toLocaleString()}`,
+  //   date: new Date().toLocaleString(),
+  // },
+  // {
+  //   description: 'Ingresso Metallica',
+  //   value: `R$ ${(190).toLocaleString()}`,
+  //   date: new Date().toLocaleString(),
+  // },
+  // {
+  //   description: 'Ingresso Metallica',
+  //   value: `R$ ${(190).toLocaleString()}`,
+  //   date: new Date().toLocaleString(),
+  // },
 ]

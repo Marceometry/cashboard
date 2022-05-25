@@ -14,7 +14,7 @@ export const Sidebar = () => {
       p='8'
       bg={bg}
     >
-      <Heading>Logo</Heading>
+      <Heading>Cashboard</Heading>
     </Flex>
   )
 }

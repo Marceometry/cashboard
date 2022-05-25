@@ -27,7 +27,7 @@ export const Table = ({ caption, columns, data, ...props }: Props) => {
   return (
     <ChakraTable {...props}>
       {caption && (
-        <TableCaption fontSize='large' placement='top' mb='4' mt='0' p='0'>
+        <TableCaption fontSize='2xl' placement='top' mb='3' mt='0' p='0'>
           {caption}
         </TableCaption>
       )}
