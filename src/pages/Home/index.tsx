@@ -1,5 +1,5 @@
 import { Flex, GridItem } from '@chakra-ui/react'
-import { Content, Header, Main, Sidebar } from '@/components'
+import { Content, FloatButton, Header, Main, Sidebar } from '@/components'
 import {
   CategoryCosts,
   Earnings,
@@ -32,6 +32,8 @@ export const Home = () => {
               balance={{ value: 1470.3, percentage: 12, increase: true }}
             />
           </GridItem>
+
+          <FloatButton />
         </Content>
       </Main>
     </Flex>
