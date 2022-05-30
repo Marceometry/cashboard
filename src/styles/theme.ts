@@ -17,6 +17,15 @@ const colors = {
 
 const styles = {
   global: (props: any) => ({
+    '&::-webkit-scrollbar': {
+      width: '10px',
+      height: '10px',
+      backgroundColor: 'transparent',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      borderRadius: '8px',
+      backgroundColor: `rgb(74, 85, 104)`,
+    },
     body: {
       fontFamily: 'sans-serif',
       color: mode('gray.800', 'gray.200')(props),

@@ -99,12 +99,12 @@ export const data = [
     date: new Date().toLocaleString(),
     isSpent: true,
   },
-  {
-    description: 'Mesa de som',
-    value: `R$ ${(4500).toLocaleString()}`,
-    date: new Date().toLocaleString(),
-    isSpent: true,
-  },
+  // {
+  //   description: 'Mesa de som',
+  //   value: `R$ ${(4500).toLocaleString()}`,
+  //   date: new Date().toLocaleString(),
+  //   isSpent: true,
+  // },
   // {
   //   description: 'Ingresso Metallica',
   //   value: `R$ ${(190).toLocaleString()}`,

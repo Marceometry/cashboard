@@ -7,10 +7,10 @@ type Props = {
 export const Content = ({ children }: Props) => {
   return (
     <Grid
-      templateRows='repeat(6, 1fr)'
-      templateColumns='repeat(6, 1fr)'
-      maxH='calc(100vh - 112px)'
-      gap='8'
+      templateRows='repeat(12, 1fr)'
+      templateColumns='repeat(12, 1fr)'
+      maxH='calc(100vh - 104px)'
+      gap='6'
     >
       {children}
     </Grid>

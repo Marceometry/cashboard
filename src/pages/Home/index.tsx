@@ -15,19 +15,19 @@ export const Home = () => {
       <Main>
         <Header />
         <Content>
-          <GridItem rowSpan={2} colSpan={3}>
+          <GridItem rowSpan={4} colSpan={6}>
             <Earnings data={tabsData} />
           </GridItem>
 
-          <GridItem rowSpan={2} colSpan={3}>
+          <GridItem rowSpan={4} colSpan={6}>
             <RecentTransactions />
           </GridItem>
 
-          <GridItem rowSpan={3} colSpan={4}>
+          <GridItem rowSpan={6} colSpan={8}>
             <CategoryCosts />
           </GridItem>
 
-          <GridItem rowSpan={3} colSpan={2}>
+          <GridItem rowSpan={6} colSpan={4}>
             <Invested
               balance={{ value: 1470.3, percentage: 12, increase: true }}
             />

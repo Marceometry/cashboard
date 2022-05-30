@@ -54,7 +54,7 @@ export const Invested = ({ balance, data = tabsData }: Props) => {
     <Card>
       <Tabs tabs={tabs} />
       <Divider mt='2' mb='4' />
-      <Box p='4'>
+      <Box p='2'>
         <Stat label='Total em conta' {...balance} />
       </Box>
     </Card>

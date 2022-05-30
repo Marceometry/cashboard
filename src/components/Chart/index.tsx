@@ -8,14 +8,6 @@ import {
   Sector,
 } from 'recharts'
 
-const data = [
-  { name: 'Categoria A', value: 400 },
-  { name: 'Categoria B', value: 350 },
-  { name: 'Categoria C', value: 300 },
-  { name: 'Categoria D', value: 200 },
-  { name: 'Categoria E', value: 100 },
-]
-
 const COLORS = ['#FC8181', '#F6AD55', '#68D391', '#63B3ED', '#B794F4']
 
 const RADIAN = Math.PI / 180
@@ -117,7 +109,11 @@ const renderCustomizedLabel: PieLabel<any> = ({
   )
 }
 
-export const Chart = () => {
+type Props = {
+  data: Array<{ name: string; value: number }>
+}
+
+export const Chart = ({ data }: Props) => {
   const [activeIndex, setActiveIndex] = useState<number>()
 
   const onPieEnter = (_: any, index: number) => {
@@ -141,7 +137,7 @@ export const Chart = () => {
           activeIndex={activeIndex}
           onMouseEnter={onPieEnter}
           onMouseLeave={onPieLeave}
-          outerRadius={130}
+          outerRadius={120}
           fill='#8884d8'
           dataKey='value'
         >

@@ -1,7 +1,7 @@
-import { Grid, IconButton } from '@chakra-ui/react'
-import { AddIcon } from '@chakra-ui/icons'
-import { Modal } from '..'
 import { useState } from 'react'
+import { IconButton } from '@chakra-ui/react'
+import { AddIcon } from '@chakra-ui/icons'
+import { AddTransactionModal } from '..'
 
 export const FloatButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -15,17 +15,14 @@ export const FloatButton = () => {
         size='lg'
         aria-label='Adicionar transação'
         position='fixed'
-        bottom='14'
-        right='14'
+        bottom='8'
+        right='8'
       />
 
-      <Modal
+      <AddTransactionModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title='Adicionar transação'
-      >
-        <Grid></Grid>
-      </Modal>
+      />
     </>
   )
 }

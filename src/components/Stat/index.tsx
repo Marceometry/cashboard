@@ -25,8 +25,8 @@ export const Stat = ({
   return (
     <ChakraStat>
       <Grid placeItems='center'>
-        <StatLabel fontSize='2xl'>{label}</StatLabel>
-        <StatNumber fontSize='4xl' my='2'>
+        <StatLabel fontSize='xl'>{label}</StatLabel>
+        <StatNumber fontSize='3xl' my='2'>
           R$ {value.toLocaleString()}
         </StatNumber>
         <StatHelpText fontSize='lg' mb='0'>

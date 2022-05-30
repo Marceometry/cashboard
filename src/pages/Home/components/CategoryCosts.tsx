@@ -1,15 +1,4 @@
-import {
-  Center,
-  Table as ChakraTable,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
-  GridItem,
-  Heading,
-  Grid,
-} from '@chakra-ui/react'
+import { Center, GridItem, Heading, Grid } from '@chakra-ui/react'
 import { Card, Chart, Table } from '@/components'
 
 const columns = [
@@ -29,33 +18,48 @@ const columns = [
   },
 ]
 
-const data = [
+const baseData = [
   {
-    category: 'Categoria A',
-    costs: 400,
-    fraction: 30,
+    name: 'Categoria A',
+    value: 400,
   },
   {
-    category: 'Categoria B',
-    costs: 350,
-    fraction: 26,
+    name: 'Categoria B',
+    value: 350,
   },
   {
-    category: 'Categoria C',
-    costs: 300,
-    fraction: 22,
+    name: 'Categoria C',
+    value: 300,
   },
   {
-    category: 'Categoria D',
-    costs: 200,
-    fraction: 15,
+    name: 'Categoria D',
+    value: 200,
   },
   {
-    category: 'Categoria E',
-    costs: 100,
-    fraction: 7,
+    name: 'Categoria E',
+    value: 500,
+  },
+  {
+    name: 'Categoria F',
+    value: 300,
+  },
+  {
+    name: 'Categoria G',
+    value: 100,
   },
 ]
+
+const total = baseData.reduce((value, item) => {
+  return value + item.value
+}, 0)
+
+const data = baseData.map((item) => {
+  return {
+    category: item.name,
+    costs: item.value,
+    fraction: Math.round((100 * item.value) / total),
+  }
+})
 
 export const CategoryCosts = () => {
   return (
@@ -63,15 +67,15 @@ export const CategoryCosts = () => {
       <Center>
         <Heading size='lg'>Gastos por categoria</Heading>
       </Center>
-      <Grid templateColumns='3fr 2fr' gap='4' h='full'>
+      <Grid templateColumns='3fr 2fr' gap='4' flex='1'>
         <GridItem>
           <Center h='full'>
-            <Chart />
+            <Chart data={baseData} />
           </Center>
         </GridItem>
         <GridItem>
-          <Center h='full'>
-            <Table columns={columns} data={data} />
+          <Center h='full' overflow='auto'>
+            <Table size='sm' columns={columns} data={data} />
           </Center>
         </GridItem>
       </Grid>
