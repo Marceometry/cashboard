@@ -5,13 +5,14 @@ import {
   FormHelperText,
   FormErrorMessage,
 } from '@chakra-ui/react'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 type Props = {
   name: string
   state: any
   setState: React.Dispatch<React.SetStateAction<any>>
   label?: string
+  type?: string
   helperText?: string
   required?: boolean
   showError?: boolean
@@ -19,6 +20,7 @@ type Props = {
 
 export const Input = ({
   name,
+  type,
   state,
   setState,
   label,
@@ -46,8 +48,6 @@ export const Input = ({
     }))
   }
 
-  console.log({ state, error, showError })
-
   return (
     <FormControl>
       {label ? (
@@ -60,7 +60,7 @@ export const Input = ({
       )}
       <ChakraInput
         id={name}
-        type={name}
+        type={type}
         required={required}
         onChange={handleChange}
       />

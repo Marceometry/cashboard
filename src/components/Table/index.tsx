@@ -21,9 +21,12 @@ type Props = TableProps & {
   data: any[]
   columns: Column[]
   caption?: string
+  sortBy?: string
 }
 
-export const Table = ({ caption, columns, data, ...props }: Props) => {
+export const Table = ({ caption, columns, data, sortBy, ...props }: Props) => {
+  const sortedData = sortBy ? data.sort((a, b) => b[sortBy] - a[sortBy]) : data
+
   return (
     <ChakraTable {...props}>
       {caption && (
@@ -39,7 +42,7 @@ export const Table = ({ caption, columns, data, ...props }: Props) => {
         </Tr>
       </Thead>
       <Tbody overflow='auto'>
-        {data.map((item) => (
+        {sortedData.map((item) => (
           <Tr key={item[columns[0].field]} bg='gray.600'>
             {columns.map((column) => {
               if (column.customRender) {

@@ -1,5 +1,3 @@
-import { Center, StatArrow } from '@chakra-ui/react'
-
 export const tabsContents = [
   {
     earned: {
@@ -49,80 +47,4 @@ export const tabsData = [
     label: 'Mês passado',
     content: tabsContents[2],
   },
-]
-
-export const columns = [
-  {
-    label: '',
-    field: 'isSpent',
-    customRender: ({ isSpent }: any) => (
-      <Center>
-        <StatArrow type={isSpent ? 'decrease' : 'increase'} />
-      </Center>
-    ),
-  },
-  {
-    label: 'Valor',
-    field: 'value',
-  },
-  {
-    label: 'Descrição',
-    field: 'description',
-  },
-  {
-    label: 'Data',
-    field: 'date',
-  },
-]
-
-export const data = [
-  {
-    description: 'Placa de vídeo',
-    value: `R$ ${(498.7).toLocaleString()}`,
-    date: new Date().toLocaleString(),
-    isSpent: true,
-  },
-  {
-    description: 'Memória RAM',
-    value: `R$ ${(253.23).toLocaleString()}`,
-    date: new Date().toLocaleString(),
-    isSpent: true,
-  },
-  {
-    description: 'Pratos hi-hat',
-    value: `R$ ${(50).toLocaleString()}`,
-    date: new Date().toLocaleString(),
-  },
-  {
-    description: 'Carpete',
-    value: `R$ ${(75).toLocaleString()}`,
-    date: new Date().toLocaleString(),
-    isSpent: true,
-  },
-  // {
-  //   description: 'Mesa de som',
-  //   value: `R$ ${(4500).toLocaleString()}`,
-  //   date: new Date().toLocaleString(),
-  //   isSpent: true,
-  // },
-  // {
-  //   description: 'Ingresso Metallica',
-  //   value: `R$ ${(190).toLocaleString()}`,
-  //   date: new Date().toLocaleString(),
-  // },
-  // {
-  //   description: 'Ingresso Metallica',
-  //   value: `R$ ${(190).toLocaleString()}`,
-  //   date: new Date().toLocaleString(),
-  // },
-  // {
-  //   description: 'Ingresso Metallica',
-  //   value: `R$ ${(190).toLocaleString()}`,
-  //   date: new Date().toLocaleString(),
-  // },
-  // {
-  //   description: 'Ingresso Metallica',
-  //   value: `R$ ${(190).toLocaleString()}`,
-  //   date: new Date().toLocaleString(),
-  // },
 ]
