@@ -62,6 +62,7 @@ export const Input = ({
         id={name}
         type={type}
         required={required}
+        value={state[name]}
         onChange={handleChange}
       />
       {helperText && !error ? (

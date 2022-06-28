@@ -1,5 +1,11 @@
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from 'react'
 import { useLocalStorage } from '@/hooks'
-import { createContext, useContext, useState, ReactNode } from 'react'
 import {
   TransactionsContextData,
   CategoryModel,
@@ -18,9 +24,11 @@ export function TransactionsContextProvider({
 }: TransactionsContextProviderProps) {
   const { get, set } = useLocalStorage()
   const [isLoading, setIsLoading] = useState(false)
-  const [categoryList, setCategoryList] = useState<CategoryModel[]>([])
+  const [categoryList, setCategoryList] = useState<CategoryModel[]>(() =>
+    get('categories', [])
+  )
   const [transactionList, setTransactionList] = useState<TransactionModel[]>(
-    () => get()
+    () => get('transactions', [])
   )
 
   const addTransaction = (transaction: AddTransactionModel) => {
@@ -32,16 +40,29 @@ export function TransactionsContextProvider({
     setTransactionList((oldState) => {
       const transactionWithId = {
         ...newTransaction,
-        id: oldState.length + 1,
+        id: oldState.length
+          ? Math.max(...oldState.map((item) => item.id)) + 1
+          : 1,
       }
       const newTransactionList = [...oldState, transactionWithId]
-      set(newTransactionList)
       return newTransactionList
     })
-    setCategoryList((oldState) => {
-      const { amount, category, type } = newTransaction
+  }
+
+  const removeTransaction = (transaction: TransactionModel) => {
+    setTransactionList((oldState) => {
+      const newList = oldState.filter((item) => item.id !== transaction.id)
+      return newList
+    })
+  }
+
+  const generateCategories = (
+    transactions: TransactionModel[]
+  ): CategoryModel[] => {
+    const categories = transactions.reduce((acc, transaction) => {
+      const { category, amount, type } = transaction
       const isIncome = type === 'income'
-      const currentCategory = oldState.find((c) => c.name === category)
+      const currentCategory = acc.find((c) => c.name === category)
       if (!currentCategory) {
         const newCategory = {
           name: category,
@@ -49,9 +70,15 @@ export function TransactionsContextProvider({
           outcome: !isIncome ? amount : 0,
           balance: isIncome ? amount : -amount,
         }
-        return [...oldState, newCategory]
+        return [...acc, newCategory]
       }
-      return oldState?.map((c) => {
+      if (
+        Math.abs(Number(currentCategory?.balance)) === amount &&
+        currentCategory?.[type] === amount
+      ) {
+        return acc.filter((c) => c.name !== category)
+      }
+      const newCategoryList = acc.map((c) => {
         if (c.name !== category) return c
         return {
           ...c,
@@ -60,36 +87,17 @@ export function TransactionsContextProvider({
           balance: isIncome ? c.balance + amount : c.balance - amount,
         }
       })
-    })
+      return newCategoryList
+    }, [] as CategoryModel[])
+    return categories
   }
 
-  const removeTransaction = (transaction: TransactionModel) => {
-    setTransactionList((oldState) => {
-      const newList = oldState.filter((item) => item.id !== transaction.id)
-      set(newList)
-      return newList
-    })
-    setCategoryList((oldState) => {
-      const { category, amount, type } = transaction
-      const isIncome = type === 'income'
-      const currentCategory = oldState.find((c) => c.name === category)
-      if (
-        Math.abs(Number(currentCategory?.balance)) === amount &&
-        currentCategory?.[type] === amount
-      ) {
-        return oldState.filter((c) => c.name !== category)
-      }
-      return oldState?.map((c) => {
-        if (c.name !== category) return c
-        return {
-          ...c,
-          income: isIncome ? c.income - amount : c.income,
-          outcome: !isIncome ? c.outcome - amount : c.outcome,
-          balance: isIncome ? c.balance - amount : c.balance + amount,
-        }
-      })
-    })
-  }
+  useEffect(() => {
+    const categories = generateCategories(transactionList)
+    setCategoryList(categories)
+    set('categories', categories)
+    set('transactions', transactionList)
+  }, [transactionList])
 
   return (
     <TransactionsContext.Provider

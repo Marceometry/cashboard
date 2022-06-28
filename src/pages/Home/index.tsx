@@ -15,23 +15,23 @@ export const Home = () => {
       <Main>
         <Header />
         <Content>
-          <GridItem rowSpan={4} colSpan={6}>
+          {/* <GridItem rowSpan={4} colSpan={6}>
             <Earnings data={tabsData} />
-          </GridItem>
+          </GridItem> */}
 
-          <GridItem rowSpan={4} colSpan={6}>
-            <RecentTransactions />
-          </GridItem>
-
-          <GridItem rowSpan={6} colSpan={8}>
+          <GridItem rowSpan={8} colSpan={7}>
             <CategoryCosts />
           </GridItem>
 
-          <GridItem rowSpan={6} colSpan={4}>
+          <GridItem rowSpan={8} colSpan={5}>
+            <RecentTransactions />
+          </GridItem>
+
+          {/* <GridItem rowSpan={6} colSpan={4}>
             <Invested
               balance={{ value: 1470.3, percentage: 12, increase: true }}
             />
-          </GridItem>
+          </GridItem> */}
 
           <FloatButton />
         </Content>

@@ -137,7 +137,7 @@ export const Chart = ({ data }: Props) => {
           activeIndex={activeIndex}
           onMouseEnter={onPieEnter}
           onMouseLeave={onPieLeave}
-          outerRadius={120}
+          outerRadius={150}
           fill='#8884d8'
           dataKey='value'
         >

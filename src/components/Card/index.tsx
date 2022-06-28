@@ -8,14 +8,19 @@ export const Card = ({ children }: Props) => {
   const bg = useColorModeValue('gray.100', 'gray.700')
 
   return (
-    <Box bg={bg} h='full' pt='4' pl='4' rounded='md' shadow='lg'>
-      <Grid templateColumns='1fr' h='full'>
-        <GridItem h='full' pb='4' pr='4' overflow='auto'>
-          <Flex direction='column' h='full'>
-            {children}
-          </Flex>
-        </GridItem>
-      </Grid>
+    <Box
+      bg={bg}
+      flex='1'
+      pt='4'
+      pl='4'
+      pb='4'
+      rounded='md'
+      shadow='lg'
+      overflow='hidden'
+    >
+      <Flex direction='column' h='full' pr='4' overflow='auto'>
+        {children}
+      </Flex>
     </Box>
   )
 }

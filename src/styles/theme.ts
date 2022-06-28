@@ -1,6 +1,5 @@
 import { extendTheme, type ThemeConfig } from '@chakra-ui/react'
 import { mode } from '@chakra-ui/theme-tools'
-import { Header } from './components'
 
 const config: ThemeConfig = {
   initialColorMode: 'system',
@@ -24,23 +23,20 @@ const styles = {
     },
     '&::-webkit-scrollbar-thumb': {
       borderRadius: '8px',
-      backgroundColor: `rgb(74, 85, 104)`,
+      backgroundColor: `rgb(64, 75, 94)`,
     },
     body: {
       fontFamily: 'sans-serif',
       color: mode('gray.800', 'gray.200')(props),
       bg: mode('gray.200', 'gray.800')(props),
+      overflow: 'hidden',
+      height: '100vh',
     },
   }),
-}
-
-const components = {
-  Header,
 }
 
 export const theme = extendTheme({
   config,
   colors,
   styles,
-  components,
 })

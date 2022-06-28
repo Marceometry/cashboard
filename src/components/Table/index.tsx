@@ -1,7 +1,6 @@
 import {
   Table as ChakraTable,
   TableProps,
-  TableContainer,
   TableCaption,
   Thead,
   Tr,
@@ -30,26 +29,29 @@ export const Table = ({ caption, columns, data, sortBy, ...props }: Props) => {
   return (
     <ChakraTable {...props}>
       {caption && (
-        <TableCaption fontSize='2xl' placement='top' mb='3' mt='0' p='0'>
+        <TableCaption fontSize='3xl' placement='top' mb='4' mt='0' p='0'>
           {caption}
         </TableCaption>
       )}
       <Thead>
         <Tr>
-          {columns.map((column) => (
-            <Th bg='gray.800'>{column.label}</Th>
+          {columns.map((column, index) => (
+            <Th bg='gray.800' key={index}>
+              {column.label}
+            </Th>
           ))}
         </Tr>
       </Thead>
       <Tbody overflow='auto'>
-        {sortedData.map((item) => (
-          <Tr key={item[columns[0].field]} bg='gray.600'>
-            {columns.map((column) => {
-              if (column.customRender) {
-                return <Td>{column.customRender(item)}</Td>
-              }
-              return <Td>{item[column.field]}</Td>
-            })}
+        {sortedData.map((item, index) => (
+          <Tr key={index} bg='gray.600'>
+            {columns.map((column, columnIndex) => (
+              <Td key={columnIndex}>
+                {column.customRender
+                  ? column.customRender(item)
+                  : item[column.field]}
+              </Td>
+            ))}
           </Tr>
         ))}
       </Tbody>

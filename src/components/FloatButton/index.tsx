@@ -15,8 +15,8 @@ export const FloatButton = () => {
         size='lg'
         aria-label='Adicionar transação'
         position='fixed'
-        bottom='8'
-        right='8'
+        bottom='10'
+        right='10'
       />
 
       <AddTransactionModal
