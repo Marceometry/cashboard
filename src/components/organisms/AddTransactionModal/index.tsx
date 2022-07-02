@@ -15,6 +15,7 @@ const makeEmptyState = (): AddTransactionModel => ({
   amount: 0,
   description: '',
   category: '',
+  date: new Date(),
   type: 'income',
 })
 
@@ -57,8 +58,8 @@ export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
           <Input
             state={state}
             setState={setState}
-            name='description'
             label='Descrição'
+            name='description'
             required
             showError
           />
@@ -67,8 +68,8 @@ export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
           <Input
             state={state}
             setState={setState}
-            name='amount'
             label='Valor'
+            name='amount'
             type='number'
             required
             showError
@@ -78,23 +79,32 @@ export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
           <Input
             state={state}
             setState={setState}
-            name='category'
             label='Categoria'
+            name='category'
             required
             showError
           />
         </GridItem>
         <GridItem>
-          <Center h='full'>
-            <RadioGroup onChange={handleRadioChange} value={state.type}>
-              <Stack direction='row' gap='5'>
-                <Radio value='income'>Entrada</Radio>
-                <Radio value='outcome'>Saída</Radio>
-              </Stack>
-            </RadioGroup>
-          </Center>
+          <Input
+            state={state}
+            setState={setState}
+            label='Data'
+            name='date'
+            type='date'
+            required
+            showError
+          />
         </GridItem>
       </Grid>
+      <Center mt='6'>
+        <RadioGroup onChange={handleRadioChange} value={state.type}>
+          <Stack direction='row' gap='5'>
+            <Radio value='income'>Entrada</Radio>
+            <Radio value='outcome'>Saída</Radio>
+          </Stack>
+        </RadioGroup>
+      </Center>
     </Modal>
   )
 }

@@ -35,7 +35,7 @@ export function TransactionsContextProvider({
     const newTransaction = {
       ...transaction,
       amount: Number(transaction.amount),
-      date: new Date(),
+      date: new Date(`${transaction.date} 00:00:00`),
     }
     setTransactionList((oldState) => {
       const transactionWithId = {

@@ -14,7 +14,7 @@ export type TransactionModel = {
   type: 'income' | 'outcome'
 }
 
-export type AddTransactionModel = Omit<TransactionModel, 'id' | 'date'>
+export type AddTransactionModel = Omit<TransactionModel, 'id'>
 
 export type TransactionsContextData = {
   isLoading: boolean
