@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, GridItem, useColorModeValue } from '@chakra-ui/react'
+import { Box, Flex, useColorModeValue } from '@chakra-ui/react'
 
 type Props = {
   children: React.ReactNode

@@ -8,7 +8,7 @@ import {
   Center,
   Button,
 } from '@chakra-ui/react'
-import { Modal, Input } from '..'
+import { Modal, Input } from '@/components'
 import { AddTransactionModel, useTransactions } from '@/contexts'
 
 const makeEmptyState = (): AddTransactionModel => ({

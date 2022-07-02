@@ -33,7 +33,7 @@ export const Sidebar = () => {
       bg={bg}
     >
       <Heading p='8' pb='5'>
-        Cashboard
+        <Link to='/'>Cashboard</Link>
       </Heading>
 
       <List width='full' borderTop='1px solid white' pt='2' mt='5'>

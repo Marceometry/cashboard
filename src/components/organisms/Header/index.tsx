@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react'
-import { ToggleColorMode } from '..'
+import { ToggleColorMode } from '@/components'
 
 export const Header = () => {
   return (
