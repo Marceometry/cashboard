@@ -13,7 +13,13 @@ export const Content = ({ data, type }: Props) => {
 
   return (
     <Flex h='full' w='full' direction='column' justifyContent='center'>
-      <Table mx='auto' sortBy='outcome' columns={columns} data={data} />
+      <Table
+        mx='auto'
+        sortBy='outcome'
+        columns={columns}
+        data={data}
+        noFilters
+      />
     </Flex>
   )
 }

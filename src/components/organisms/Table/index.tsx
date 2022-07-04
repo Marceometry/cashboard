@@ -1,14 +1,21 @@
 import {
   Table as ChakraTable,
   TableProps,
-  TableCaption,
   Thead,
   Tr,
   Th,
   Tbody,
   Td,
   Tfoot,
+  Heading,
+  Flex,
+  Input,
 } from '@chakra-ui/react'
+import { Select } from '@/components/atoms'
+import { MONTH_LIST, YEAR_LIST } from '@/constants'
+import { useEffect, useMemo, useState } from 'react'
+import { getMonth, getYear } from 'date-fns'
+import { filterByMonth, filterByText, filterByYear } from './utils'
 
 type Column = {
   label: string
@@ -21,43 +28,94 @@ type Props = TableProps & {
   columns: Column[]
   caption?: string
   sortBy?: string
+  noFilters?: boolean
 }
 
-export const Table = ({ caption, columns, data, sortBy, ...props }: Props) => {
-  const sortedData = sortBy ? data.sort((a, b) => b[sortBy] - a[sortBy]) : data
+export const Table = ({
+  caption,
+  columns,
+  data,
+  sortBy,
+  noFilters,
+  ...props
+}: Props) => {
+  const [filteredData, setFilteredData] = useState(data)
+  const [selectedMonth, setSelectedMonth] = useState(getMonth(new Date()))
+  const [selectedYear, setSelectedYear] = useState(getYear(new Date()))
+  const [searchText, setSearchText] = useState('')
+
+  const sortedData = useMemo(
+    () =>
+      sortBy
+        ? filteredData.sort((a, b) => b[sortBy] - a[sortBy])
+        : filteredData,
+    [sortBy, filteredData]
+  )
+
+  useEffect(() => {
+    let filtered = [...data]
+
+    filtered = filterByText(filtered, columns, searchText)
+    filtered = filterByMonth(filtered, selectedMonth)
+    filtered = filterByYear(filtered, selectedYear)
+
+    setFilteredData(filtered)
+  }, [data, searchText, selectedMonth, selectedYear])
 
   return (
-    <ChakraTable {...props}>
-      {caption && (
-        <TableCaption fontSize='3xl' placement='top' mb='4' mt='0' p='0'>
-          {caption}
-        </TableCaption>
-      )}
-      <Thead>
-        <Tr>
-          {columns.map((column, index) => (
-            <Th bg='gray.800' key={index}>
-              {column.label}
-            </Th>
-          ))}
-        </Tr>
-      </Thead>
-      <Tbody overflow='auto'>
-        {sortedData.map((item, index) => (
-          <Tr key={index} bg='gray.600'>
-            {columns.map((column, columnIndex) => (
-              <Td key={columnIndex}>
-                {column.customRender
-                  ? column.customRender(item)
-                  : item[column.field]}
-              </Td>
+    <div>
+      <Flex justifyContent='space-between' mb='4'>
+        {caption && <Heading fontSize='3xl'>{caption}</Heading>}
+        {!noFilters && (
+          <Flex gap='4'>
+            <Select
+              w='auto'
+              options={MONTH_LIST}
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(Number(e.target.value))}
+            />
+            <Select
+              w='auto'
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(Number(e.target.value))}
+              options={YEAR_LIST.map((item) => ({ label: item, value: item }))}
+            />
+            <Input
+              w='auto'
+              placeholder='Pesquisar'
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+          </Flex>
+        )}
+      </Flex>
+      <ChakraTable {...props}>
+        <Thead>
+          <Tr>
+            {columns.map((column, index) => (
+              <Th bg='gray.800' key={index}>
+                {column.label}
+              </Th>
             ))}
           </Tr>
-        ))}
-      </Tbody>
-      <Tfoot>
-        <Tr></Tr>
-      </Tfoot>
-    </ChakraTable>
+        </Thead>
+        <Tbody overflow='auto'>
+          {sortedData.map((item, index) => (
+            <Tr key={index} bg='gray.600'>
+              {columns.map((column, columnIndex) => (
+                <Td key={columnIndex}>
+                  {column.customRender
+                    ? column.customRender(item)
+                    : item[column.field]}
+                </Td>
+              ))}
+            </Tr>
+          ))}
+        </Tbody>
+        <Tfoot>
+          <Tr></Tr>
+        </Tfoot>
+      </ChakraTable>
+    </div>
   )
 }
