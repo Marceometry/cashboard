@@ -9,7 +9,8 @@ import {
 } from '@chakra-ui/react'
 
 type Tab = {
-  label: string
+  key: string
+  label: string | React.ReactNode
   content: React.ReactNode
 }
 
@@ -22,13 +23,13 @@ export const Tabs = ({ tabs, ...props }: Props) => {
     <ChakraTabs isFitted {...props}>
       <TabList mb='4'>
         {tabs.map((tab) => (
-          <Tab>{tab.label}</Tab>
+          <Tab key={tab.key}>{tab.label}</Tab>
         ))}
       </TabList>
 
       <TabPanels>
         {tabs.map((tab) => (
-          <TabPanel>
+          <TabPanel key={tab.key}>
             <Flex gap='4' w='100%'>
               {tab.content}
             </Flex>

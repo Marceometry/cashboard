@@ -1,10 +1,6 @@
-import { Box, Flex, useColorModeValue } from '@chakra-ui/react'
+import { Box, ChakraComponent, Flex, useColorModeValue } from '@chakra-ui/react'
 
-type Props = {
-  children: React.ReactNode
-}
-
-export const Card = ({ children }: Props) => {
+export const Card: ChakraComponent<'div', {}> = ({ children, ...props }) => {
   const bg = useColorModeValue('gray.100', 'gray.700')
 
   return (
@@ -17,6 +13,7 @@ export const Card = ({ children }: Props) => {
       rounded='md'
       shadow='lg'
       overflow='hidden'
+      {...props}
     >
       <Flex direction='column' h='full' pr='4' overflow='auto'>
         {children}

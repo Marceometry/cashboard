@@ -5,13 +5,15 @@ export type CategoryModel = {
   balance: number
 }
 
+export type TransactionType = 'income' | 'outcome'
+
 export type TransactionModel = {
   id: number
   amount: number
   description: string
   category: string
   date: Date
-  type: 'income' | 'outcome'
+  type: TransactionType
 }
 
 export type AddTransactionModel = Omit<TransactionModel, 'id'>
