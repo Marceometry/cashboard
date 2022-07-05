@@ -7,7 +7,7 @@ export const Card: ChakraComponent<'div', {}> = ({ children, ...props }) => {
     <Box
       bg={bg}
       flex='1'
-      pt='4'
+      pt='3'
       pl='4'
       pb='4'
       rounded='md'
@@ -15,7 +15,7 @@ export const Card: ChakraComponent<'div', {}> = ({ children, ...props }) => {
       overflow='hidden'
       {...props}
     >
-      <Flex direction='column' h='full' pr='4' overflow='auto'>
+      <Flex direction='column' h='full' pr='4' pt='1' overflow='auto'>
         {children}
       </Flex>
     </Box>

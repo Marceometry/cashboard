@@ -1,10 +1,22 @@
 import { Center, StatArrow } from '@chakra-ui/react'
+import { ButtonProps, ColumnProps } from '@/components'
+
+type ButtonsProps = {
+  handleClick: () => void
+}
+
+export const getButtons = ({ handleClick }: ButtonsProps): ButtonProps[] => [
+  {
+    children: 'Nova Transação',
+    onClick: handleClick,
+  },
+]
 
 type ColumnsProps = {
   handleDelete: (row: any) => void
 }
 
-export const getColumns = ({ handleDelete }: ColumnsProps) => [
+export const getColumns = ({ handleDelete }: ColumnsProps): ColumnProps[] => [
   {
     label: '',
     field: 'type',

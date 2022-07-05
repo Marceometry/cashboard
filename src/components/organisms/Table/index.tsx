@@ -10,6 +10,7 @@ import {
   Heading,
   Flex,
   Input,
+  Button,
 } from '@chakra-ui/react'
 import { Select } from '@/components/atoms'
 import { MONTH_LIST, YEAR_LIST } from '@/constants'
@@ -17,15 +18,22 @@ import { useEffect, useMemo, useState } from 'react'
 import { getMonth, getYear } from 'date-fns'
 import { filterByMonth, filterByText, filterByYear } from './utils'
 
-type Column = {
+export type ColumnProps = {
   label: string
   field: string
   customRender?: (data: any) => JSX.Element | string
 }
 
+export type ButtonProps = {
+  children: string
+  onClick: () => void
+  variant?: 'outline' | 'ghost' | 'link' | 'solid' | 'unstyled'
+}
+
 type Props = TableProps & {
   data: any[]
-  columns: Column[]
+  columns: ColumnProps[]
+  buttons?: ButtonProps[]
   caption?: string
   sortBy?: string
   noFilters?: boolean
@@ -34,6 +42,7 @@ type Props = TableProps & {
 export const Table = ({
   caption,
   columns,
+  buttons,
   data,
   sortBy,
   noFilters,
@@ -86,6 +95,9 @@ export const Table = ({
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
             />
+            {buttons?.map((button) => (
+              <Button {...button} />
+            ))}
           </Flex>
         )}
       </Flex>

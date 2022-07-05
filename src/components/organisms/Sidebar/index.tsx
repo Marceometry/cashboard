@@ -32,11 +32,11 @@ export const Sidebar = () => {
       shadow='lg'
       bg={bg}
     >
-      <Heading p='8' pb='5'>
+      <Heading py='8'>
         <Link to='/'>Cashboard</Link>
       </Heading>
 
-      <List width='full' borderTop='1px solid white' pt='2' mt='5'>
+      <List width='full' borderTop='1px solid white' pt='2'>
         {routes.map((route) => (
           <ListItem key={route.path}>
             <Link to={route.path}>
