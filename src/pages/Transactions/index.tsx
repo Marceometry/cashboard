@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Table, Card, AddTransactionModal, MainTemplate } from '@/components'
+import { Table, Card, MainTemplate } from '@/components'
 import { useTransactions } from '@/contexts'
 import { getButtons, getColumns } from './constants'
+import { AddTransactionModal } from './components'
 
 export const Transactions = () => {
   const { transactionList, removeTransaction } = useTransactions()

@@ -48,8 +48,8 @@ export const Table = ({
   noFilters,
   ...props
 }: Props) => {
-  const [filteredData, setFilteredData] = useState(data)
-  const [selectedMonth, setSelectedMonth] = useState(getMonth(new Date()))
+  const [filteredData, setFilteredData] = useState<any[]>([])
+  const [selectedMonth, setSelectedMonth] = useState(getMonth(new Date()) + 1)
   const [selectedYear, setSelectedYear] = useState(getYear(new Date()))
   const [searchText, setSearchText] = useState('')
 
@@ -64,9 +64,11 @@ export const Table = ({
   useEffect(() => {
     let filtered = [...data]
 
-    filtered = filterByText(filtered, columns, searchText)
-    filtered = filterByMonth(filtered, selectedMonth)
-    filtered = filterByYear(filtered, selectedYear)
+    if (!noFilters) {
+      filtered = filterByText(filtered, columns, searchText)
+      filtered = filterByMonth(filtered, selectedMonth)
+      filtered = filterByYear(filtered, selectedYear)
+    }
 
     setFilteredData(filtered)
   }, [data, searchText, selectedMonth, selectedYear])

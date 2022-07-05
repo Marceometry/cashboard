@@ -1,5 +1,5 @@
 import { Radio as ChakraRadio, useRadioGroup, Stack } from '@chakra-ui/react'
-import { useController } from 'react-hook-form'
+import { useController, useFormContext } from 'react-hook-form'
 
 type Option = {
   label: string
@@ -9,19 +9,12 @@ type Option = {
 type Props = {
   name: string
   options: Option[]
-  control: any
-  defaultValue?: string
   direction?: 'row' | 'column'
 }
 
-export const Radio = ({
-  name,
-  options,
-  control,
-  defaultValue,
-  direction = 'row',
-}: Props) => {
-  const { field } = useController({ name, control, defaultValue })
+export const Radio = ({ name, options, direction = 'row' }: Props) => {
+  const { control } = useFormContext()
+  const { field } = useController({ name, control })
   const { getRootProps, getRadioProps } = useRadioGroup({ ...field })
 
   return (

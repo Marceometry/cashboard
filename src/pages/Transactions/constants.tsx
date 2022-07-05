@@ -1,5 +1,5 @@
 import { Center, StatArrow } from '@chakra-ui/react'
-import { ButtonProps, ColumnProps } from '@/components'
+import { ButtonProps, ColumnProps, IconButton } from '@/components'
 
 type ButtonsProps = {
   handleClick: () => void
@@ -49,9 +49,11 @@ export const getColumns = ({ handleDelete }: ColumnsProps): ColumnProps[] => [
     field: '',
     customRender: (row: any) => {
       return (
-        <button type='button' onClick={() => handleDelete(row)}>
-          Excluir
-        </button>
+        <IconButton
+          icon='delete'
+          aria-label='Excluir transação'
+          onClick={() => handleDelete(row)}
+        />
       )
     },
   },

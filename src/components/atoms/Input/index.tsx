@@ -1,4 +1,4 @@
-import { FieldError, UseFormRegister } from 'react-hook-form'
+import { FieldError, useFormContext } from 'react-hook-form'
 import {
   Input as ChakraInput,
   FormControl,
@@ -9,25 +9,27 @@ import {
 } from '@chakra-ui/react'
 
 type Props = InputProps & {
-  register: UseFormRegister<any>
   name: string
   label?: string
   type?: string
   helperText?: string
   required?: boolean
-  error?: FieldError
 }
 
 export const Input = ({
   name,
-  register,
   type,
   label,
   required,
   helperText,
-  error,
   ...props
 }: Props) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext()
+  const error = errors[name]
+
   return (
     <FormControl isInvalid={!!error?.message}>
       {label ? (
@@ -51,7 +53,9 @@ export const Input = ({
       ) : (
         ''
       )}
-      <FormErrorMessage>{error?.message}</FormErrorMessage>
+      {typeof error?.message === 'string' && (
+        <FormErrorMessage>{error.message}</FormErrorMessage>
+      )}
     </FormControl>
   )
 }

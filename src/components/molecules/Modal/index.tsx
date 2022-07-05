@@ -1,3 +1,4 @@
+import { UseFormReturn } from 'react-hook-form'
 import {
   Button,
   Flex,
@@ -10,11 +11,18 @@ import {
   ModalOverlay,
   ModalProps,
 } from '@chakra-ui/react'
+import { Form } from '@/components'
+
+type ButtonProps = {
+  children: string
+  onClick: () => void
+}
 
 type Props = ModalProps & {
   title: string
-  onConfirm?: () => void
-  customButton?: React.ReactNode
+  formMethods: UseFormReturn<any, object>
+  onConfirm?: (data?: any) => void
+  extraButton?: ButtonProps
 }
 
 export const Modal = ({
@@ -23,13 +31,14 @@ export const Modal = ({
   isOpen,
   onClose,
   onConfirm,
-  customButton,
+  extraButton,
+  formMethods,
 }: Props) => {
   return (
     <ChakraModal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent maxW={600}>
-        <form onSubmit={onConfirm}>
+        <Form formMethods={formMethods} onSubmit={onConfirm}>
           <ModalHeader fontSize='2xl'>{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>{children}</ModalBody>
@@ -39,13 +48,17 @@ export const Modal = ({
               <Button type='submit' size='lg'>
                 Confirmar
               </Button>
-              {customButton}
+              {extraButton && (
+                <Button onClick={extraButton.onClick} type='submit' size='lg'>
+                  {extraButton.children}
+                </Button>
+              )}
               <Button onClick={onClose} variant='outline' size='lg'>
                 Cancelar
               </Button>
             </Flex>
           </ModalFooter>
-        </form>
+        </Form>
       </ModalContent>
     </ChakraModal>
   )
