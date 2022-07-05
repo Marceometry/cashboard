@@ -1,55 +1,35 @@
+import { FieldError, UseFormRegister } from 'react-hook-form'
 import {
   Input as ChakraInput,
   FormControl,
   FormLabel,
   FormHelperText,
   FormErrorMessage,
+  InputProps,
 } from '@chakra-ui/react'
-import { useCallback, useState } from 'react'
 
-type Props = {
+type Props = InputProps & {
+  register: UseFormRegister<any>
   name: string
-  state: any
-  setState: React.Dispatch<React.SetStateAction<any>>
   label?: string
   type?: string
   helperText?: string
   required?: boolean
-  showError?: boolean
+  error?: FieldError
 }
 
 export const Input = ({
   name,
+  register,
   type,
-  state,
-  setState,
   label,
-  helperText,
   required,
-  showError,
+  helperText,
+  error,
+  ...props
 }: Props) => {
-  const [error, setError] = useState('')
-
-  const handleError = useCallback(
-    (value: string) => {
-      if (required && !value) return 'Este campo é obrigatório'
-      return ''
-    },
-    [required]
-  )
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    const hasError = handleError(value)
-    setError(hasError)
-    setState((oldState: any) => ({
-      ...oldState,
-      [name]: value,
-    }))
-  }
-
   return (
-    <FormControl>
+    <FormControl isInvalid={!!error?.message}>
       {label ? (
         <FormLabel htmlFor={name}>
           {label}
@@ -61,16 +41,17 @@ export const Input = ({
       <ChakraInput
         id={name}
         type={type}
-        required={required}
-        value={state[name]}
-        onChange={handleChange}
+        {...register(name, {
+          required: required ? 'Este campo é obrigatório' : '',
+        })}
+        {...props}
       />
       {helperText && !error ? (
         <FormHelperText>{helperText}</FormHelperText>
       ) : (
         ''
       )}
-      {showError && error ? <FormErrorMessage>{error}</FormErrorMessage> : ''}
+      <FormErrorMessage>{error?.message}</FormErrorMessage>
     </FormControl>
   )
 }

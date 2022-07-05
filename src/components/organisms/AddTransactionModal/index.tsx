@@ -1,109 +1,113 @@
-import { useState } from 'react'
-import {
-  Grid,
-  GridItem,
-  RadioGroup,
-  Radio,
-  Stack,
-  Center,
-  Button,
-} from '@chakra-ui/react'
-import { Modal, Input } from '@/components'
-import { AddTransactionModel, useTransactions } from '@/contexts'
-
-const makeEmptyState = (): AddTransactionModel => ({
-  amount: 0,
-  description: '',
-  category: '',
-  date: new Date(),
-  type: 'income',
-})
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { Grid, GridItem, Center, Button } from '@chakra-ui/react'
+import { format } from 'date-fns'
+import { Modal, Input, Radio } from '@/components'
+// import { AddTransactionModel, useTransactions } from '@/contexts'
 
 type Props = {
   isOpen: boolean
   onClose: () => void
 }
 
+const defaultValues = {
+  description: '',
+  amount: '',
+  category: '',
+  type: 'income',
+  date: format(new Date(), 'yyyy-MM-dd'),
+}
+
 export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
-  const { addTransaction } = useTransactions()
-  const [state, setState] = useState<AddTransactionModel>(makeEmptyState())
+  // const { addTransaction } = useTransactions()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm({ defaultValues })
+  const [keepModalOpen, setKeepModalOpen] = useState(false)
 
-  const handleRadioChange = (value: 'income' | 'outcome') => {
-    setState((oldState) => ({
-      ...oldState,
-      type: value,
-    }))
+  const onSubmit = (data: any) => {
+    // addTransaction(state)
+    // setState(makeEmptyState())
+    console.log(data)
+
+    if (keepModalOpen) {
+      setKeepModalOpen(false)
+      reset()
+    } else {
+      onClose()
+    }
   }
 
-  const handleSubmit = (addNew?: boolean) => {
-    addTransaction(state)
-    setState(makeEmptyState())
-    !addNew && onClose()
-  }
+  useEffect(() => {
+    reset()
+  }, [isOpen])
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      onConfirm={() => handleSubmit(false)}
+      onConfirm={handleSubmit(onSubmit)}
+      title='Adicionar transação'
       customButton={
-        <Button onClick={() => handleSubmit(true)} size='lg'>
+        <Button onClick={() => setKeepModalOpen(true)} type='submit' size='lg'>
           Adicionar novo
         </Button>
       }
-      title='Adicionar transação'
     >
       <Grid templateColumns='1fr 1fr' gap='4'>
         <GridItem>
           <Input
-            state={state}
-            setState={setState}
             label='Descrição'
             name='description'
+            error={errors.description}
+            register={register}
             required
-            showError
           />
         </GridItem>
         <GridItem>
           <Input
-            state={state}
-            setState={setState}
             label='Valor'
             name='amount'
             type='number'
+            error={errors.amount}
+            register={register}
             required
-            showError
           />
         </GridItem>
         <GridItem>
           <Input
-            state={state}
-            setState={setState}
             label='Categoria'
             name='category'
+            error={errors.category}
+            register={register}
             required
-            showError
           />
         </GridItem>
         <GridItem>
           <Input
-            state={state}
-            setState={setState}
             label='Data'
             name='date'
             type='date'
+            error={errors.date}
+            register={register}
             required
-            showError
           />
         </GridItem>
       </Grid>
       <Center mt='6'>
-        <RadioGroup onChange={handleRadioChange} value={state.type}>
-          <Stack direction='row' gap='5'>
-            <Radio value='income'>Entrada</Radio>
-            <Radio value='outcome'>Saída</Radio>
-          </Stack>
-        </RadioGroup>
+        <Radio
+          name='type'
+          control={control}
+          defaultValue={control._defaultValues.type}
+          options={[
+            { label: 'Entrada', value: 'income' },
+            { label: 'Saída', value: 'outcome' },
+          ]}
+        />
       </Center>
     </Modal>
   )

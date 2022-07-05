@@ -96,7 +96,7 @@ export const Table = ({
               onChange={(e) => setSearchText(e.target.value)}
             />
             {buttons?.map((button) => (
-              <Button {...button} />
+              <Button key={button.children} {...button} />
             ))}
           </Flex>
         )}

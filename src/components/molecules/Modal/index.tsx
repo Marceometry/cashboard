@@ -29,21 +29,23 @@ export const Modal = ({
     <ChakraModal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent maxW={600}>
-        <ModalHeader fontSize='2xl'>{title}</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>{children}</ModalBody>
+        <form onSubmit={onConfirm}>
+          <ModalHeader fontSize='2xl'>{title}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>{children}</ModalBody>
 
-        <ModalFooter>
-          <Flex w='full' justify='space-around' gap='6'>
-            <Button onClick={onConfirm} size='lg'>
-              Confirmar
-            </Button>
-            {customButton}
-            <Button onClick={onClose} variant='outline' size='lg'>
-              Cancelar
-            </Button>
-          </Flex>
-        </ModalFooter>
+          <ModalFooter>
+            <Flex w='full' justify='space-around' gap='6'>
+              <Button type='submit' size='lg'>
+                Confirmar
+              </Button>
+              {customButton}
+              <Button onClick={onClose} variant='outline' size='lg'>
+                Cancelar
+              </Button>
+            </Flex>
+          </ModalFooter>
+        </form>
       </ModalContent>
     </ChakraModal>
   )
