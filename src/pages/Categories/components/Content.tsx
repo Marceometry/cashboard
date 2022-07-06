@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react'
-import { Chart, Table } from '@/components'
-import { TransactionType, useTransactions } from '@/contexts'
-import { generateData, getColumns } from './constants'
+import { Table } from '@/components'
+import { TransactionType } from '@/contexts'
+import { getColumns } from './constants'
 
 type Props = {
   data: any[]

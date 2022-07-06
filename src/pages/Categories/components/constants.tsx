@@ -1,25 +1,9 @@
+import { ColumnProps } from '@/components'
 import { CategoryModel, TransactionType } from '@/contexts'
 
-export const getColumns = (type: TransactionType) => [
-  {
-    label: 'Categoria',
-    field: 'name',
-  },
-  {
-    label: 'Custos',
-    field: type,
-    customRender: (props: any) => `R$ ${props[type].toLocaleString()}`,
-  },
-  {
-    label: 'Fração',
-    field: 'fraction',
-    customRender: ({ fraction }: any) => `${fraction}%`,
-  },
-]
-
 type DataModel = {
-  outcome?: number
-  income?: number
+  outcome: number
+  income: number
   name: string
   fraction: number
 }
@@ -32,6 +16,22 @@ type Response = {
   }[]
 }
 
+export const getColumns = (type: TransactionType): ColumnProps<DataModel>[] => [
+  {
+    label: 'Categoria',
+    field: 'name',
+  },
+  {
+    label: 'Custos',
+    field: type,
+    customRender: (props) => `R$ ${props[type].toLocaleString()}`,
+  },
+  {
+    label: 'Fração',
+    field: 'fraction',
+    customRender: ({ fraction }) => `${fraction}%`,
+  },
+]
 export const generateData = (
   categoryList: CategoryModel[],
   type: TransactionType

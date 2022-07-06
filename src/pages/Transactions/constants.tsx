@@ -1,5 +1,6 @@
 import { Center, StatArrow } from '@chakra-ui/react'
 import { ButtonProps, ColumnProps, IconButton } from '@/components'
+import { TransactionModel } from '@/contexts'
 
 type ButtonsProps = {
   handleClick: () => void
@@ -13,14 +14,16 @@ export const getButtons = ({ handleClick }: ButtonsProps): ButtonProps[] => [
 ]
 
 type ColumnsProps = {
-  handleDelete: (row: any) => void
+  handleDelete: (row: TransactionModel) => void
 }
 
-export const getColumns = ({ handleDelete }: ColumnsProps): ColumnProps[] => [
+export const getColumns = ({
+  handleDelete,
+}: ColumnsProps): ColumnProps<TransactionModel>[] => [
   {
     label: '',
     field: 'type',
-    customRender: ({ type }: any) => (
+    customRender: ({ type }) => (
       <Center>
         <StatArrow type={type === 'income' ? 'increase' : 'decrease'} />
       </Center>
@@ -29,7 +32,7 @@ export const getColumns = ({ handleDelete }: ColumnsProps): ColumnProps[] => [
   {
     label: 'Valor',
     field: 'amount',
-    customRender: ({ amount }: any) => {
+    customRender: ({ amount }) => {
       return `R$ ${amount.toLocaleString()}`
     },
   },
@@ -40,14 +43,14 @@ export const getColumns = ({ handleDelete }: ColumnsProps): ColumnProps[] => [
   {
     label: 'Data',
     field: 'date',
-    customRender: ({ date }: any) => {
+    customRender: ({ date }) => {
       return new Date(date).toLocaleDateString()
     },
   },
   {
     label: '',
     field: '',
-    customRender: (row: any) => {
+    customRender: (row) => {
       return (
         <IconButton
           icon='delete'

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Grid, GridItem, Center, Button } from '@chakra-ui/react'
+import { Grid, GridItem, Center } from '@chakra-ui/react'
 import { format } from 'date-fns'
 import { Modal, Input, Radio } from '@/components'
 import { AddTransactionModel, useTransactions } from '@/contexts'

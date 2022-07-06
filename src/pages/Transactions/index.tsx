@@ -1,16 +1,25 @@
 import { useState } from 'react'
 import { Table, Card, MainTemplate } from '@/components'
-import { useTransactions } from '@/contexts'
+import { TransactionModel, useDialog, useTransactions } from '@/contexts'
 import { getButtons, getColumns } from './constants'
 import { AddTransactionModal } from './components'
 
 export const Transactions = () => {
+  const { openDialog } = useDialog()
   const { transactionList, removeTransaction } = useTransactions()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleClick = () => setIsModalOpen(true)
 
-  const columns = getColumns({ handleDelete: removeTransaction })
+  const handleOpenDeleteDialog = (row: TransactionModel) => {
+    openDialog({
+      title: `${row.description} | R$ ${row.amount.toLocaleString()}`,
+      body: 'Deseja realmente excluir esta transação? Essa ação não pode ser desfeita.',
+      onConfirm: () => removeTransaction(row),
+    })
+  }
+
+  const columns = getColumns({ handleDelete: handleOpenDeleteDialog })
   const buttons = getButtons({ handleClick })
 
   return (

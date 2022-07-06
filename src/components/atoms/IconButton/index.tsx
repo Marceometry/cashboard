@@ -20,12 +20,7 @@ export const IconButton = ({ onClick, icon, ...rest }: Props) => {
     <ChakraIconButton
       icon={<Icon />}
       onClick={onClick}
-      isRound
-      size='lg'
       aria-label='Adicionar transação'
-      position='fixed'
-      bottom='10'
-      right='10'
       {...rest}
     />
   )

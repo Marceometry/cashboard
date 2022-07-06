@@ -18,10 +18,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { getMonth, getYear } from 'date-fns'
 import { filterByMonth, filterByText, filterByYear } from './utils'
 
-export type ColumnProps = {
+export type ColumnProps<T> = {
   label: string
   field: string
-  customRender?: (data: any) => JSX.Element | string
+  customRender?: (data: T) => JSX.Element | string
 }
 
 export type ButtonProps = {
@@ -32,7 +32,7 @@ export type ButtonProps = {
 
 type Props = TableProps & {
   data: any[]
-  columns: ColumnProps[]
+  columns: ColumnProps<any>[]
   buttons?: ButtonProps[]
   caption?: string
   sortBy?: string
