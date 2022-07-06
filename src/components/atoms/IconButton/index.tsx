@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   IconButton as ChakraIconButton,
   IconButtonProps as ChakraIconButtonProps,
@@ -14,8 +15,13 @@ export type IconButtonProps = Omit<ChakraIconButtonProps, 'icon'> & {
   icon: keyof typeof icons
 }
 
-export const IconButton = ({ onClick, icon, ...rest }: IconButtonProps) => {
-  const Icon = icons[icon]
+export const IconButton = React.forwardRef(
+  (props: IconButtonProps, ref: React.LegacyRef<HTMLButtonElement>) => {
+    const { onClick, icon, ...rest } = props
+    const Icon = icons[icon]
 
-  return <ChakraIconButton icon={<Icon />} onClick={onClick} {...rest} />
-}
+    return (
+      <ChakraIconButton icon={<Icon />} ref={ref} onClick={onClick} {...rest} />
+    )
+  }
+)
