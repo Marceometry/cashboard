@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Grid, GridItem, Center } from '@chakra-ui/react'
-import { format } from 'date-fns'
 import { Modal, Input, Radio } from '@/components'
 import { AddTransactionModel, useTransactions } from '@/contexts'
+import { formatDateValue, masks } from '@/utils'
 
 type Props = {
   isOpen: boolean
@@ -11,11 +11,11 @@ type Props = {
 }
 
 const defaultValues = {
-  description: '',
   amount: '',
   category: '',
+  description: '',
   type: 'income',
-  date: format(new Date(), 'yyyy-MM-dd'),
+  date: formatDateValue(new Date()),
 }
 
 export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
@@ -74,16 +74,26 @@ export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
               label='Categoria'
               name='category'
               required
-              helperButton={{
-                icon: 'list',
-                'aria-label': 'Selecionar Categoria',
-                onClick: () => setIsCategoriesModalOpen(true),
-              }}
+              helperButton={
+                categoryList.length
+                  ? {
+                      icon: 'list',
+                      hasTooltip: true,
+                      'aria-label': 'Selecionar Categoria',
+                      onClick: () => setIsCategoriesModalOpen(true),
+                    }
+                  : undefined
+              }
             />
           </GridItem>
 
           <GridItem>
-            <Input label='Valor' name='amount' type='number' required />
+            <Input
+              label='Valor'
+              name='amount'
+              required
+              mask={masks.monetaryValue}
+            />
           </GridItem>
           <GridItem>
             <Input label='Data' name='date' type='date' required />
@@ -101,24 +111,26 @@ export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
         </Center>
       </Modal>
 
-      <Modal
-        title='Selecionar Categoria'
-        isOpen={isCategoriesModalOpen}
-        onClose={() => setIsCategoriesModalOpen(false)}
-        onConfirm={handleSelectCategory}
-        formMethods={categoriesFormMethods}
-        maxWidth={400}
-      >
-        <Radio
-          required
-          name='category'
-          columns={3}
-          options={categoryList.map((category) => ({
-            label: category.name,
-            value: category.name,
-          }))}
-        />
-      </Modal>
+      {!!categoryList.length && (
+        <Modal
+          title='Selecionar Categoria'
+          isOpen={isCategoriesModalOpen}
+          onClose={() => setIsCategoriesModalOpen(false)}
+          onConfirm={handleSelectCategory}
+          formMethods={categoriesFormMethods}
+          maxWidth={400}
+        >
+          <Radio
+            required
+            name='category'
+            columns={3}
+            options={categoryList.map((category) => ({
+              label: category.name,
+              value: category.name,
+            }))}
+          />
+        </Modal>
+      )}
     </>
   )
 }

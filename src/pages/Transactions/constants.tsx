@@ -1,6 +1,7 @@
 import { Center, StatArrow } from '@chakra-ui/react'
 import { ButtonProps, ColumnProps, IconButton } from '@/components'
 import { TransactionModel } from '@/contexts'
+import { masks } from '@/utils'
 
 type ButtonsProps = {
   handleClick: () => void
@@ -32,9 +33,7 @@ export const getColumns = ({
   {
     label: 'Valor',
     field: 'amount',
-    customRender: ({ amount }) => {
-      return `R$ ${amount.toLocaleString()}`
-    },
+    customRender: ({ amount }) => masks.valueToMoney(amount),
   },
   {
     label: 'Descrição',

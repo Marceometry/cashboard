@@ -1,5 +1,6 @@
 import { ColumnProps } from '@/components'
 import { CategoryModel, TransactionType } from '@/contexts'
+import { masks } from '@/utils'
 
 type DataModel = {
   outcome: number
@@ -24,7 +25,7 @@ export const getColumns = (type: TransactionType): ColumnProps<DataModel>[] => [
   {
     label: 'Custos',
     field: type,
-    customRender: (props) => `R$ ${props[type].toLocaleString()}`,
+    customRender: (props) => masks.valueToMoney(props[type]),
   },
   {
     label: 'Fração',

@@ -32,6 +32,7 @@ export function TransactionsContextProvider({
   )
 
   const addTransaction = (transaction: AddTransactionModel) => {
+    console.log(transaction.amount)
     const newTransaction = {
       ...transaction,
       amount: Number(transaction.amount),
