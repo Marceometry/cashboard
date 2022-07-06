@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from 'react'
 import {
   Table as ChakraTable,
   TableProps,
@@ -12,15 +13,14 @@ import {
   Input,
   Button,
 } from '@chakra-ui/react'
+import { getMonth, getYear } from 'date-fns'
 import { Select } from '@/components/atoms'
 import { MONTH_LIST, YEAR_LIST } from '@/constants'
-import { useEffect, useMemo, useState } from 'react'
-import { getMonth, getYear } from 'date-fns'
 import { filterByMonth, filterByText, filterByYear } from './utils'
 
 export type ColumnProps<T> = {
   label: string
-  field: string
+  field: keyof T | ''
   customRender?: (data: T) => JSX.Element | string
 }
 

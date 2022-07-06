@@ -23,6 +23,7 @@ export type ModalProps = ChakraModalProps & {
   formMethods: UseFormReturn<any, object>
   onConfirm?: (data?: any) => void
   extraButton?: ButtonProps
+  maxWidth?: number
 }
 
 export const Modal = ({
@@ -33,11 +34,12 @@ export const Modal = ({
   onConfirm,
   extraButton,
   formMethods,
+  maxWidth = 600,
 }: ModalProps) => {
   return (
     <ChakraModal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
-      <ModalContent maxW={600}>
+      <ModalContent maxW={maxWidth}>
         <Form formMethods={formMethods} onSubmit={onConfirm}>
           <ModalHeader fontSize='2xl'>{title}</ModalHeader>
           <ModalCloseButton />

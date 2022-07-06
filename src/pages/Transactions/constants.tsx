@@ -41,6 +41,10 @@ export const getColumns = ({
     field: 'description',
   },
   {
+    label: 'Categoria',
+    field: 'category',
+  },
+  {
     label: 'Data',
     field: 'date',
     customRender: ({ date }) => {
@@ -50,14 +54,12 @@ export const getColumns = ({
   {
     label: '',
     field: '',
-    customRender: (row) => {
-      return (
-        <IconButton
-          icon='delete'
-          aria-label='Excluir transação'
-          onClick={() => handleDelete(row)}
-        />
-      )
-    },
+    customRender: (row) => (
+      <IconButton
+        icon='delete'
+        aria-label='Excluir transação'
+        onClick={() => handleDelete(row)}
+      />
+    ),
   },
 ]

@@ -1,27 +1,21 @@
-import { IconButton as ChakraIconButton } from '@chakra-ui/react'
-import { AddIcon, DeleteIcon } from '@chakra-ui/icons'
+import {
+  IconButton as ChakraIconButton,
+  IconButtonProps as ChakraIconButtonProps,
+} from '@chakra-ui/react'
+import { AddIcon, DeleteIcon, HamburgerIcon } from '@chakra-ui/icons'
 
 const icons = {
   add: AddIcon,
   delete: DeleteIcon,
+  list: HamburgerIcon,
 }
 
-type Props = React.DetailedHTMLProps<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
-  HTMLButtonElement
-> & {
+export type IconButtonProps = Omit<ChakraIconButtonProps, 'icon'> & {
   icon: keyof typeof icons
 }
 
-export const IconButton = ({ onClick, icon, ...rest }: Props) => {
+export const IconButton = ({ onClick, icon, ...rest }: IconButtonProps) => {
   const Icon = icons[icon]
 
-  return (
-    <ChakraIconButton
-      icon={<Icon />}
-      onClick={onClick}
-      aria-label='Adicionar transação'
-      {...rest}
-    />
-  )
+  return <ChakraIconButton icon={<Icon />} onClick={onClick} {...rest} />
 }
