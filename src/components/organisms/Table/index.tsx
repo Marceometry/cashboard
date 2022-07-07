@@ -5,14 +5,16 @@ import { ModalFilters, TableBody, TableHeader } from './components'
 import { filterByText, filterData } from './utils'
 import { FilterModel, TableProps } from './types'
 
-export const defaultFilterValues = {
+export const defaultFilterValues: FilterModel = {
   selectedMonth: getMonth(new Date()) + 1,
   selectedYear: getYear(new Date()),
+  selectedCategories: [],
 }
 
-export const emptyFilterValues = {
+export const emptyFilterValues: FilterModel = {
   selectedMonth: 0,
   selectedYear: 0,
+  selectedCategories: [],
 }
 
 export const Table = ({

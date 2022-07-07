@@ -23,7 +23,7 @@ export const filterData = (
   filters: FilterModel,
   dateField: string
 ) => {
-  const { selectedMonth, selectedYear } = filters
+  const { selectedMonth, selectedYear, selectedCategories } = filters
   return data.filter((item) => {
     let included = true
     if (selectedMonth) {
@@ -32,6 +32,12 @@ export const filterData = (
     }
     if (selectedYear) {
       included = filterByYear(item[dateField], Number(selectedYear))
+      if (!included) return
+    }
+    if (selectedCategories.length) {
+      included = selectedCategories.some(
+        (category) => category === item.category
+      )
       if (!included) return
     }
     return included

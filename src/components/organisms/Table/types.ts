@@ -3,6 +3,7 @@ import { TableProps as ChakraTableProps } from '@chakra-ui/react'
 export type FilterModel = {
   selectedMonth: number
   selectedYear: number
+  selectedCategories: string[]
 }
 
 export type ColumnProps<T> = {

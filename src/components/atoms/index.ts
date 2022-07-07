@@ -1,3 +1,4 @@
+export * from './CheckboxGroup'
 export * from './FormControl'
 export * from './IconButton'
 export * from './Input'
