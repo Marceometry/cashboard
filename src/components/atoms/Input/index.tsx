@@ -38,8 +38,8 @@ export const Input = ({
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!mask) return
-    e.target.value = mask(e.target.value)
+    if (mask) e.target.value = mask(e.target.value)
+    inputRegister.onChange(e)
   }
 
   return (
@@ -55,8 +55,8 @@ export const Input = ({
           {...inputRegister}
           {...props}
           id={name}
+          onChange={handleChange}
           placeholder={placeholder || mask?.('') || label}
-          onChange={mask ? handleChange : inputRegister.onChange}
         />
       </FormControl>
       {helperButton && <IconButton {...helperButton} mb={error ? 6 : 0} />}

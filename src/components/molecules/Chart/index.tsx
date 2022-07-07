@@ -7,6 +7,7 @@ import {
   PieLabel,
   Sector,
 } from 'recharts'
+import { masks } from '@/utils'
 
 const COLORS = ['#FC8181', '#F6AD55', '#68D391', '#63B3ED', '#B794F4']
 
@@ -77,7 +78,7 @@ const renderActiveShape = (props: any) => {
         textAnchor={textAnchor}
         fill='#999'
       >
-        {`R$ ${payload.value.toLocaleString()}`}
+        {`R$ ${masks.monetaryValue(payload.value)}`}
       </text>
     </g>
   )

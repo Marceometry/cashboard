@@ -1,8 +1,19 @@
 import { useEffect, useState } from 'react'
+import { getMonth, getYear } from 'date-fns'
 import { useDebouncedValue } from '@/hooks'
 import { ModalFilters, TableBody, TableHeader } from './components'
-import { filterByMonth, filterByText, filterByYear, filterData } from './utils'
+import { filterByText, filterData } from './utils'
 import { FilterModel, TableProps } from './types'
+
+export const defaultFilterValues = {
+  selectedMonth: getMonth(new Date()) + 1,
+  selectedYear: getYear(new Date()),
+}
+
+export const emptyFilterValues = {
+  selectedMonth: 0,
+  selectedYear: 0,
+}
 
 export const Table = ({
   caption,
@@ -15,23 +26,26 @@ export const Table = ({
   ...props
 }: TableProps) => {
   const [filteredData, setFilteredData] = useState<any[]>([])
+  const [filters, setFilters] = useState(defaultFilterValues)
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
   const [searchText, setSearchText] = useState('')
   const debouncedSearchText = useDebouncedValue(searchText)
 
   const handleFilter = (filters: FilterModel) => {
-    const filtered = filterData([...data], filters, dateField)
-    setFilteredData(filtered)
+    return filterData(data, filters, dateField)
   }
 
-  const handleSearch = (text: string) => {
-    const filtered = filterByText([...data], columns, text)
-    setFilteredData(filtered)
+  const handleSearch = (data: any[], text: string) => {
+    return filterByText(data, columns, text)
   }
 
   useEffect(() => {
-    handleSearch(debouncedSearchText)
-  }, [data, debouncedSearchText])
+    if (noFilters) return setFilteredData(data)
+
+    const filtered = handleFilter(filters)
+    const searchResult = handleSearch(filtered, debouncedSearchText)
+    setFilteredData(searchResult)
+  }, [data, filters, debouncedSearchText])
 
   return (
     <div>
@@ -47,7 +61,7 @@ export const Table = ({
       <ModalFilters
         isOpen={isModalFiltersOpen}
         onClose={() => setIsModalFiltersOpen(false)}
-        handleFilter={handleFilter}
+        handleFilter={setFilters}
       />
 
       <TableBody

@@ -6,10 +6,10 @@ export const masks = {
     }).format(value)
   },
 
-  monetaryValue(value: string, maxNumberCharacter = 12) {
-    let cleanValue = value?.toString().replace(/\D/g, '')
+  monetaryValue(value: string | number, maxNumberCharacter = 12) {
+    let cleanValue = String(value)?.toString().replace(/\D/g, '')
 
-    if (cleanValue.startsWith('00')) cleanValue = cleanValue.replace('0', '')
+    if (cleanValue.startsWith('0')) cleanValue = cleanValue.replace('0', '')
 
     const max: string = '999999999999999'.substring(0, maxNumberCharacter)
     if (Number(cleanValue) > Number(max)) {
@@ -19,12 +19,19 @@ export const masks = {
     const tempValue =
       cleanValue?.length < 4 ? cleanValue?.padStart(3, '0') : +cleanValue
 
-    return `R$ ${String(tempValue)
+    const response = `R$ ${String(tempValue)
       ?.replace(/(\d)(\d{2})$/, '$1,$2')
       ?.replace(/(?=(\d{3})+(\D))\B/g, '.')}`
+
+    return response
   },
 
-  unMaskMonetaryValue(value: string) {
-    return value?.replace('R$ ', '').replace('.', '').replace(',', '.')
+  unMaskMonetaryValue(value: string | number) {
+    const response = String(value)
+      ?.replace('R$ ', '')
+      .replace('.', '')
+      .replace(',', '.')
+
+    return Number(response)
   },
 }

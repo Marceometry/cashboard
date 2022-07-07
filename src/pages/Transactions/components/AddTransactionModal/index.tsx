@@ -28,7 +28,10 @@ export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
   const [keepModalOpen, setKeepModalOpen] = useState(false)
 
   const handleSubmit = (data: AddTransactionModel) => {
-    addTransaction(data)
+    addTransaction({
+      ...data,
+      amount: masks.unMaskMonetaryValue(data.amount),
+    })
     if (keepModalOpen) {
       setKeepModalOpen(false)
       formMethods.setFocus('description')

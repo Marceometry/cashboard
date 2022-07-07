@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Table, Card, MainTemplate } from '@/components'
 import { TransactionModel, useDialog, useTransactions } from '@/contexts'
+import { masks } from '@/utils'
 import { getButtons, getColumns } from './constants'
 import { AddTransactionModal } from './components'
 
@@ -13,7 +14,7 @@ export const Transactions = () => {
 
   const handleOpenDeleteDialog = (row: TransactionModel) => {
     openDialog({
-      title: `${row.description} | R$ ${row.amount.toLocaleString()}`,
+      title: `${row.description} | R$ ${masks.monetaryValue(row.amount)}`,
       body: 'Deseja realmente excluir esta transação? Essa ação não pode ser desfeita.',
       onConfirm: () => removeTransaction(row),
     })

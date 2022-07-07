@@ -1,10 +1,9 @@
-import { useState } from 'react'
 import { Grid, GridItem } from '@chakra-ui/react'
-import { getMonth, getYear } from 'date-fns'
 import { Modal, Select } from '@/components'
 import { MONTH_LIST, YEAR_LIST } from '@/constants'
 import { useForm } from 'react-hook-form'
 import { FilterModel } from '../types'
+import { defaultFilterValues } from '..'
 
 type Props = {
   isOpen: boolean
@@ -12,13 +11,8 @@ type Props = {
   handleFilter: (data: FilterModel) => void
 }
 
-const defaultValues = {
-  selectedMonth: getMonth(new Date()) + 1,
-  selectedYear: getYear(new Date()),
-}
-
 export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
-  const formMethods = useForm({ defaultValues })
+  const formMethods = useForm({ defaultValues: defaultFilterValues })
 
   const handleSubmit = (data: FilterModel) => {
     handleFilter(data)
