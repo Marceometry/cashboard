@@ -32,9 +32,9 @@ export function TransactionsContextProvider({
   )
 
   const addTransaction = (transaction: AddTransactionModel) => {
-    console.log(transaction.amount)
     const newTransaction = {
       ...transaction,
+      category: transaction.category || 'Outros',
       amount: Number(transaction.amount),
       date: new Date(`${transaction.date} 00:00:00`),
     }

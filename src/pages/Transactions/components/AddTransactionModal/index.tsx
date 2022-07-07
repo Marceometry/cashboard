@@ -74,9 +74,20 @@ export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
           </GridItem>
           <GridItem>
             <Input
+              label='Valor'
+              name='amount'
+              required
+              mask={masks.monetaryValue}
+            />
+          </GridItem>
+
+          <GridItem>
+            <Input label='Data' name='date' type='date' required />
+          </GridItem>
+          <GridItem>
+            <Input
               label='Categoria'
               name='category'
-              required
               helperButton={
                 categoryList.length
                   ? {
@@ -88,18 +99,6 @@ export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
                   : undefined
               }
             />
-          </GridItem>
-
-          <GridItem>
-            <Input
-              label='Valor'
-              name='amount'
-              required
-              mask={masks.monetaryValue}
-            />
-          </GridItem>
-          <GridItem>
-            <Input label='Data' name='date' type='date' required />
           </GridItem>
         </Grid>
 
