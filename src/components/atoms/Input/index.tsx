@@ -1,10 +1,5 @@
 import { useFormContext } from 'react-hook-form'
-import {
-  Flex,
-  Input as ChakraInput,
-  InputProps,
-  Tooltip,
-} from '@chakra-ui/react'
+import { Flex, Input as ChakraInput, InputProps } from '@chakra-ui/react'
 import { FormControl, IconButton, IconButtonProps } from '@/components'
 
 type Props = InputProps & {
@@ -14,6 +9,7 @@ type Props = InputProps & {
   required?: boolean
   helperText?: string
   helperButton?: IconButtonProps
+  width?: number
   mask?: (value: string) => any
 }
 
@@ -25,6 +21,7 @@ export const Input = ({
   helperText,
   helperButton,
   mask,
+  width,
   ...props
 }: Props) => {
   const {
@@ -43,7 +40,7 @@ export const Input = ({
   }
 
   return (
-    <Flex alignItems='flex-end' gap='2'>
+    <Flex alignItems='flex-end' gap='2' width={width}>
       <FormControl
         name={name}
         label={label}

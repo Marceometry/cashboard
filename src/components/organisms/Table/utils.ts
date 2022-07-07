@@ -1,4 +1,5 @@
 import { getYear } from 'date-fns'
+import { masks } from '@/utils'
 import { FilterModel } from './types'
 
 export const filterByText = (data: any[], columns: any[], text: string) => {
@@ -10,6 +11,18 @@ export const filterByText = (data: any[], columns: any[], text: string) => {
   })
 }
 
+export const filterByMinAmount = (amount: string, itemAmount: number) => {
+  const numberAmount = masks.unMaskMonetaryValue(amount)
+  if (numberAmount === 0) return true
+  return itemAmount > numberAmount
+}
+
+export const filterByMaxAmount = (amount: string, itemAmount: number) => {
+  const numberAmount = masks.unMaskMonetaryValue(amount)
+  if (numberAmount === 0) return true
+  return itemAmount < numberAmount
+}
+
 export const filterByMonth = (date: string, month: number) => {
   return new Date(date).getMonth() + 1 === month
 }
@@ -18,14 +31,34 @@ export const filterByYear = (date: string, year: number) => {
   return getYear(new Date(date)) === year
 }
 
+export const filterByCategory = (categories: string[], category: string) => {
+  return categories.some((item) => item === category)
+}
+
 export const filterData = (
   data: any[],
   filters: FilterModel,
   dateField: string
 ) => {
-  const { selectedMonth, selectedYear, selectedCategories } = filters
+  const {
+    selectedMonth,
+    selectedYear,
+    selectedCategories,
+    minAmount,
+    maxAmount,
+  } = filters
+
   return data.filter((item) => {
     let included = true
+
+    if (minAmount) {
+      included = filterByMinAmount(minAmount, item.amount)
+      if (!included) return
+    }
+    if (maxAmount) {
+      included = filterByMaxAmount(maxAmount, item.amount)
+      if (!included) return
+    }
     if (selectedMonth) {
       included = filterByMonth(item[dateField], Number(selectedMonth))
       if (!included) return
@@ -35,11 +68,10 @@ export const filterData = (
       if (!included) return
     }
     if (selectedCategories.length) {
-      included = selectedCategories.some(
-        (category) => category === item.category
-      )
+      included = filterByCategory(selectedCategories, item.category)
       if (!included) return
     }
+
     return included
   })
 }

@@ -4,6 +4,8 @@ export type FilterModel = {
   selectedMonth: number
   selectedYear: number
   selectedCategories: string[]
+  minAmount: string
+  maxAmount: string
 }
 
 export type ColumnProps<T> = {

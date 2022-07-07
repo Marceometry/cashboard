@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Checkbox, Grid, GridItem } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
+import { Checkbox, Flex, Grid, GridItem, Heading, Text } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
-import { CheckboxGroup, Modal, Select } from '@/components'
+import { CheckboxGroup, Input, Modal, Select } from '@/components'
 import { MONTH_LIST, YEAR_LIST } from '@/constants'
 import { useTransactions } from '@/contexts'
+import { masks } from '@/utils'
 import { FilterModel } from '../types'
 import { defaultFilterValues } from '..'
 
@@ -46,46 +47,54 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
       onConfirm={handleSubmit}
       formMethods={formMethods}
       title='Selecionar Filtros'
-      maxWidth={450}
+      maxWidth={400}
     >
-      <Grid templateColumns='1fr 1fr' gap='4'>
+      <Grid gap='4'>
         <GridItem>
-          <Select w='auto' name='selectedMonth' options={MONTH_LIST} />
+          <Flex gap='4' alignItems='flex-end'>
+            <Select name='selectedMonth' options={MONTH_LIST} />
+            <Text>de</Text>
+            <Select
+              name='selectedYear'
+              options={YEAR_LIST.map((item) => ({ label: item, value: item }))}
+            />
+          </Flex>
         </GridItem>
+
         <GridItem>
-          <Select
-            w='auto'
-            name='selectedYear'
-            options={YEAR_LIST.map((item) => ({ label: item, value: item }))}
+          <Flex gap='4' alignItems='flex-end'>
+            <Input name='minAmount' mask={masks.monetaryValue} />
+            <Text>até</Text>
+            <Input name='maxAmount' mask={masks.monetaryValue} />
+          </Flex>
+        </GridItem>
+
+        <GridItem my='4'>
+          <Checkbox
+            mb='4'
+            w='fit-content'
+            isChecked={allChecked}
+            isIndeterminate={isIndeterminate}
+            onChange={(e) =>
+              formMethods.setValue(
+                'selectedCategories',
+                e.target.checked ? categoryList.map((item) => item.name) : []
+              )
+            }
+          >
+            Todas as categorias
+          </Checkbox>
+
+          <CheckboxGroup
+            name='selectedCategories'
+            columns={3}
+            defaultCheckAll
+            options={categoryList.map((item) => ({
+              label: item.name,
+              value: item.name,
+            }))}
           />
         </GridItem>
-      </Grid>
-
-      <Grid mt='6' mb='2'>
-        <Checkbox
-          mb='4'
-          w='fit-content'
-          isChecked={allChecked}
-          isIndeterminate={isIndeterminate}
-          onChange={(e) =>
-            formMethods.setValue(
-              'selectedCategories',
-              e.target.checked ? categoryList.map((item) => item.name) : []
-            )
-          }
-        >
-          Todas as categorias
-        </Checkbox>
-
-        <CheckboxGroup
-          name='selectedCategories'
-          columns={3}
-          defaultCheckAll
-          options={categoryList.map((item) => ({
-            label: item.name,
-            value: item.name,
-          }))}
-        />
       </Grid>
     </Modal>
   )

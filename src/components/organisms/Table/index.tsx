@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Flex } from '@chakra-ui/react'
 import { getMonth, getYear } from 'date-fns'
 import { useDebouncedValue } from '@/hooks'
 import { ModalFilters, TableBody, TableHeader } from './components'
@@ -9,12 +10,16 @@ export const defaultFilterValues: FilterModel = {
   selectedMonth: getMonth(new Date()) + 1,
   selectedYear: getYear(new Date()),
   selectedCategories: [],
+  maxAmount: '',
+  minAmount: '',
 }
 
 export const emptyFilterValues: FilterModel = {
   selectedMonth: 0,
   selectedYear: 0,
   selectedCategories: [],
+  maxAmount: '',
+  minAmount: '',
 }
 
 export const Table = ({
@@ -50,7 +55,7 @@ export const Table = ({
   }, [data, filters, debouncedSearchText])
 
   return (
-    <div>
+    <Flex direction='column' overflow='hidden' p='1'>
       <TableHeader
         caption={caption}
         noFilters={noFilters}
@@ -72,6 +77,6 @@ export const Table = ({
         sortBy={sortBy}
         {...props}
       />
-    </div>
+    </Flex>
   )
 }
