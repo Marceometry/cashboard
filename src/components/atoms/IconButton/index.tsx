@@ -1,15 +1,16 @@
-import React from 'react'
 import {
   IconButton as ChakraIconButton,
   IconButtonProps as ChakraIconButtonProps,
   Tooltip,
 } from '@chakra-ui/react'
 import { AddIcon, DeleteIcon, HamburgerIcon } from '@chakra-ui/icons'
+import { Funnel } from 'phosphor-react'
 
 const icons = {
   add: AddIcon,
   delete: DeleteIcon,
   list: HamburgerIcon,
+  filter: Funnel,
 }
 
 export type IconButtonProps = Omit<ChakraIconButtonProps, 'icon'> & {

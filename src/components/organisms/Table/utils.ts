@@ -1,4 +1,5 @@
-import { getMonth, getYear } from 'date-fns'
+import { getYear } from 'date-fns'
+import { FilterModel } from './types'
 
 export const filterByText = (data: any[], columns: any[], text: string) => {
   if (!text) return data
@@ -9,16 +10,30 @@ export const filterByText = (data: any[], columns: any[], text: string) => {
   })
 }
 
-export const filterByMonth = (data: any[], month: number) => {
-  if (!month) return data
-  return data.filter((item) => {
-    return getMonth(new Date(item.date)) + 1 === month
-  })
+export const filterByMonth = (date: string, month: number) => {
+  return new Date(date).getMonth() + 1 === month
 }
 
-export const filterByYear = (data: any[], year: number) => {
-  if (!year) return data
+export const filterByYear = (date: string, year: number) => {
+  return getYear(new Date(date)) === year
+}
+
+export const filterData = (
+  data: any[],
+  filters: FilterModel,
+  dateField: string
+) => {
+  const { selectedMonth, selectedYear } = filters
   return data.filter((item) => {
-    return getYear(new Date(item.date)) === year
+    let included = true
+    if (selectedMonth) {
+      included = filterByMonth(item[dateField], Number(selectedMonth))
+      if (!included) return
+    }
+    if (selectedYear) {
+      included = filterByYear(item[dateField], Number(selectedYear))
+      if (!included) return
+    }
+    return included
   })
 }

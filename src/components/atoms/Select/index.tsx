@@ -1,4 +1,5 @@
 import { Select as ChakraSelect, SelectProps } from '@chakra-ui/react'
+import { useFormContext } from 'react-hook-form'
 
 type Option = {
   label: string
@@ -7,9 +8,12 @@ type Option = {
 
 type Props = SelectProps & {
   options: Option[] | string[]
+  name: string
 }
 
-export const Select = ({ options, ...props }: Props) => {
+export const Select = ({ options, name, ...props }: Props) => {
+  const { register } = useFormContext()
+
   const formattedOptions = options.map((item, index) => {
     if (typeof item === 'object') return item
     return {
@@ -19,7 +23,7 @@ export const Select = ({ options, ...props }: Props) => {
   })
 
   return (
-    <ChakraSelect {...props}>
+    <ChakraSelect {...register(name)} {...props}>
       {formattedOptions.map((option) => (
         <option key={option.value} value={option.value}>
           {option.label}
