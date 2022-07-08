@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 
 type Tab = {
-  key: string
+  key: string | number
   label: string | React.ReactNode
   content: React.ReactNode
 }

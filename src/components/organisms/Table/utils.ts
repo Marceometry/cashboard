@@ -1,4 +1,3 @@
-import { getYear } from 'date-fns'
 import { masks } from '@/utils'
 import { FilterModel } from './types'
 
@@ -28,7 +27,7 @@ export const filterByMonth = (date: string, month: number) => {
 }
 
 export const filterByYear = (date: string, year: number) => {
-  return getYear(new Date(date)) === year
+  return new Date(date).getFullYear() === year
 }
 
 export const filterByCategory = (categories: string[], category: string) => {

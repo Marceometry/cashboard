@@ -2,40 +2,28 @@ import {
   Stat as ChakraStat,
   StatLabel,
   StatNumber,
-  StatHelpText,
   StatArrow,
   Grid,
+  Center,
 } from '@chakra-ui/react'
 
 export type StatProps = {
   label: string
   value: number
-  percentage: number
   increase?: boolean
-  isSpent?: boolean
 }
 
-export const Stat = ({
-  label,
-  value,
-  percentage,
-  increase,
-  isSpent,
-}: StatProps) => {
+export const Stat = ({ label, value, increase }: StatProps) => {
   return (
     <ChakraStat>
       <Grid placeItems='center'>
-        <StatLabel fontSize='xl'>{label}</StatLabel>
+        <Center gap='2'>
+          <StatArrow type={increase ? 'increase' : 'decrease'} />
+          <StatLabel fontSize='xl'>{label}</StatLabel>
+        </Center>
         <StatNumber fontSize='3xl' my='2'>
           R$ {value.toLocaleString()}
         </StatNumber>
-        <StatHelpText fontSize='lg' mb='0'>
-          <StatArrow
-            type={increase ? 'increase' : 'decrease'}
-            transform={isSpent ? 'rotate(180deg)' : ''}
-          />
-          {percentage}%
-        </StatHelpText>
       </Grid>
     </ChakraStat>
   )
