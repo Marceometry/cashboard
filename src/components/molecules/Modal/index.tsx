@@ -37,13 +37,18 @@ export const Modal = ({
   maxWidth = 600,
 }: ModalProps) => {
   return (
-    <ChakraModal isOpen={isOpen} onClose={onClose} isCentered>
+    <ChakraModal
+      isOpen={isOpen}
+      onClose={onClose}
+      scrollBehavior='inside'
+      isCentered
+    >
       <ModalOverlay />
-      <ModalContent maxW={maxWidth}>
+      <ModalContent maxW={maxWidth} overflow='auto'>
+        <ModalHeader fontSize='2xl'>{title}</ModalHeader>
+        <ModalCloseButton />
         <Form formMethods={formMethods} onSubmit={onConfirm}>
-          <ModalHeader fontSize='2xl'>{title}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>{children}</ModalBody>
+          <ModalBody maxH='50vh'>{children}</ModalBody>
 
           <ModalFooter>
             <Flex w='full' justify='space-around' gap='6'>
