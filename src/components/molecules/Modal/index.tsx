@@ -51,16 +51,21 @@ export const Modal = ({
           <ModalBody maxH='50vh'>{children}</ModalBody>
 
           <ModalFooter>
-            <Flex w='full' justify='space-around' gap='6'>
-              <Button type='submit' size='lg'>
+            <Flex w='full' justify='center' gap='6'>
+              <Button type='submit' size='lg' w='100%'>
                 Confirmar
               </Button>
               {extraButton && (
-                <Button onClick={extraButton.onClick} type='submit' size='lg'>
+                <Button
+                  onClick={extraButton.onClick}
+                  type='submit'
+                  size='lg'
+                  w='100%'
+                >
                   {extraButton.children}
                 </Button>
               )}
-              <Button onClick={onClose} variant='outline' size='lg'>
+              <Button onClick={onClose} variant='outline' size='lg' w='100%'>
                 Cancelar
               </Button>
             </Flex>

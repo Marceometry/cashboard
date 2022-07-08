@@ -72,6 +72,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
         <Accordion
           items={[
             {
+              key: 1,
               button: (
                 <Checkbox
                   w='fit-content'

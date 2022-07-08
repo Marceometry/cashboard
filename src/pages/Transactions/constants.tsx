@@ -4,22 +4,26 @@ import { TransactionModel } from '@/contexts'
 import { masks } from '@/utils'
 
 type ButtonsProps = {
-  handleClick: () => void
+  handleNewTransaction: () => void
 }
 
-export const getButtons = ({ handleClick }: ButtonsProps): ButtonProps[] => [
+export const getButtons = ({
+  handleNewTransaction,
+}: ButtonsProps): ButtonProps[] => [
   {
     children: 'Nova Transação',
-    onClick: handleClick,
+    onClick: handleNewTransaction,
   },
 ]
 
 type ColumnsProps = {
-  handleDelete: (row: TransactionModel) => void
+  handleDeleteTransaction: (row: TransactionModel) => void
+  handleEditTransaction: (id: number) => void
 }
 
 export const getColumns = ({
-  handleDelete,
+  handleDeleteTransaction,
+  handleEditTransaction,
 }: ColumnsProps): ColumnProps<TransactionModel>[] => [
   {
     label: '',
@@ -54,11 +58,18 @@ export const getColumns = ({
     label: '',
     field: '',
     customRender: (row) => (
-      <IconButton
-        icon='delete'
-        aria-label='Excluir transação'
-        onClick={() => handleDelete(row)}
-      />
+      <Center gap='4'>
+        <IconButton
+          icon='edit'
+          aria-label='Editar transação'
+          onClick={() => handleEditTransaction(row.id)}
+        />
+        <IconButton
+          icon='delete'
+          aria-label='Excluir transação'
+          onClick={() => handleDeleteTransaction(row)}
+        />
+      </Center>
     ),
   },
 ]

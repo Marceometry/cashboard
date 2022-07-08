@@ -8,18 +8,20 @@ import { formatDateValue, masks } from '@/utils'
 type Props = {
   isOpen: boolean
   onClose: () => void
+  selectedId?: number
 }
 
 const defaultValues = {
-  amount: '',
+  amount: '' as any,
   category: '',
   description: '',
   type: 'outcome',
   date: formatDateValue(new Date()),
 }
 
-export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
-  const { addTransaction, categoryList } = useTransactions()
+export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
+  const { transactionList, addTransaction, updateTransaction, categoryList } =
+    useTransactions()
 
   const formMethods = useForm({ defaultValues })
   const categoriesFormMethods = useForm()
@@ -27,11 +29,45 @@ export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false)
   const [keepModalOpen, setKeepModalOpen] = useState(false)
 
+  const loadTransactionById = (id: number) => {
+    const selectedTransaction = transactionList.find((item) => item.id === id)
+    if (!selectedTransaction) return
+    const newFormValues = {
+      ...selectedTransaction,
+      amount: masks.valueToMonetaryValue(selectedTransaction.amount),
+      date: formatDateValue(new Date(selectedTransaction.date)),
+    }
+    formMethods.reset(newFormValues || defaultValues)
+  }
+
+  useEffect(() => {
+    formMethods.reset(defaultValues)
+  }, [isOpen])
+
+  useEffect(() => {
+    if (isCategoriesModalOpen) return
+    categoriesFormMethods.reset()
+  }, [isCategoriesModalOpen])
+
+  useEffect(() => {
+    if (!selectedId || !isOpen) return
+    loadTransactionById(selectedId)
+  }, [isOpen, selectedId])
+
   const handleSubmit = (data: AddTransactionModel) => {
-    addTransaction({
+    const payload = {
       ...data,
       amount: masks.unMaskMonetaryValue(data.amount),
-    })
+    }
+    if (selectedId) {
+      updateTransaction({
+        ...payload,
+        id: selectedId,
+      })
+    } else {
+      addTransaction(payload)
+    }
+
     if (keepModalOpen) {
       setKeepModalOpen(false)
       formMethods.setFocus('description')
@@ -47,15 +83,6 @@ export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
     setIsCategoriesModalOpen(false)
   }
 
-  useEffect(() => {
-    formMethods.reset()
-  }, [isOpen])
-
-  useEffect(() => {
-    if (isCategoriesModalOpen) return
-    categoriesFormMethods.reset()
-  }, [isCategoriesModalOpen])
-
   return (
     <>
       <Modal
@@ -63,11 +90,15 @@ export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
         onClose={onClose}
         onConfirm={handleSubmit}
         formMethods={formMethods}
-        title='Adicionar transação'
-        extraButton={{
-          children: 'Adicionar novo',
-          onClick: () => setKeepModalOpen(true),
-        }}
+        title={`${selectedId ? 'Editar' : 'Adicionar'} transação`}
+        extraButton={
+          !selectedId
+            ? {
+                children: 'Adicionar novo',
+                onClick: () => setKeepModalOpen(true),
+              }
+            : undefined
+        }
       >
         <Grid templateColumns='1fr 1fr' gap='4'>
           <GridItem>

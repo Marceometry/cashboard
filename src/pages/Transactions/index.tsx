@@ -9,9 +9,13 @@ import { isBefore } from 'date-fns'
 export const Transactions = () => {
   const { openDialog } = useDialog()
   const { transactionList, removeTransaction } = useTransactions()
+  const [selectedTransactionId, setSelectedTransactionId] = useState<number>()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const handleClick = () => setIsModalOpen(true)
+  const handleOpenTransactionModal = (selectedId?: number) => {
+    setIsModalOpen(true)
+    setSelectedTransactionId(selectedId)
+  }
 
   const handleOpenDeleteDialog = (row: TransactionModel) => {
     openDialog({
@@ -21,8 +25,13 @@ export const Transactions = () => {
     })
   }
 
-  const columns = getColumns({ handleDelete: handleOpenDeleteDialog })
-  const buttons = getButtons({ handleClick })
+  const buttons = getButtons({
+    handleNewTransaction: () => handleOpenTransactionModal(),
+  })
+  const columns = getColumns({
+    handleDeleteTransaction: handleOpenDeleteDialog,
+    handleEditTransaction: (id: number) => handleOpenTransactionModal(id),
+  })
 
   return (
     <MainTemplate>
@@ -43,6 +52,7 @@ export const Transactions = () => {
       <AddTransactionModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        selectedId={selectedTransactionId}
       />
     </MainTemplate>
   )

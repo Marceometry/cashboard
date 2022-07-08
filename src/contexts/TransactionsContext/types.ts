@@ -26,5 +26,6 @@ export type TransactionsContextData = {
   categoryList: CategoryModel[]
   setCategoryList: (list: CategoryModel[]) => void
   addTransaction: (transaction: AddTransactionModel) => void
+  updateTransaction: (transaction: TransactionModel) => void
   removeTransaction: (transaction: TransactionModel) => void
 }

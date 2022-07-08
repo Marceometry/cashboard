@@ -50,6 +50,22 @@ export function TransactionsContextProvider({
     })
   }
 
+  const updateTransaction = (transaction: TransactionModel) => {
+    const newTransaction = {
+      ...transaction,
+      category: transaction.category || 'Outros',
+      amount: Number(transaction.amount),
+      date: new Date(`${transaction.date} 00:00:00`).toISOString(),
+    }
+    setTransactionList((oldState) => {
+      const newTransactionList = oldState.map((item) => {
+        if (item.id !== transaction.id) return item
+        return { ...item, ...newTransaction }
+      })
+      return newTransactionList
+    })
+  }
+
   const removeTransaction = (transaction: TransactionModel) => {
     setTransactionList((oldState) => {
       const newList = oldState.filter((item) => item.id !== transaction.id)
@@ -110,6 +126,7 @@ export function TransactionsContextProvider({
         categoryList,
         setCategoryList,
         addTransaction,
+        updateTransaction,
         removeTransaction,
       }}
     >

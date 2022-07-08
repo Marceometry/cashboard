@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react'
 
 type Item = {
+  key: number
   button: React.ReactNode
   panel: React.ReactNode
 }
@@ -21,7 +22,7 @@ export const Accordion = ({ items, ...props }: Props) => {
   return (
     <ChakraAccordion allowToggle {...props}>
       {items.map((item) => (
-        <AccordionItem>
+        <AccordionItem key={item.key}>
           <AccordionButton>
             <Flex flex='1'>{item.button}</Flex>
             <AccordionIcon />
