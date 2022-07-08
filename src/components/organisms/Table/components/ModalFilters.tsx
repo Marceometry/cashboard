@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Checkbox, Flex, Grid, GridItem, Heading, Text } from '@chakra-ui/react'
+import { Checkbox, Flex, Grid, GridItem, Text } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
-import { CheckboxGroup, Input, Modal, Select } from '@/components'
+import { Accordion, CheckboxGroup, Input, Modal, Select } from '@/components'
 import { MONTH_LIST, YEAR_LIST } from '@/constants'
 import { useTransactions } from '@/contexts'
 import { masks } from '@/utils'
@@ -69,32 +69,40 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
           </Flex>
         </GridItem>
 
-        <GridItem my='4'>
-          <Checkbox
-            mb='4'
-            w='fit-content'
-            isChecked={allChecked}
-            isIndeterminate={isIndeterminate}
-            onChange={(e) =>
-              formMethods.setValue(
-                'selectedCategories',
-                e.target.checked ? categoryList.map((item) => item.name) : []
-              )
-            }
-          >
-            Todas as categorias
-          </Checkbox>
-
-          <CheckboxGroup
-            name='selectedCategories'
-            columns={3}
-            defaultCheckAll
-            options={categoryList.map((item) => ({
-              label: item.name,
-              value: item.name,
-            }))}
-          />
-        </GridItem>
+        <Accordion
+          items={[
+            {
+              button: (
+                <Checkbox
+                  w='fit-content'
+                  isChecked={allChecked}
+                  isIndeterminate={isIndeterminate}
+                  onChange={(e) =>
+                    formMethods.setValue(
+                      'selectedCategories',
+                      e.target.checked
+                        ? categoryList.map((item) => item.name)
+                        : []
+                    )
+                  }
+                >
+                  Todas as categorias
+                </Checkbox>
+              ),
+              panel: (
+                <CheckboxGroup
+                  name='selectedCategories'
+                  columns={3}
+                  defaultCheckAll
+                  options={categoryList.map((item) => ({
+                    label: item.name,
+                    value: item.name,
+                  }))}
+                />
+              ),
+            },
+          ]}
+        />
       </Grid>
     </Modal>
   )

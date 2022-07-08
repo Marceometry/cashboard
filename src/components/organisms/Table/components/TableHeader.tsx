@@ -28,7 +28,7 @@ export const TableHeader = ({
   handleOpenModalFilters,
 }: HeaderProps) => {
   return (
-    <Flex justifyContent='space-between' mb='4'>
+    <Flex justifyContent='space-between' gap='8' mb='4'>
       {caption && <Heading fontSize='3xl'>{caption}</Heading>}
 
       {!noFilters && (
