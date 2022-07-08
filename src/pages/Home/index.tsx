@@ -7,7 +7,6 @@ export const Home = () => {
 
   const [incomeItems, outcomeItems] = transactionList.reduce(
     (acc, item) => {
-      console.log(item)
       const index = item.type === 'income' ? 0 : 1
       const value = [...acc[index], item]
       acc[index] = value
@@ -15,8 +14,6 @@ export const Home = () => {
     },
     [[], []] as TransactionModel[][]
   )
-
-  console.log(incomeItems, outcomeItems)
 
   const tabs = getTabs(incomeItems, outcomeItems)
 

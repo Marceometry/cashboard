@@ -4,6 +4,7 @@ import { Grid, GridItem, Center } from '@chakra-ui/react'
 import { Modal, Input, Radio } from '@/components'
 import { AddTransactionModel, useTransactions } from '@/contexts'
 import { formatDateValue, masks } from '@/utils'
+import { useKeyboardListener } from '@/hooks'
 
 type Props = {
   isOpen: boolean
@@ -20,6 +21,7 @@ const defaultValues = {
 }
 
 export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
+  const { useShiftShortcut } = useKeyboardListener()
   const { transactionList, addTransaction, updateTransaction, categoryList } =
     useTransactions()
 
@@ -28,6 +30,8 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
 
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false)
   const [keepModalOpen, setKeepModalOpen] = useState(false)
+
+  useShiftShortcut('Enter', () => setKeepModalOpen(true))
 
   const loadTransactionById = (id: number) => {
     const selectedTransaction = transactionList.find((item) => item.id === id)
