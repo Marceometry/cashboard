@@ -26,6 +26,7 @@ export type TableProps = ChakraTableProps & {
   buttons?: ButtonProps[]
   caption?: string
   sortBy?: string
+  sortFunction?: (a: any, b: any) => number
   noFilters?: boolean
   dateField?: string
 }

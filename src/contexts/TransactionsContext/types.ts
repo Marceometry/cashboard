@@ -12,7 +12,7 @@ export type TransactionModel = {
   amount: number
   description: string
   category: string
-  date: Date
+  date: string
   type: TransactionType
 }
 

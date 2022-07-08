@@ -4,6 +4,7 @@ import { TransactionModel, useDialog, useTransactions } from '@/contexts'
 import { masks } from '@/utils'
 import { getButtons, getColumns } from './constants'
 import { AddTransactionModal } from './components'
+import { isBefore } from 'date-fns'
 
 export const Transactions = () => {
   const { openDialog } = useDialog()
@@ -31,6 +32,11 @@ export const Transactions = () => {
           columns={columns}
           data={transactionList}
           buttons={buttons}
+          sortFunction={(a, b) => {
+            const date1 = new Date(a.date)
+            const date2 = new Date(b.date)
+            return isBefore(date1, date2) ? 1 : isBefore(date2, date1) ? -1 : 0
+          }}
         />
       </Card>
 

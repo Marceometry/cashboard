@@ -36,7 +36,7 @@ export function TransactionsContextProvider({
       ...transaction,
       category: transaction.category || 'Outros',
       amount: Number(transaction.amount),
-      date: new Date(`${transaction.date} 00:00:00`),
+      date: new Date(`${transaction.date} 00:00:00`).toISOString(),
     }
     setTransactionList((oldState) => {
       const transactionWithId = {

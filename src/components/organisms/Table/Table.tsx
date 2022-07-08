@@ -27,7 +27,6 @@ export const Table = ({
   columns,
   buttons,
   data,
-  sortBy,
   noFilters,
   dateField = 'date',
   ...props
@@ -71,12 +70,7 @@ export const Table = ({
         handleFilter={setFilters}
       />
 
-      <TableBody
-        data={filteredData}
-        columns={columns}
-        sortBy={sortBy}
-        {...props}
-      />
+      <TableBody data={filteredData} columns={columns} {...props} />
     </Flex>
   )
 }

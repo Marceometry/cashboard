@@ -14,7 +14,7 @@ const defaultValues = {
   amount: '',
   category: '',
   description: '',
-  type: 'income',
+  type: 'outcome',
   date: formatDateValue(new Date()),
 }
 
@@ -36,6 +36,7 @@ export const AddTransactionModal = ({ isOpen, onClose }: Props) => {
       setKeepModalOpen(false)
       formMethods.setFocus('description')
       formMethods.reset()
+      formMethods.setValue('date', data.date)
     } else {
       onClose()
     }

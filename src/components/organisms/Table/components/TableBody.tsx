@@ -10,8 +10,18 @@ import {
 } from '@chakra-ui/react'
 import { TableProps } from '../types'
 
-export const TableBody = ({ data, columns, sortBy, ...props }: TableProps) => {
-  const sortedData = sortBy ? data.sort((a, b) => b[sortBy] - a[sortBy]) : data
+export const TableBody = ({
+  data,
+  columns,
+  sortBy,
+  sortFunction,
+  ...props
+}: TableProps) => {
+  const sortedData = sortBy
+    ? data.sort((a, b) => b[sortBy] - a[sortBy])
+    : sortFunction
+    ? data.sort(sortFunction)
+    : data
 
   return (
     <Box overflow='auto' h='100%'>
