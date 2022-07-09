@@ -7,21 +7,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
-
-const routes = [
-  {
-    label: 'Home',
-    path: '/',
-  },
-  {
-    label: 'Transações',
-    path: '/transactions',
-  },
-  {
-    label: 'Categorias',
-    path: '/categories',
-  },
-]
+import { routes } from '@/router'
 
 export const Sidebar = () => {
   const bg = useColorModeValue('gray.300', 'gray.600')

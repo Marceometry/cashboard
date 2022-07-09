@@ -1,12 +1,6 @@
+import React from 'react'
 import { TableProps as ChakraTableProps } from '@chakra-ui/react'
-
-export type FilterModel = {
-  selectedMonth: number
-  selectedYear: number
-  selectedCategories: string[]
-  minAmount: string
-  maxAmount: string
-}
+import { IconButtonProps } from '@/components'
 
 export type ColumnProps<T> = {
   label: string
@@ -15,18 +9,22 @@ export type ColumnProps<T> = {
 }
 
 export type ButtonProps = {
-  children: string
   onClick: () => void
-  variant?: 'outline' | 'ghost' | 'link' | 'solid' | 'unstyled'
+  children: string
+  variant?: 'outline' | 'ghost' | 'link' | 'solid'
+}
+
+export type TableButtons = {
+  textButtons?: ButtonProps[]
+  iconButtons?: IconButtonProps[]
 }
 
 export type TableProps = ChakraTableProps & {
   data: any[]
   columns: ColumnProps<any>[]
-  buttons?: ButtonProps[]
-  caption?: string
+  buttons?: TableButtons
+  caption?: React.ReactNode
+  noSearch?: boolean
   sortBy?: string
-  sortFunction?: (a: any, b: any) => number
-  noFilters?: boolean
-  dateField?: string
+  sortFunction?: (array: any[], dateField?: string) => any[]
 }

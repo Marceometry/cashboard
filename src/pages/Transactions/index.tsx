@@ -1,19 +1,32 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Table, Card, MainTemplate } from '@/components'
 import { TransactionModel, useDialog, useTransactions } from '@/contexts'
-import { masks } from '@/utils'
-import { getButtons, getColumns } from './constants'
-import { AddTransactionModal } from './components'
-import { isBefore } from 'date-fns'
+import { masks, sortByDate } from '@/utils'
+import {
+  getButtons,
+  getColumns,
+  getCaption,
+  defaultFilterValues,
+} from './constants'
+import { AddTransactionModal, ModalFilters } from './components'
+import { filterData } from './utils'
 
 export const Transactions = () => {
   const { openDialog } = useDialog()
   const { transactionList, removeTransaction } = useTransactions()
+  const [tableData, setTableData] = useState<TransactionModel[]>([])
+  const [tableFilters, setTableFilters] = useState(defaultFilterValues)
   const [selectedTransactionId, setSelectedTransactionId] = useState<number>()
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalTransactionOpen, setIsModalTransactionOpen] = useState(false)
+  const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
+
+  useEffect(() => {
+    const filteredData = filterData(transactionList, tableFilters)
+    setTableData(filteredData)
+  }, [transactionList, tableFilters])
 
   const handleOpenTransactionModal = (selectedId?: number) => {
-    setIsModalOpen(true)
+    setIsModalTransactionOpen(true)
     setSelectedTransactionId(selectedId)
   }
 
@@ -25,8 +38,10 @@ export const Transactions = () => {
     })
   }
 
+  const caption = getCaption(tableFilters)
   const buttons = getButtons({
     handleNewTransaction: () => handleOpenTransactionModal(),
+    handleOpenModalFilter: () => setIsModalFiltersOpen(true),
   })
   const columns = getColumns({
     handleDeleteTransaction: handleOpenDeleteDialog,
@@ -37,22 +52,24 @@ export const Transactions = () => {
     <MainTemplate>
       <Card>
         <Table
-          caption='Transações'
+          data={tableData}
           columns={columns}
-          data={transactionList}
           buttons={buttons}
-          sortFunction={(a, b) => {
-            const date1 = new Date(a.date)
-            const date2 = new Date(b.date)
-            return isBefore(date1, date2) ? 1 : isBefore(date2, date1) ? -1 : 0
-          }}
+          caption={caption}
+          sortFunction={sortByDate}
         />
       </Card>
 
       <AddTransactionModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isModalTransactionOpen}
+        onClose={() => setIsModalTransactionOpen(false)}
         selectedId={selectedTransactionId}
+      />
+
+      <ModalFilters
+        isOpen={isModalFiltersOpen}
+        onClose={() => setIsModalFiltersOpen(false)}
+        handleFilter={setTableFilters}
       />
     </MainTemplate>
   )

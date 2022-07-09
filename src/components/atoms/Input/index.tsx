@@ -9,7 +9,7 @@ type Props = InputProps & {
   required?: boolean
   helperText?: string
   helperButton?: IconButtonProps
-  width?: number
+  flex?: string
   mask?: (value: string) => any
 }
 
@@ -21,7 +21,7 @@ export const Input = ({
   helperText,
   helperButton,
   mask,
-  width,
+  flex,
   ...props
 }: Props) => {
   const {
@@ -40,7 +40,7 @@ export const Input = ({
   }
 
   return (
-    <Flex alignItems='flex-end' gap='2' width={width}>
+    <Flex alignItems='flex-end' gap='2' flex={flex}>
       <FormControl
         name={name}
         label={label}

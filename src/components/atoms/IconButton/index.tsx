@@ -14,8 +14,10 @@ const icons = {
   filter: Funnel,
 }
 
+export type IconOption = keyof typeof icons
+
 export type IconButtonProps = Omit<ChakraIconButtonProps, 'icon'> & {
-  icon: keyof typeof icons
+  icon: IconOption
   hasTooltip?: boolean
 }
 

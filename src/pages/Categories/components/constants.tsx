@@ -41,7 +41,7 @@ export const generateData = (
     ...categoryList
       .filter((item) => !!item[type])
       .sort((a, b) => b[type] - a[type]),
-  ].splice(0, 5)
+  ]
 
   const total = orderedList.reduce((value, item) => {
     return value + item[type]
@@ -54,9 +54,11 @@ export const generateData = (
     fraction: Math.round((100 * item[type]) / total),
   }))
 
-  const chartData = data.map((item) => {
-    return { name: item.name, value: Number(item[type]) }
-  })
+  const chartData = data
+    .map((item) => {
+      return { name: item.name, value: Number(item[type]) }
+    })
+    .splice(0, 5)
 
   return { data, chartData }
 }

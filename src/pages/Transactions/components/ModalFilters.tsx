@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Checkbox, Flex, Grid, GridItem, Text } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { Accordion, CheckboxGroup, Input, Modal, Select } from '@/components'
 import { MONTH_LIST, YEAR_LIST } from '@/constants'
 import { useTransactions } from '@/contexts'
-import { masks } from '@/utils'
-import { FilterModel } from '../types'
-import { defaultFilterValues } from '..'
+import { masks, sortAlphabetically } from '@/utils'
+import { defaultFilterValues, FilterModel } from '../constants'
 
 type Props = {
   isOpen: boolean
@@ -15,7 +14,11 @@ type Props = {
 }
 
 export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
-  const { categoryList } = useTransactions()
+  const { categoryList: contextCategoryList } = useTransactions()
+  const categoryList = useMemo(
+    () => sortAlphabetically(contextCategoryList, 'name'),
+    [contextCategoryList]
+  )
   const formMethods = useForm({ defaultValues: defaultFilterValues })
   const selectedCategories = formMethods.watch('selectedCategories')
   const [isIndeterminate, setIsIndeterminate] = useState(true)
@@ -29,7 +32,10 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
   }, [formMethods, categoryList, selectedCategories])
 
   const handleSubmit = (data: FilterModel) => {
-    handleFilter(data)
+    handleFilter({
+      ...data,
+      selectedCategories: allChecked ? [] : data.selectedCategories,
+    })
     onClose()
   }
 
@@ -47,7 +53,6 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
       onConfirm={handleSubmit}
       formMethods={formMethods}
       title='Selecionar Filtros'
-      maxWidth={400}
     >
       <Grid gap='4'>
         <GridItem>
@@ -63,9 +68,9 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
 
         <GridItem>
           <Flex gap='4' alignItems='flex-end'>
-            <Input name='minAmount' mask={masks.monetaryValue} />
+            <Input flex='1' name='minAmount' mask={masks.monetaryValue} />
             <Text>até</Text>
-            <Input name='maxAmount' mask={masks.monetaryValue} />
+            <Input flex='1' name='maxAmount' mask={masks.monetaryValue} />
           </Flex>
         </GridItem>
 

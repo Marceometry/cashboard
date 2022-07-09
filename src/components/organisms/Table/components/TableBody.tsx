@@ -20,7 +20,7 @@ export const TableBody = ({
   const sortedData = sortBy
     ? data.sort((a, b) => b[sortBy] - a[sortBy])
     : sortFunction
-    ? data.sort(sortFunction)
+    ? sortFunction(data)
     : data
 
   return (

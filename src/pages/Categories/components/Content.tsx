@@ -18,7 +18,7 @@ export const Content = ({ data, type }: Props) => {
         sortBy='outcome'
         columns={columns}
         data={data}
-        noFilters
+        noSearch
       />
     </Flex>
   )

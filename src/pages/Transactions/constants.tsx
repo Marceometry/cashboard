@@ -1,20 +1,64 @@
 import { Center, StatArrow } from '@chakra-ui/react'
-import { ButtonProps, ColumnProps, IconButton } from '@/components'
+import { ColumnProps, IconButton, TableButtons } from '@/components'
 import { TransactionModel } from '@/contexts'
 import { masks } from '@/utils'
 
+export type FilterModel = {
+  selectedMonth: number
+  selectedYear: number
+  selectedCategories: string[]
+  minAmount: string
+  maxAmount: string
+}
+
+export const defaultFilterValues: FilterModel = {
+  selectedMonth: new Date().getMonth() + 1,
+  selectedYear: new Date().getFullYear(),
+  selectedCategories: [],
+  maxAmount: '',
+  minAmount: '',
+}
+
+export const emptyFilterValues: FilterModel = {
+  selectedMonth: 0,
+  selectedYear: 0,
+  selectedCategories: [],
+  maxAmount: '',
+  minAmount: '',
+}
+
 type ButtonsProps = {
   handleNewTransaction: () => void
+  handleOpenModalFilter: () => void
 }
 
 export const getButtons = ({
   handleNewTransaction,
-}: ButtonsProps): ButtonProps[] => [
-  {
-    children: 'Nova Transação',
-    onClick: handleNewTransaction,
-  },
-]
+  handleOpenModalFilter,
+}: ButtonsProps): TableButtons => ({
+  textButtons: [
+    {
+      children: 'Nova Transação',
+      onClick: handleNewTransaction,
+    },
+  ],
+  iconButtons: [
+    {
+      icon: 'filter',
+      'aria-label': 'Selecionar Filtros',
+      onClick: handleOpenModalFilter,
+    },
+  ],
+})
+
+export const getCaption = (filters: FilterModel) => {
+  if (!filters) return ''
+  const { selectedMonth, selectedYear } = filters
+  if (!selectedMonth || !selectedYear) return ''
+
+  const month = selectedMonth > 9 ? selectedMonth : `0${selectedMonth}`
+  return `${month}/${selectedYear}`
+}
 
 type ColumnsProps = {
   handleDeleteTransaction: (row: TransactionModel) => void

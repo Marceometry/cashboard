@@ -39,7 +39,7 @@ export const Categories = () => {
         <Tabs tabs={tabs} onChange={handleTabsChange} />
         {currentView === 'chart' && <Chart data={chartData} />}
         <button
-          style={{ position: 'absolute', right: 12, bottom: 8 }}
+          style={{ position: 'absolute', right: 36, top: 70 }}
           onClick={() =>
             setCurrentView(currentView === 'table' ? 'chart' : 'table')
           }

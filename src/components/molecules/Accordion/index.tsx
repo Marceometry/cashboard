@@ -22,7 +22,7 @@ export const Accordion = ({ items, ...props }: Props) => {
   return (
     <ChakraAccordion allowToggle {...props}>
       {items.map((item) => (
-        <AccordionItem key={item.key}>
+        <AccordionItem borderWidth='1px' key={item.key}>
           <AccordionButton>
             <Flex flex='1'>{item.button}</Flex>
             <AccordionIcon />

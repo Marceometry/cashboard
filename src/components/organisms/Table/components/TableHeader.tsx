@@ -8,31 +8,33 @@ import {
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 import { IconButton } from '@/components'
-import { ButtonProps } from '../types'
+import { TableButtons } from '../types'
 
 type HeaderProps = {
-  caption?: string
-  noFilters?: boolean
-  buttons?: ButtonProps[]
+  caption?: React.ReactNode
+  noSearch?: boolean
+  buttons?: TableButtons
   searchText: string
   setSearchText: (value: string) => void
-  handleOpenModalFilters: () => void
 }
 
 export const TableHeader = ({
   caption,
-  noFilters,
+  noSearch,
   buttons,
   searchText,
   setSearchText,
-  handleOpenModalFilters,
 }: HeaderProps) => {
   return (
-    <Flex justifyContent='space-between' gap='8' mb='4'>
+    <Flex
+      justifyContent={caption ? 'space-between' : 'flex-end'}
+      gap='8'
+      mb='4'
+    >
       {caption && <Heading fontSize='3xl'>{caption}</Heading>}
 
-      {!noFilters && (
-        <Flex gap='4'>
+      <Flex gap='4'>
+        {!noSearch && (
           <InputGroup w='auto'>
             <InputLeftElement
               pointerEvents='none'
@@ -44,18 +46,16 @@ export const TableHeader = ({
               onChange={(e) => setSearchText(e.target.value)}
             />
           </InputGroup>
+        )}
 
-          <IconButton
-            icon='filter'
-            aria-label='Selecionar Filtros'
-            onClick={handleOpenModalFilters}
-          />
+        {buttons?.iconButtons?.map((button) => (
+          <IconButton key={button.icon} {...button} />
+        ))}
 
-          {buttons?.map((button) => (
-            <Button key={button.children} {...button} />
-          ))}
-        </Flex>
-      )}
+        {buttons?.textButtons?.map((button) => (
+          <Button key={button.children} {...button} />
+        ))}
+      </Flex>
     </Flex>
   )
 }
