@@ -2,20 +2,27 @@ import { useEffect, useState } from 'react'
 import { Table, Card, MainTemplate } from '@/components'
 import { TransactionModel, useDialog, useTransactions } from '@/contexts'
 import { masks, sortByDate } from '@/utils'
+import { useLocalStorage } from '@/hooks'
 import {
   getButtons,
   getColumns,
   getCaption,
   defaultFilterValues,
+  FilterModel,
 } from './constants'
 import { AddTransactionModal, ModalFilters } from './components'
 import { filterData } from './utils'
 
 export const Transactions = () => {
+  const storage = useLocalStorage()
   const { openDialog } = useDialog()
   const { transactionList, removeTransaction } = useTransactions()
+
   const [tableData, setTableData] = useState<TransactionModel[]>([])
-  const [tableFilters, setTableFilters] = useState(defaultFilterValues)
+  const [tableFilters, setTableFilters] = useState(
+    () => storage.get('table-filters') || defaultFilterValues
+  )
+
   const [selectedTransactionId, setSelectedTransactionId] = useState<number>()
   const [isModalTransactionOpen, setIsModalTransactionOpen] = useState(false)
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
@@ -24,6 +31,11 @@ export const Transactions = () => {
     const filteredData = filterData(transactionList, tableFilters)
     setTableData(filteredData)
   }, [transactionList, tableFilters])
+
+  const handleSetFilters = (filters: FilterModel) => {
+    setTableFilters(filters)
+    storage.set('table-filters', filters)
+  }
 
   const handleOpenTransactionModal = (selectedId?: number) => {
     setIsModalTransactionOpen(true)
@@ -69,7 +81,7 @@ export const Transactions = () => {
       <ModalFilters
         isOpen={isModalFiltersOpen}
         onClose={() => setIsModalFiltersOpen(false)}
-        handleFilter={setTableFilters}
+        handleFilter={handleSetFilters}
       />
     </MainTemplate>
   )

@@ -2,9 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { Checkbox, Flex, Grid, GridItem, Text } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { Accordion, CheckboxGroup, Input, Modal, Select } from '@/components'
+import { masks, sortAlphabetically } from '@/utils'
 import { MONTH_LIST, YEAR_LIST } from '@/constants'
 import { useTransactions } from '@/contexts'
-import { masks, sortAlphabetically } from '@/utils'
+import { useLocalStorage } from '@/hooks'
 import { defaultFilterValues, FilterModel } from '../constants'
 
 type Props = {
@@ -14,12 +15,15 @@ type Props = {
 }
 
 export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
+  const storage = useLocalStorage()
   const { categoryList: contextCategoryList } = useTransactions()
   const categoryList = useMemo(
     () => sortAlphabetically(contextCategoryList, 'name'),
     [contextCategoryList]
   )
-  const formMethods = useForm({ defaultValues: defaultFilterValues })
+  const formMethods = useForm({
+    defaultValues: storage.get('table-filters') || defaultFilterValues,
+  })
   const selectedCategories = formMethods.watch('selectedCategories')
   const [isIndeterminate, setIsIndeterminate] = useState(true)
   const [allChecked, setAllChecked] = useState(true)

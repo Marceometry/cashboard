@@ -22,13 +22,13 @@ export const TransactionsContext = createContext({} as TransactionsContextData)
 export function TransactionsContextProvider({
   children,
 }: TransactionsContextProviderProps) {
-  const { get, set } = useLocalStorage()
+  const storage = useLocalStorage()
   const [isLoading, setIsLoading] = useState(false)
   const [categoryList, setCategoryList] = useState<CategoryModel[]>(() =>
-    get('categories', [])
+    storage.get('categories', [])
   )
   const [transactionList, setTransactionList] = useState<TransactionModel[]>(
-    () => get('transactions', [])
+    () => storage.get('transactions', [])
   )
 
   const addTransaction = (transaction: AddTransactionModel) => {
@@ -112,8 +112,8 @@ export function TransactionsContextProvider({
   useEffect(() => {
     const categories = generateCategories(transactionList)
     setCategoryList(categories)
-    set('categories', categories)
-    set('transactions', transactionList)
+    storage.set('categories', categories)
+    storage.set('transactions', transactionList)
   }, [transactionList])
 
   return (

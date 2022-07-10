@@ -1,10 +1,10 @@
-type LocaStorageItem = 'transactions' | 'categories'
+type LocaStorageItem = 'transactions' | 'categories' | 'table-filters'
 
 export const useLocalStorage = () => {
   const get = (item: LocaStorageItem, defaultValue?: any) => {
-    const list = localStorage.getItem(`@cashboard/${item}`)
-    if (!list) return defaultValue
-    return JSON.parse(list)
+    const response = localStorage.getItem(`@cashboard/${item}`)
+    if (!response) return defaultValue
+    return JSON.parse(response)
   }
 
   const set = (item: LocaStorageItem, data: any) => {
