@@ -124,7 +124,7 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
             <Input
               label='Categoria'
               name='category'
-              helperButton={
+              rightIcon={
                 categoryList.length
                   ? {
                       icon: 'list',

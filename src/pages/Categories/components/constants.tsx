@@ -33,6 +33,7 @@ export const getColumns = (type: TransactionType): ColumnProps<DataModel>[] => [
     customRender: ({ fraction }) => `${fraction}%`,
   },
 ]
+
 export const generateData = (
   categoryList: CategoryModel[],
   type: TransactionType

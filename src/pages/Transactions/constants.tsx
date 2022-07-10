@@ -1,4 +1,4 @@
-import { Center, StatArrow } from '@chakra-ui/react'
+import { Center, Flex, Stat, StatArrow, Text } from '@chakra-ui/react'
 import { ColumnProps, IconButton, TableButtons } from '@/components'
 import { TransactionModel } from '@/contexts'
 import { masks } from '@/utils'
@@ -51,13 +51,42 @@ export const getButtons = ({
   ],
 })
 
-export const getCaption = (filters: FilterModel) => {
-  if (!filters) return ''
+export const getCaption = (filters: FilterModel, data: TransactionModel[]) => {
+  const [income, outcome] = data.reduce(
+    (acc, item) => {
+      const index = item.type === 'income' ? 0 : 1
+      const value = acc[index] + item.amount
+      acc[index] = value
+      return acc
+    },
+    [0, 0]
+  )
+
+  const Balance = () => (
+    <Stat>
+      <Flex alignItems='center' gap='1'>
+        <StatArrow type='increase' />
+        <Text fontSize='md'>{masks.valueToMoney(income)}</Text>
+      </Flex>
+      <Flex alignItems='center' gap='1'>
+        <StatArrow type='decrease' />
+        <Text fontSize='md'>{masks.valueToMoney(outcome)}</Text>
+      </Flex>
+    </Stat>
+  )
+
+  if (!filters) return <Balance />
+
   const { selectedMonth, selectedYear } = filters
   if (!selectedMonth || !selectedYear) return ''
 
   const month = selectedMonth > 9 ? selectedMonth : `0${selectedMonth}`
-  return `${month}/${selectedYear}`
+  return (
+    <Flex gap='4'>
+      {month}/{selectedYear}
+      <Balance />
+    </Flex>
+  )
 }
 
 type ColumnsProps = {

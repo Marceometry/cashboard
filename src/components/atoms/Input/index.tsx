@@ -1,5 +1,11 @@
 import { useFormContext } from 'react-hook-form'
-import { Flex, Input as ChakraInput, InputProps } from '@chakra-ui/react'
+import {
+  Flex,
+  Input as ChakraInput,
+  InputGroup,
+  InputProps,
+  InputRightElement,
+} from '@chakra-ui/react'
 import { FormControl, IconButton, IconButtonProps } from '@/components'
 
 type Props = InputProps & {
@@ -8,7 +14,7 @@ type Props = InputProps & {
   placeholder?: string
   required?: boolean
   helperText?: string
-  helperButton?: IconButtonProps
+  rightIcon?: IconButtonProps
   flex?: string
   mask?: (value: string) => any
 }
@@ -19,7 +25,7 @@ export const Input = ({
   placeholder,
   required,
   helperText,
-  helperButton,
+  rightIcon,
   mask,
   flex,
   ...props
@@ -48,15 +54,26 @@ export const Input = ({
         required={required}
         helperText={helperText}
       >
-        <ChakraInput
-          {...inputRegister}
-          {...props}
-          id={name}
-          onChange={handleChange}
-          placeholder={placeholder || mask?.('') || label}
-        />
+        <InputGroup>
+          <ChakraInput
+            {...inputRegister}
+            {...props}
+            id={name}
+            onChange={handleChange}
+            placeholder={placeholder || mask?.('') || label}
+          />
+          {rightIcon && (
+            <InputRightElement>
+              <IconButton
+                borderTopLeftRadius={0}
+                borderBottomLeftRadius={0}
+                {...rightIcon}
+                mb={error ? 6 : 0}
+              />
+            </InputRightElement>
+          )}
+        </InputGroup>
       </FormControl>
-      {helperButton && <IconButton {...helperButton} mb={error ? 6 : 0} />}
     </Flex>
   )
 }

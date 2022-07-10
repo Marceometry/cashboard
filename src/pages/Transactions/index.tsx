@@ -38,7 +38,7 @@ export const Transactions = () => {
     })
   }
 
-  const caption = getCaption(tableFilters)
+  const caption = getCaption(tableFilters, tableData)
   const buttons = getButtons({
     handleNewTransaction: () => handleOpenTransactionModal(),
     handleOpenModalFilter: () => setIsModalFiltersOpen(true),

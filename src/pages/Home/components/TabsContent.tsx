@@ -1,6 +1,7 @@
-import { Stat } from '@/components'
-import { TransactionModel } from '@/contexts'
+import { Flex } from '@chakra-ui/react'
 import { isThisYear } from 'date-fns'
+import { TransactionModel } from '@/contexts'
+import { Stat } from '@/components'
 
 type Props = {
   incomeItems: TransactionModel[]
@@ -23,9 +24,11 @@ export const TabsContent = ({ incomeItems, outcomeItems, month }: Props) => {
   const totalOutcome = getAmountByDate(outcomeItems, month)
 
   return (
-    <>
-      <Stat label='Ganhos totais' value={totalIncome} increase />
-      <Stat label='Gastos totais' value={totalOutcome} />
-    </>
+    <Flex flex='1' gap='6' direction='column'>
+      <Flex flex='1'>
+        <Stat label='Ganhos totais' value={totalIncome} increase />
+        <Stat label='Gastos totais' value={totalOutcome} />
+      </Flex>
+    </Flex>
   )
 }
