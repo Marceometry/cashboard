@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Card, Chart, MainTemplate, Tabs } from '@/components'
+import { Card, PieChart, MainTemplate, Tabs } from '@/components'
 import { TransactionType, useTransactions } from '@/contexts'
-import { Content, Label, generateData } from './components'
+import { generateData, getTabs } from './constants'
 
 export const Categories = () => {
   const { categoryList } = useTransactions()
@@ -14,32 +14,15 @@ export const Categories = () => {
     setCurrentType(index === 0 ? 'outcome' : 'income')
   }
 
-  const tabs = [
-    {
-      key: 'outcome',
-      label: <Label isSpent={true} />,
-      content:
-        currentView === 'table' ? (
-          <Content data={data} type='outcome' />
-        ) : (
-          <></>
-        ),
-    },
-    {
-      key: 'income',
-      label: <Label isSpent={false} />,
-      content:
-        currentView === 'table' ? <Content data={data} type='income' /> : <></>,
-    },
-  ]
+  const tabs = getTabs(data, currentView)
 
   return (
     <MainTemplate>
       <Card position='relative'>
         <Tabs tabs={tabs} onChange={handleTabsChange} />
-        {currentView === 'chart' && <Chart data={chartData} />}
+        {currentView === 'chart' && <PieChart data={chartData} />}
         <button
-          style={{ position: 'absolute', right: 36, top: 70 }}
+          style={{ position: 'absolute', right: 40, top: 64 }}
           onClick={() =>
             setCurrentView(currentView === 'table' ? 'chart' : 'table')
           }

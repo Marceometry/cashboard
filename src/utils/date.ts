@@ -11,3 +11,12 @@ export const filterByMonth = (date: string, month: number) => {
 export const filterByYear = (date: string, year: number) => {
   return new Date(date).getFullYear() === year
 }
+
+export const getFormattedMonthAndYear = (
+  originalDate: Date | string,
+  fullYear?: boolean
+) => {
+  const date = new Date(originalDate)
+  const year = fullYear ? 'yyyy' : 'yy'
+  return format(date, `MM/${year}`)
+}

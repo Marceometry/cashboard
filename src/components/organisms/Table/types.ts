@@ -26,5 +26,9 @@ export type TableProps = ChakraTableProps & {
   caption?: React.ReactNode
   noSearch?: boolean
   sortBy?: string
-  sortFunction?: (array: any[], dateField?: string) => any[]
+  sortFunction?: (
+    array: any[],
+    oldestFirst?: boolean,
+    dateField?: string
+  ) => any[]
 }

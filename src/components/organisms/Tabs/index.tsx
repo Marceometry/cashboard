@@ -20,17 +20,24 @@ type Props = Omit<TabsProps, 'children'> & {
 
 export const Tabs = ({ tabs, ...props }: Props) => {
   return (
-    <ChakraTabs isFitted {...props}>
-      <TabList mb='4'>
+    <ChakraTabs
+      isFitted
+      display='flex'
+      flexDirection='column'
+      overflow='hidden'
+      p='1'
+      {...props}
+    >
+      <TabList>
         {tabs.map((tab) => (
           <Tab key={tab.key}>{tab.label}</Tab>
         ))}
       </TabList>
 
-      <TabPanels>
+      <TabPanels flex='1' display='flex' overflow='hidden'>
         {tabs.map((tab) => (
-          <TabPanel key={tab.key}>
-            <Flex gap='4' w='100%'>
+          <TabPanel key={tab.key} flex='1' display='flex' overflow='hidden'>
+            <Flex gap='4' w='100%' flex='1' overflow='auto'>
               {tab.content}
             </Flex>
           </TabPanel>

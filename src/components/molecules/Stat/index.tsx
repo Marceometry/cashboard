@@ -21,7 +21,7 @@ export const Stat = ({ label, value, increase }: StatProps) => {
           <StatArrow type={increase ? 'increase' : 'decrease'} />
           <StatLabel fontSize='xl'>{label}</StatLabel>
         </Center>
-        <StatNumber fontSize='3xl' my='2'>
+        <StatNumber fontSize='3xl' mt='2'>
           R$ {value.toLocaleString()}
         </StatNumber>
       </Grid>
