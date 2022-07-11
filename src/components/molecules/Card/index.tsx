@@ -1,7 +1,7 @@
 import { Box, ChakraComponent, Flex, useColorModeValue } from '@chakra-ui/react'
 
 export const Card: ChakraComponent<'div', {}> = ({ children, ...props }) => {
-  const bg = useColorModeValue('gray.100', 'gray.700')
+  const bg = useColorModeValue('gray.50', 'gray.700')
 
   return (
     <Box

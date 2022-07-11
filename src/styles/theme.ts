@@ -23,7 +23,7 @@ const styles = {
     },
     '&::-webkit-scrollbar-thumb': {
       borderRadius: '8px',
-      backgroundColor: `rgb(64, 75, 94)`,
+      backgroundColor: mode('rgb(159 170 191)', 'rgb(64, 75, 94)')(props),
     },
     body: {
       fontFamily: 'sans-serif',

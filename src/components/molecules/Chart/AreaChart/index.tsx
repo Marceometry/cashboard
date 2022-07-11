@@ -1,4 +1,5 @@
 import { masks } from '@/utils'
+import { useColorModeValue } from '@chakra-ui/react'
 import {
   ComposedChart,
   XAxis,
@@ -11,19 +12,18 @@ import {
 } from 'recharts'
 
 type Props = {
-  areaLabel: string
-  areaColor?: string
   data: Array<{
     name: string
     value: number
   }>
+  areaLabel: string
+  areaColor?: string
+  isMonth?: boolean
 }
 
-export const AreaChart = ({
-  data,
-  areaLabel,
-  areaColor = '#48bb78',
-}: Props) => {
+export const AreaChart = ({ data, areaLabel, areaColor, isMonth }: Props) => {
+  const tooltipBg = useColorModeValue('#f7fafc', '#2d3748')
+
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <ComposedChart
@@ -41,9 +41,11 @@ export const AreaChart = ({
         <XAxis dataKey='name' />
         <YAxis />
         <Tooltip
-          labelFormatter={(name: string) => `Mês ${name}`}
+          labelFormatter={(name: string) =>
+            `${isMonth ? 'Mês' : 'Dia'} ${name}`
+          }
           formatter={(data: number) => masks.valueToMoney(data)}
-          contentStyle={{ backgroundColor: '#2d3748' }}
+          contentStyle={{ backgroundColor: tooltipBg }}
         />
         <Legend />
         <Area

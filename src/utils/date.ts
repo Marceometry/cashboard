@@ -20,3 +20,8 @@ export const getFormattedMonthAndYear = (
   const year = fullYear ? 'yyyy' : 'yy'
   return format(date, `MM/${year}`)
 }
+
+export const getFormattedDayAndMonth = (originalDate: Date | string) => {
+  const date = new Date(originalDate)
+  return format(date, `dd/MM`)
+}

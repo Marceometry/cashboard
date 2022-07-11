@@ -1,5 +1,5 @@
 import { masks } from '@/utils'
-import { Text } from '@chakra-ui/react'
+import { Text, useColorModeValue } from '@chakra-ui/react'
 import {
   XAxis,
   YAxis,
@@ -25,6 +25,8 @@ type Props = {
 }
 
 export const BarChart = ({ data, bars }: Props) => {
+  const tooltipBg = useColorModeValue('#f7fafc', '#2d3748')
+
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <ComposedChart
@@ -45,7 +47,7 @@ export const BarChart = ({ data, bars }: Props) => {
         <Tooltip
           labelFormatter={(name: string) => `Dia ${name}`}
           formatter={(data: number) => masks.valueToMoney(data)}
-          contentStyle={{ backgroundColor: '#2d3748' }}
+          contentStyle={{ backgroundColor: tooltipBg }}
         />
         <Legend />
         {bars.map((area) => (

@@ -1,5 +1,9 @@
 import { TransactionModel, TransactionType } from '@/contexts'
-import { getFormattedMonthAndYear, sortByDate } from '@/utils'
+import {
+  getFormattedDayAndMonth,
+  getFormattedMonthAndYear,
+  sortByDate,
+} from '@/utils'
 import { TabsContent } from './components'
 
 export const getTabs = (
@@ -50,7 +54,7 @@ export const getChartData = (
       if (month && date.getMonth() !== month) return [...acc]
 
       const name = month
-        ? date.getDate().toString()
+        ? getFormattedDayAndMonth(date)
         : getFormattedMonthAndYear(date)
       const itemIndex = acc.findIndex((accItem) => accItem.name === name)
 

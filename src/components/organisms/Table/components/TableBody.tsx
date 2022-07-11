@@ -7,6 +7,7 @@ import {
   Td,
   Tfoot,
   Box,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { TableProps } from '../types'
 
@@ -17,6 +18,9 @@ export const TableBody = ({
   sortFunction,
   ...props
 }: TableProps) => {
+  const headerBg = useColorModeValue('gray.300', 'gray.800')
+  const rowBg = useColorModeValue('gray.200', 'gray.600')
+
   const sortedData = sortBy
     ? data.sort((a, b) => b[sortBy] - a[sortBy])
     : sortFunction
@@ -29,7 +33,7 @@ export const TableBody = ({
         <Thead>
           <Tr>
             {columns.map((column, index) => (
-              <Th bg='gray.800' key={index}>
+              <Th bg={headerBg} key={index}>
                 {column.label}
               </Th>
             ))}
@@ -37,7 +41,7 @@ export const TableBody = ({
         </Thead>
         <Tbody overflow='auto'>
           {sortedData.map((item, index) => (
-            <Tr key={index} bg='gray.600'>
+            <Tr key={index} bg={rowBg}>
               {columns.map((column, columnIndex) => (
                 <Td key={columnIndex}>
                   {column.customRender
