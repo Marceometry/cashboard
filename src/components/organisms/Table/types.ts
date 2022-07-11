@@ -31,4 +31,6 @@ export type TableProps = ChakraTableProps & {
     oldestFirst?: boolean,
     dateField?: string
   ) => any[]
+  chartData?: any
+  chartBars?: any
 }

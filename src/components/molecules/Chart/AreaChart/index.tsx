@@ -1,5 +1,5 @@
 import {
-  AreaChart as ChakraAreaChart,
+  ComposedChart,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -25,7 +25,7 @@ export const AreaChart = ({
 }: Props) => {
   return (
     <ResponsiveContainer width='100%' height='100%'>
-      <ChakraAreaChart
+      <ComposedChart
         width={500}
         height={300}
         data={data}
@@ -48,7 +48,7 @@ export const AreaChart = ({
           fill={areaColor}
           stroke={areaColor}
         />
-      </ChakraAreaChart>
+      </ComposedChart>
     </ResponsiveContainer>
   )
 }

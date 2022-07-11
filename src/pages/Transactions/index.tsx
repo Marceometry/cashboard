@@ -9,6 +9,8 @@ import {
   getCaption,
   defaultFilterValues,
   FilterModel,
+  generateChartData,
+  chartBars,
 } from './constants'
 import { AddTransactionModal, ModalFilters } from './components'
 import { filterData } from './utils'
@@ -69,6 +71,8 @@ export const Transactions = () => {
           buttons={buttons}
           caption={caption}
           sortFunction={sortByDate}
+          chartBars={chartBars}
+          chartData={generateChartData(tableData)}
         />
       </Card>
 

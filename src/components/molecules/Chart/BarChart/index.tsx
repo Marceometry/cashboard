@@ -1,24 +1,28 @@
 import {
-  ComposedChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
+  ComposedChart,
+  Bar,
 } from 'recharts'
 
 type Props = {
-  barLabel: string
-  barColor?: string
-  data: Array<{
-    name: string
-    value: number
+  bars: Array<{
+    dataKey: string
+    label: string
+    color: string
   }>
+  data: Array<
+    any & {
+      name: string
+    }
+  >
 }
 
-export const BarChart = ({ data, barLabel, barColor = '#48bb78' }: Props) => {
+export const BarChart = ({ data, bars }: Props) => {
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <ComposedChart
@@ -38,7 +42,14 @@ export const BarChart = ({ data, barLabel, barColor = '#48bb78' }: Props) => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar name={barLabel} dataKey='value' fill={barColor} />
+        {bars.map((area) => (
+          <Bar
+            key={area.label}
+            name={area.label}
+            fill={area.color}
+            dataKey={area.dataKey}
+          />
+        ))}
       </ComposedChart>
     </ResponsiveContainer>
   )

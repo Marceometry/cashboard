@@ -16,6 +16,9 @@ type HeaderProps = {
   buttons?: TableButtons
   searchText: string
   setSearchText: (value: string) => void
+  toggleChart: () => void
+  isChartView: boolean
+  showToggleChartButton: boolean
 }
 
 export const TableHeader = ({
@@ -24,6 +27,9 @@ export const TableHeader = ({
   buttons,
   searchText,
   setSearchText,
+  toggleChart,
+  isChartView,
+  showToggleChartButton,
 }: HeaderProps) => {
   return (
     <Flex
@@ -46,6 +52,14 @@ export const TableHeader = ({
               onChange={(e) => setSearchText(e.target.value)}
             />
           </InputGroup>
+        )}
+
+        {showToggleChartButton && (
+          <IconButton
+            icon={isChartView ? 'table' : 'chartBar'}
+            aria-label={isChartView ? 'Mostrar tabela' : 'Mostrar gráfico'}
+            onClick={toggleChart}
+          />
         )}
 
         {buttons?.iconButtons?.map((button) => (

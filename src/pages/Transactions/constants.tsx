@@ -1,7 +1,7 @@
 import { Center, Flex, Stat, StatArrow, Text } from '@chakra-ui/react'
 import { ColumnProps, IconButton, TableButtons } from '@/components'
-import { TransactionModel } from '@/contexts'
-import { masks } from '@/utils'
+import { TransactionModel, TransactionType } from '@/contexts'
+import { masks, sortByDate } from '@/utils'
 
 export type FilterModel = {
   selectedMonth: number
@@ -144,5 +144,59 @@ export const getColumns = ({
         />
       </Center>
     ),
+  },
+]
+
+type ChartDataResponse = Array<{
+  name: string
+  income: number
+  outcome: number
+}>
+
+export const generateChartData = (list: TransactionModel[]) => {
+  return sortByDate(list, true).reduce(
+    (acc: ChartDataResponse, item: TransactionModel) => {
+      const { amount, type } = item
+      const isIncome = type === 'income'
+      const date = new Date(item.date)
+      const name = date.getDate().toString()
+      const itemIndex = acc.findIndex((accItem) => accItem.name === name)
+
+      if (acc[itemIndex]) {
+        const income = isIncome
+          ? acc[itemIndex].income + amount
+          : acc[itemIndex].income
+
+        const outcome = !isIncome
+          ? acc[itemIndex].outcome + amount
+          : acc[itemIndex].outcome
+
+        acc[itemIndex] = { name, income, outcome }
+        return [...acc]
+      }
+
+      return [
+        ...acc,
+        {
+          name,
+          income: isIncome ? amount : 0,
+          outcome: !isIncome ? amount : 0,
+        },
+      ]
+    },
+    []
+  )
+}
+
+export const chartBars = [
+  {
+    dataKey: 'income',
+    label: 'Entrada',
+    color: '#48bb78',
+  },
+  {
+    dataKey: 'outcome',
+    label: 'Saída',
+    color: '#f56565',
   },
 ]
