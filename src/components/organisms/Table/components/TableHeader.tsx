@@ -56,6 +56,7 @@ export const TableHeader = ({
 
         {charts?.map((chart) => (
           <IconButton
+            key={chart.type}
             onClick={() => toggleChart(chart.type)}
             icon={currentView === chart.type ? 'table' : `${chart.type}Chart`}
             aria-label={

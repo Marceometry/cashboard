@@ -1,13 +1,12 @@
 import { Radio, RadioGroup, Stack, Stat, StatArrow } from '@chakra-ui/react'
 import { TransactionType } from '@/contexts'
-import { FilterModel } from '../constants'
 
-type Props = {
+export type CaptionProps = {
   currentType: TransactionType
   setCurrentType: (type: TransactionType) => void
 }
 
-export const Caption = ({ currentType, setCurrentType }: Props) => {
+export const Caption = ({ currentType, setCurrentType }: CaptionProps) => {
   return (
     <RadioGroup onChange={setCurrentType} value={currentType}>
       <Stat>

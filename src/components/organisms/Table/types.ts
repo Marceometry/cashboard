@@ -25,6 +25,7 @@ export type ChartProps = {
   type: ChartType
   data: any[]
   bars?: any[]
+  isMonth?: boolean
 }
 
 export type TableProps = ChakraTableProps & {
@@ -40,4 +41,5 @@ export type TableProps = ChakraTableProps & {
     dateField?: string
   ) => any[]
   charts?: ChartProps[]
+  onViewChange?: (view: 'table' | ChartType) => void
 }

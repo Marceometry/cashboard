@@ -1,10 +1,12 @@
-import { ColumnProps } from '@/components'
-import { CategoryModel, TransactionType } from '@/contexts'
 import { masks } from '@/utils'
+import { ChartProps, ColumnProps, TableButtons } from '@/components'
+import { CHART_COLORS } from '@/constants'
+import { CategoryModel, TransactionType } from '@/contexts'
+import { Caption, CaptionProps } from './components'
 
-export type FilterModel = {
-  month: number
-  year: number
+type ChartType = {
+  name: string
+  value: number
 }
 
 type DataModel = {
@@ -21,6 +23,32 @@ type Response = {
     value: number
   }[]
 }
+
+export type FilterModel = {
+  month: number
+  year: number
+}
+
+export const defaultFilterValues = {
+  month: null,
+  year: null,
+}
+
+export const getCaption = (props: CaptionProps) => <Caption {...props} />
+
+export const getButtons = (
+  handleClick: () => void,
+  isFilterDisabled: boolean
+): TableButtons => ({
+  iconButtons: [
+    {
+      icon: 'filter',
+      'aria-label': 'Selecionar Filtros',
+      onClick: handleClick,
+      disabled: isFilterDisabled,
+    },
+  ],
+})
 
 export const getColumns = (type: TransactionType): ColumnProps<DataModel>[] => [
   {
@@ -70,3 +98,23 @@ export const generateData = (
 
   return { data, chartData }
 }
+
+export const getCharts = (
+  chartData: ChartType[],
+  barChartData: CategoryModel[]
+): ChartProps[] => [
+  {
+    type: 'pie',
+    data: chartData,
+  },
+  {
+    type: 'bar',
+    isMonth: true,
+    data: barChartData,
+    bars: chartData.map((item, index) => ({
+      label: item.name,
+      dataKey: item.name,
+      color: CHART_COLORS[index % CHART_COLORS.length],
+    })),
+  },
+]

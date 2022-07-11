@@ -22,9 +22,10 @@ type Props = {
       name: string
     }
   >
+  isMonth?: boolean
 }
 
-export const BarChart = ({ data, bars }: Props) => {
+export const BarChart = ({ data, bars, isMonth }: Props) => {
   const tooltipBg = useColorModeValue('#f7fafc', '#2d3748')
 
   return (
@@ -45,7 +46,9 @@ export const BarChart = ({ data, bars }: Props) => {
         <XAxis dataKey='name' />
         <YAxis />
         <Tooltip
-          labelFormatter={(name: string) => `Dia ${name}`}
+          labelFormatter={(name: string) =>
+            `${isMonth ? 'Mês' : 'Dia'} ${name}`
+          }
           formatter={(data: number) => masks.valueToMoney(data)}
           contentStyle={{ backgroundColor: tooltipBg }}
         />

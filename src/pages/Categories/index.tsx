@@ -1,50 +1,58 @@
 import { useState } from 'react'
-import { CHART_COLORS } from '@/constants'
 import { Card, MainTemplate, Table } from '@/components'
 import { TransactionType, useTransactions } from '@/contexts'
-import { FilterModel, generateData, getColumns } from './constants'
-import { Caption } from './components'
+import { ModalFilters } from './components'
+import {
+  FilterModel,
+  generateData,
+  getColumns,
+  getCaption,
+  getCharts,
+  getButtons,
+} from './constants'
 
 export const Categories = () => {
   const { generateCategoriesByDate, generateCategoriesHistory } =
     useTransactions()
   const [currentType, setCurrentType] = useState<TransactionType>('outcome')
   const [filters, setFilters] = useState<FilterModel>({ month: 0, year: 0 })
+  const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
+  const [isFilterDisabled, setIsFilterDisabled] = useState(false)
 
-  const list = generateCategoriesByDate(filters.month, filters.year)
-  const { data, chartData } = generateData(list, currentType)
-  const columns = getColumns(currentType)
-  const caption = (
-    <Caption currentType={currentType} setCurrentType={setCurrentType} />
+  const barChartData = generateCategoriesHistory(currentType)
+  const categoriesByDate = generateCategoriesByDate(filters.month, filters.year)
+  const { data, chartData } = generateData(categoriesByDate, currentType)
+
+  const caption = getCaption({ currentType, setCurrentType })
+  const buttons = getButtons(
+    () => setIsModalFiltersOpen(true),
+    isFilterDisabled
   )
+  const columns = getColumns(currentType)
+  const charts = getCharts(chartData, barChartData)
 
-  const chart3Data = generateCategoriesHistory(currentType)
+  const handleViewChange = (view: string) => {
+    setIsFilterDisabled(view === 'bar')
+  }
 
   return (
     <MainTemplate>
       <Card position='relative'>
         <Table
-          mx='auto'
-          sortBy='outcome'
+          sortBy={currentType}
+          buttons={buttons}
           columns={columns}
           caption={caption}
-          charts={[
-            {
-              type: 'pie',
-              data: chartData,
-            },
-            {
-              type: 'bar',
-              data: chart3Data,
-              bars: chartData.map((item, index) => ({
-                label: item.name,
-                dataKey: item.name,
-                color: CHART_COLORS[index % CHART_COLORS.length],
-              })),
-            },
-          ]}
+          charts={charts}
           data={data}
+          onViewChange={handleViewChange}
           noSearch
+        />
+
+        <ModalFilters
+          handleFilter={setFilters}
+          isOpen={isModalFiltersOpen}
+          onClose={() => setIsModalFiltersOpen(false)}
         />
       </Card>
     </MainTemplate>
