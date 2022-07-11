@@ -40,7 +40,7 @@ export const TableHeader = ({
       {caption && <Heading fontSize='3xl'>{caption}</Heading>}
 
       <Flex gap='4'>
-        {!noSearch && (
+        {!noSearch && !isChartView && (
           <InputGroup w='auto'>
             <InputLeftElement
               pointerEvents='none'

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Box, Flex } from '@chakra-ui/react'
-import { useDebouncedValue } from '@/hooks'
+import { useDebouncedValue, useLocalStorage } from '@/hooks'
 import { BarChart } from '@/components'
 import { TableBody, TableHeader } from './components'
 import { filterByText } from './utils'
@@ -16,13 +16,22 @@ export const Table = ({
   chartBars,
   ...props
 }: TableProps) => {
+  const storage = useLocalStorage()
   const [filteredData, setFilteredData] = useState<any[]>([])
-  const [currentView, setCurrentView] = useState<'table' | 'chart'>('table')
   const [searchText, setSearchText] = useState('')
   const debouncedSearchText = useDebouncedValue(searchText)
+  const [currentView, setCurrentView] = useState<'table' | 'chart'>(
+    !!chartBars?.length && storage.get('default-table-view') === 'chart'
+      ? 'chart'
+      : 'table'
+  )
 
   const toggleChart = () => {
-    setCurrentView((oldState) => (oldState === 'chart' ? 'table' : 'chart'))
+    setCurrentView((oldState) => {
+      const value = oldState === 'chart' ? 'table' : 'chart'
+      storage.set('default-table-view', value)
+      return value
+    })
   }
 
   const handleSearch = (text: string) => {

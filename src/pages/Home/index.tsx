@@ -46,7 +46,7 @@ export const Home = () => {
       <Card>
         <Tabs tabs={tabs} onChange={handleTabsChange} flex='none' />
 
-        <Grid templateColumns='1fr 1fr' h='100%' mt='5'>
+        <Grid templateColumns='1fr 1fr' h='100%'>
           <GridItem>
             <AreaChart data={incomeData} areaLabel='Entrada' />
           </GridItem>

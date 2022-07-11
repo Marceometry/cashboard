@@ -6,10 +6,14 @@ import { getColumns } from '../constants'
 type Props = {
   data: any[]
   type: TransactionType
+  handleChartView: () => void
 }
 
-export const Content = ({ data, type }: Props) => {
+export const Content = ({ data, type, handleChartView }: Props) => {
   const columns = getColumns(type)
+  const buttons = {
+    textButtons: [{ children: 'Mostrar Gráfico', onClick: handleChartView }],
+  }
 
   return (
     <Flex h='full' w='full' direction='column' justifyContent='center'>
@@ -17,6 +21,7 @@ export const Content = ({ data, type }: Props) => {
         mx='auto'
         sortBy='outcome'
         columns={columns}
+        buttons={buttons}
         data={data}
         noSearch
       />

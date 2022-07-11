@@ -1,3 +1,4 @@
+import { masks } from '@/utils'
 import {
   ComposedChart,
   XAxis,
@@ -39,7 +40,11 @@ export const AreaChart = ({
         <CartesianGrid strokeDasharray='1 1' />
         <XAxis dataKey='name' />
         <YAxis />
-        <Tooltip />
+        <Tooltip
+          labelFormatter={(name: string) => `Mês ${name}`}
+          formatter={(data: number) => masks.valueToMoney(data)}
+          contentStyle={{ backgroundColor: '#2d3748' }}
+        />
         <Legend />
         <Area
           type='monotone'

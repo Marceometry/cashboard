@@ -49,12 +49,14 @@ export const generateData = (
     return value + item[type]
   }, 0)
 
-  const data = orderedList.map((item) => ({
-    name: item.name,
-    income: item.income,
-    outcome: item.outcome,
-    fraction: Math.round((100 * item[type]) / total),
-  }))
+  const data = orderedList
+    .map((item) => ({
+      name: item.name,
+      income: item.income,
+      outcome: item.outcome,
+      fraction: Math.round((100 * item[type]) / total),
+    }))
+    .splice(0, 10)
 
   const chartData = data
     .map((item) => {
@@ -65,9 +67,17 @@ export const generateData = (
   return { data, chartData }
 }
 
-export const getTabs = (data: DataModel[], currentView: 'table' | 'chart') => {
+export const getTabs = (
+  data: DataModel[],
+  currentView: 'table' | 'chart',
+  handleChartView: () => void
+) => {
   const getContent = (type: TransactionType) => {
-    return currentView === 'table' ? <Content data={data} type={type} /> : <></>
+    return currentView === 'table' ? (
+      <Content data={data} type={type} handleChartView={handleChartView} />
+    ) : (
+      <></>
+    )
   }
 
   const getItem = (type: TransactionType) => ({

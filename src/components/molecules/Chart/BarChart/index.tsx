@@ -1,3 +1,5 @@
+import { masks } from '@/utils'
+import { Text } from '@chakra-ui/react'
 import {
   XAxis,
   YAxis,
@@ -40,7 +42,11 @@ export const BarChart = ({ data, bars }: Props) => {
         <CartesianGrid strokeDasharray='1 1' />
         <XAxis dataKey='name' />
         <YAxis />
-        <Tooltip />
+        <Tooltip
+          labelFormatter={(name: string) => `Dia ${name}`}
+          formatter={(data: number) => masks.valueToMoney(data)}
+          contentStyle={{ backgroundColor: '#2d3748' }}
+        />
         <Legend />
         {bars.map((area) => (
           <Bar
