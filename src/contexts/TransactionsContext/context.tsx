@@ -11,7 +11,9 @@ import {
   CategoryModel,
   TransactionModel,
   AddTransactionModel,
+  TransactionType,
 } from '.'
+import { filterByMonth, filterByYear, getFormattedMonthAndYear } from '@/utils'
 
 export type TransactionsContextProviderProps = {
   children: ReactNode
@@ -109,6 +111,44 @@ export function TransactionsContextProvider({
     return categories
   }
 
+  const generateCategoriesByDate = (month: number, year: number) => {
+    const transactions = transactionList.filter((item) => {
+      let included = true
+      if (month) {
+        included = filterByMonth(item.date, month)
+        if (!included) return
+      }
+      if (year) {
+        included = filterByYear(item.date, year)
+        if (!included) return
+      }
+      return included
+    })
+
+    return generateCategories(transactions)
+  }
+
+  const generateCategoriesHistory = (chartType: TransactionType) => {
+    return transactionList.reduce((acc: any[], item: TransactionModel) => {
+      const { amount, category } = item
+      const date = new Date(item.date)
+
+      const name = getFormattedMonthAndYear(date)
+      const itemIndex = acc.findIndex((accItem) => accItem.name === name)
+
+      if (acc[itemIndex]) {
+        const value = acc[itemIndex][category]
+          ? acc[itemIndex][category] + amount
+          : amount
+
+        acc[itemIndex] = { ...acc[itemIndex], name, [category]: value }
+        return [...acc]
+      }
+
+      return [...acc, { name, [category]: amount ?? 0 }]
+    }, [])
+  }
+
   useEffect(() => {
     const categories = generateCategories(transactionList)
     setCategoryList(categories)
@@ -128,6 +168,8 @@ export function TransactionsContextProvider({
         addTransaction,
         updateTransaction,
         removeTransaction,
+        generateCategoriesByDate,
+        generateCategoriesHistory,
       }}
     >
       {children}

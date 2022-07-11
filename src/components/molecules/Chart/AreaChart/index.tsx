@@ -12,16 +12,20 @@ import {
 } from 'recharts'
 
 type Props = {
-  data: Array<{
-    name: string
-    value: number
+  areas: Array<{
+    dataKey?: string
+    label: string
+    color: string
   }>
-  areaLabel: string
-  areaColor?: string
+  data: Array<
+    any & {
+      name: string
+    }
+  >
   isMonth?: boolean
 }
 
-export const AreaChart = ({ data, areaLabel, areaColor, isMonth }: Props) => {
+export const AreaChart = ({ data, areas, isMonth }: Props) => {
   const tooltipBg = useColorModeValue('#f7fafc', '#2d3748')
 
   return (
@@ -48,13 +52,16 @@ export const AreaChart = ({ data, areaLabel, areaColor, isMonth }: Props) => {
           contentStyle={{ backgroundColor: tooltipBg }}
         />
         <Legend />
-        <Area
-          type='monotone'
-          dataKey='value'
-          name={areaLabel}
-          fill={areaColor}
-          stroke={areaColor}
-        />
+        {areas.map((area) => (
+          <Area
+            type='monotone'
+            key={area.label}
+            name={area.label}
+            fill={area.color}
+            stroke={area.color}
+            dataKey={area.dataKey || 'value'}
+          />
+        ))}
       </ComposedChart>
     </ResponsiveContainer>
   )

@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 import { IconButton } from '@/components'
-import { TableButtons } from '../types'
+import { ChartProps, ChartType, TableButtons } from '../types'
 
 type HeaderProps = {
   caption?: React.ReactNode
@@ -16,9 +16,9 @@ type HeaderProps = {
   buttons?: TableButtons
   searchText: string
   setSearchText: (value: string) => void
-  toggleChart: () => void
-  isChartView: boolean
-  showToggleChartButton: boolean
+  toggleChart: (chartType: ChartType) => void
+  currentView: 'table' | ChartType
+  charts?: ChartProps[]
 }
 
 export const TableHeader = ({
@@ -28,8 +28,8 @@ export const TableHeader = ({
   searchText,
   setSearchText,
   toggleChart,
-  isChartView,
-  showToggleChartButton,
+  currentView,
+  charts,
 }: HeaderProps) => {
   return (
     <Flex
@@ -40,7 +40,7 @@ export const TableHeader = ({
       {caption && <Heading fontSize='3xl'>{caption}</Heading>}
 
       <Flex gap='4'>
-        {!noSearch && !isChartView && (
+        {(!noSearch || currentView === 'table') && (
           <InputGroup w='auto'>
             <InputLeftElement
               pointerEvents='none'
@@ -54,13 +54,19 @@ export const TableHeader = ({
           </InputGroup>
         )}
 
-        {showToggleChartButton && (
+        {charts?.map((chart) => (
           <IconButton
-            icon={isChartView ? 'table' : 'chartBar'}
-            aria-label={isChartView ? 'Mostrar tabela' : 'Mostrar gráfico'}
-            onClick={toggleChart}
+            onClick={() => toggleChart(chart.type)}
+            icon={currentView === chart.type ? 'table' : `${chart.type}Chart`}
+            aria-label={
+              currentView === chart.type
+                ? 'Mostrar tabela'
+                : `Mostrar gráfico ${
+                    chart.type === 'pie' ? 'Pizza' : 'de Barras'
+                  }`
+            }
           />
-        )}
+        ))}
 
         {buttons?.iconButtons?.map((button) => (
           <IconButton key={button.icon} {...button} />

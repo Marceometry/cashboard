@@ -1,10 +1,14 @@
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 
+type Callback = (event?: KeyboardEvent) => void
+
+type BaseKey = 'shift' | 'ctrl' | 'alt'
+
 export const useKeyboardListener = () => {
   const useShortcut = (
-    baseKey: string,
+    baseKey: BaseKey,
     key: string,
-    callback: (event: KeyboardEvent) => void,
+    callback: Callback,
     node = null
   ) => {
     const callbackRef = useRef(callback)
@@ -14,10 +18,7 @@ export const useKeyboardListener = () => {
 
     const handleKeyPress = useCallback(
       (event: KeyboardEvent) => {
-        if (
-          event.key === key &&
-          event[`${baseKey}Key` as keyof KeyboardEvent]
-        ) {
+        if (event.key === key && event[`${baseKey}Key`]) {
           callbackRef.current(event)
         }
       },
@@ -28,16 +29,17 @@ export const useKeyboardListener = () => {
       const targetNode = node ?? document
       targetNode && targetNode.addEventListener('keydown', handleKeyPress)
 
-      return () =>
+      return () => {
         targetNode && targetNode.removeEventListener('keydown', handleKeyPress)
+      }
     }, [handleKeyPress, node])
+
+    return () => callback()
   }
 
-  const useShiftShortcut = (
-    key: string,
-    callback: (event: KeyboardEvent) => void,
-    node = null
-  ) => useShortcut('shift', key, callback, node)
+  const useShiftShortcut = (callback: Callback, key: string, node = null) => {
+    return useShortcut('shift', key, callback, node)
+  }
 
   return { useShiftShortcut }
 }

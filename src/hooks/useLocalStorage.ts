@@ -1,8 +1,9 @@
 type LocaStorageItem =
   | 'transactions'
   | 'categories'
-  | 'table-filters'
   | 'default-table-view'
+  | 'transactions-table-filters'
+  | 'categories-table-filters'
 
 export const useLocalStorage = () => {
   const get = (item: LocaStorageItem, defaultValue?: any) => {

@@ -28,4 +28,6 @@ export type TransactionsContextData = {
   addTransaction: (transaction: AddTransactionModel) => void
   updateTransaction: (transaction: TransactionModel) => void
   removeTransaction: (transaction: TransactionModel) => void
+  generateCategoriesByDate: (month: number, year: number) => CategoryModel[]
+  generateCategoriesHistory: (chartType: TransactionType) => CategoryModel[]
 }

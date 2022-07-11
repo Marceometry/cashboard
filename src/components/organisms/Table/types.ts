@@ -19,6 +19,14 @@ export type TableButtons = {
   iconButtons?: IconButtonProps[]
 }
 
+export type ChartType = 'pie' | 'bar'
+
+export type ChartProps = {
+  type: ChartType
+  data: any[]
+  bars?: any[]
+}
+
 export type TableProps = ChakraTableProps & {
   data: any[]
   columns: ColumnProps<any>[]
@@ -31,6 +39,5 @@ export type TableProps = ChakraTableProps & {
     oldestFirst?: boolean,
     dateField?: string
   ) => any[]
-  chartData?: any
-  chartBars?: any
+  charts?: ChartProps[]
 }

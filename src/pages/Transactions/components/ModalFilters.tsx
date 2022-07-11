@@ -22,7 +22,8 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
     [contextCategoryList]
   )
   const formMethods = useForm({
-    defaultValues: storage.get('table-filters') || defaultFilterValues,
+    defaultValues:
+      storage.get('transactions-table-filters') || defaultFilterValues,
   })
   const selectedCategories = formMethods.watch('selectedCategories')
   const [isIndeterminate, setIsIndeterminate] = useState(true)

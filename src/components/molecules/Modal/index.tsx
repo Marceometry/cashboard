@@ -12,6 +12,7 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react'
 import { Form } from '@/components'
+import { useKeyboardListener } from '@/hooks'
 
 type ButtonProps = {
   children: string
@@ -36,6 +37,10 @@ export const Modal = ({
   formMethods,
   maxWidth = 600,
 }: ModalProps) => {
+  const { useShiftShortcut } = useKeyboardListener()
+
+  useShiftShortcut(() => extraButton?.onClick(), 'Enter')
+
   return (
     <ChakraModal
       isOpen={isOpen}

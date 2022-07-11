@@ -22,7 +22,7 @@ export const Transactions = () => {
 
   const [tableData, setTableData] = useState<TransactionModel[]>([])
   const [tableFilters, setTableFilters] = useState(
-    () => storage.get('table-filters') || defaultFilterValues
+    () => storage.get('transactions-table-filters') || defaultFilterValues
   )
 
   const [selectedTransactionId, setSelectedTransactionId] = useState<number>()
@@ -36,7 +36,7 @@ export const Transactions = () => {
 
   const handleSetFilters = (filters: FilterModel) => {
     setTableFilters(filters)
-    storage.set('table-filters', filters)
+    storage.set('transactions-table-filters', filters)
   }
 
   const handleOpenTransactionModal = (selectedId?: number) => {
@@ -46,7 +46,7 @@ export const Transactions = () => {
 
   const handleOpenDeleteDialog = (row: TransactionModel) => {
     openDialog({
-      title: `${row.description} | R$ ${masks.monetaryValue(row.amount)}`,
+      title: `${row.description} | ${masks.valueToMoney(row.amount)}`,
       body: 'Deseja realmente excluir esta transação? Essa ação não pode ser desfeita.',
       onConfirm: () => removeTransaction(row),
     })
@@ -71,8 +71,13 @@ export const Transactions = () => {
           buttons={buttons}
           caption={caption}
           sortFunction={sortByDate}
-          chartBars={chartBars}
-          chartData={generateChartData(tableData)}
+          charts={[
+            {
+              type: 'bar',
+              bars: chartBars,
+              data: generateChartData(tableData),
+            },
+          ]}
         />
       </Card>
 

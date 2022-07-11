@@ -4,7 +4,7 @@ import {
   Tooltip,
 } from '@chakra-ui/react'
 import { AddIcon, DeleteIcon, EditIcon, HamburgerIcon } from '@chakra-ui/icons'
-import { ChartBar, Funnel, Table } from 'phosphor-react'
+import { ChartBar, ChartPie, Funnel, Table } from 'phosphor-react'
 
 const icons = {
   add: AddIcon,
@@ -13,7 +13,8 @@ const icons = {
   list: HamburgerIcon,
   filter: Funnel,
   table: Table,
-  chartBar: ChartBar,
+  barChart: ChartBar,
+  pieChart: ChartPie,
 }
 
 export type IconOption = keyof typeof icons

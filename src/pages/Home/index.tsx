@@ -49,18 +49,26 @@ export const Home = () => {
         <Grid templateColumns='1fr 1fr' h='100%'>
           <GridItem>
             <AreaChart
-              data={incomeData}
-              areaLabel='Entrada'
-              areaColor='#48bb78'
               isMonth={!selectedMonth}
+              data={incomeData}
+              areas={[
+                {
+                  label: 'Entrada',
+                  color: '#48bb78',
+                },
+              ]}
             />
           </GridItem>
           <GridItem>
             <AreaChart
-              data={outcomeData}
-              areaLabel='Saída'
-              areaColor='#f56565'
               isMonth={!selectedMonth}
+              data={outcomeData}
+              areas={[
+                {
+                  label: 'Saída',
+                  color: '#f56565',
+                },
+              ]}
             />
           </GridItem>
         </Grid>

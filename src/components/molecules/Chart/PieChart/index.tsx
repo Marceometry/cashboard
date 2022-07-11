@@ -4,7 +4,7 @@ import {
   Pie,
   Cell,
 } from 'recharts'
-import { COLORS } from './constants'
+import { CHART_COLORS } from '@/constants'
 import { CustomizedLabel } from './CustomizedLabel'
 
 type Props = {
@@ -19,14 +19,16 @@ export const PieChart = ({ data }: Props) => {
           data={data}
           cx='50%'
           cy='50%'
-          labelLine={false}
           label={CustomizedLabel}
-          outerRadius={150}
+          outerRadius={200}
           fill='#8884d8'
           dataKey='value'
         >
           {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            <Cell
+              key={`cell-${index}`}
+              fill={CHART_COLORS[index % CHART_COLORS.length]}
+            />
           ))}
         </Pie>
       </RechartsPieChart>

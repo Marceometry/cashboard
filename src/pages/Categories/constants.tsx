@@ -1,7 +1,11 @@
 import { ColumnProps } from '@/components'
 import { CategoryModel, TransactionType } from '@/contexts'
 import { masks } from '@/utils'
-import { Content, Label } from './components'
+
+export type FilterModel = {
+  month: number
+  year: number
+}
 
 type DataModel = {
   outcome: number
@@ -65,26 +69,4 @@ export const generateData = (
     .splice(0, 5)
 
   return { data, chartData }
-}
-
-export const getTabs = (
-  data: DataModel[],
-  currentView: 'table' | 'chart',
-  handleChartView: () => void
-) => {
-  const getContent = (type: TransactionType) => {
-    return currentView === 'table' ? (
-      <Content data={data} type={type} handleChartView={handleChartView} />
-    ) : (
-      <></>
-    )
-  }
-
-  const getItem = (type: TransactionType) => ({
-    key: type,
-    label: <Label isSpent={type === 'outcome'} />,
-    content: getContent(type),
-  })
-
-  return [getItem('outcome'), getItem('income')]
 }
