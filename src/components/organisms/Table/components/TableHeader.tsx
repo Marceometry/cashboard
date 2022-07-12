@@ -5,9 +5,10 @@ import {
   Button,
   InputGroup,
   InputLeftElement,
+  InputRightElement,
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
-import { IconButton } from '@/components'
+import { IconButton, SearchInput } from '@/components'
 import { ChartProps, ChartType, TableButtons } from '../types'
 
 type HeaderProps = {
@@ -41,17 +42,7 @@ export const TableHeader = ({
 
       <Flex gap='4'>
         {(!noSearch || currentView === 'table') && (
-          <InputGroup w='auto'>
-            <InputLeftElement
-              pointerEvents='none'
-              children={<SearchIcon color='gray.300' />}
-            />
-            <Input
-              placeholder='Pesquisar...'
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-            />
-          </InputGroup>
+          <SearchInput searchText={searchText} setSearchText={setSearchText} />
         )}
 
         {charts?.map((chart) => (

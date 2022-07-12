@@ -19,7 +19,7 @@ export const Categories = () => {
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
   const [isFilterDisabled, setIsFilterDisabled] = useState(false)
 
-  const barChartData = generateCategoriesHistory(currentType)
+  const areaChartData = generateCategoriesHistory(currentType)
   const categoriesByDate = generateCategoriesByDate(filters.month, filters.year)
   const { data, chartData } = generateData(categoriesByDate, currentType)
 
@@ -29,10 +29,10 @@ export const Categories = () => {
     isFilterDisabled
   )
   const columns = getColumns(currentType)
-  const charts = getCharts(chartData, barChartData)
+  const charts = getCharts(chartData, areaChartData)
 
   const handleViewChange = (view: string) => {
-    setIsFilterDisabled(view === 'bar')
+    setIsFilterDisabled(view === 'area')
   }
 
   return (

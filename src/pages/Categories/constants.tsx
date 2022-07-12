@@ -101,17 +101,17 @@ export const generateData = (
 
 export const getCharts = (
   chartData: ChartType[],
-  barChartData: CategoryModel[]
+  areaChartData: CategoryModel[]
 ): ChartProps[] => [
   {
     type: 'pie',
     data: chartData,
   },
   {
-    type: 'bar',
+    type: 'area',
     isMonth: true,
-    data: barChartData,
-    bars: chartData.map((item, index) => ({
+    data: areaChartData,
+    sections: chartData.map((item, index) => ({
       label: item.name,
       dataKey: item.name,
       color: CHART_COLORS[index % CHART_COLORS.length],

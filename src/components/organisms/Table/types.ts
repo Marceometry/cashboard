@@ -19,12 +19,12 @@ export type TableButtons = {
   iconButtons?: IconButtonProps[]
 }
 
-export type ChartType = 'pie' | 'bar'
+export type ChartType = 'pie' | 'bar' | 'area'
 
 export type ChartProps = {
   type: ChartType
   data: any[]
-  bars?: any[]
+  sections?: any[]
   isMonth?: boolean
 }
 

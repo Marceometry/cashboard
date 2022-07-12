@@ -64,12 +64,7 @@ export const Input = ({
           />
           {rightIcon && (
             <InputRightElement>
-              <IconButton
-                borderTopLeftRadius={0}
-                borderBottomLeftRadius={0}
-                {...rightIcon}
-                mb={error ? 6 : 0}
-              />
+              <IconButton {...rightIcon} borderRadius={0} mb={error ? 6 : 0} />
             </InputRightElement>
           )}
         </InputGroup>

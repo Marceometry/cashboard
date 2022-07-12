@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Grid, GridItem } from '@chakra-ui/react'
-import { AreaChart, Card, MainTemplate, Tabs } from '@/components'
+import { Card, ComposedChart, MainTemplate, Tabs } from '@/components'
 import { TransactionModel, useTransactions } from '@/contexts'
 import { generateChartData, getTabs } from './constants'
 
@@ -48,10 +48,11 @@ export const Home = () => {
 
         <Grid templateColumns='1fr 1fr' h='100%'>
           <GridItem>
-            <AreaChart
+            <ComposedChart
+              type='area'
               isMonth={!selectedMonth}
               data={incomeData}
-              areas={[
+              sections={[
                 {
                   label: 'Entrada',
                   color: '#48bb78',
@@ -60,10 +61,11 @@ export const Home = () => {
             />
           </GridItem>
           <GridItem>
-            <AreaChart
+            <ComposedChart
+              type='area'
               isMonth={!selectedMonth}
               data={outcomeData}
-              areas={[
+              sections={[
                 {
                   label: 'Saída',
                   color: '#f56565',

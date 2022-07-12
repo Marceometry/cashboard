@@ -4,15 +4,17 @@ import {
   Tooltip,
 } from '@chakra-ui/react'
 import { AddIcon, DeleteIcon, EditIcon, HamburgerIcon } from '@chakra-ui/icons'
-import { ChartBar, ChartPie, Funnel, Table } from 'phosphor-react'
+import { ChartBar, ChartLine, ChartPie, Funnel, Table, X } from 'phosphor-react'
 
 const icons = {
   add: AddIcon,
   edit: EditIcon,
   delete: DeleteIcon,
+  close: X,
   list: HamburgerIcon,
   filter: Funnel,
   table: Table,
+  areaChart: ChartLine,
   barChart: ChartBar,
   pieChart: ChartPie,
 }

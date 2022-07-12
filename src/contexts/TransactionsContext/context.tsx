@@ -129,24 +129,34 @@ export function TransactionsContextProvider({
   }
 
   const generateCategoriesHistory = (chartType: TransactionType) => {
-    return transactionList.reduce((acc: any[], item: TransactionModel) => {
-      const { amount, category } = item
-      const date = new Date(item.date)
+    const categoriesHistory = transactionList.reduce(
+      (acc: any[], item: TransactionModel) => {
+        const { amount, category } = item
+        const date = new Date(item.date)
 
-      const name = getFormattedMonthAndYear(date)
-      const itemIndex = acc.findIndex((accItem) => accItem.name === name)
+        const name = getFormattedMonthAndYear(date)
+        const itemIndex = acc.findIndex((accItem) => accItem.name === name)
 
-      if (acc[itemIndex]) {
-        const value = acc[itemIndex][category]
-          ? acc[itemIndex][category] + amount
-          : amount
+        if (acc[itemIndex]) {
+          const value = acc[itemIndex][category]
+            ? acc[itemIndex][category] + amount
+            : amount
 
-        acc[itemIndex] = { ...acc[itemIndex], name, [category]: value }
-        return [...acc]
-      }
+          acc[itemIndex] = { ...acc[itemIndex], name, [category]: value }
+          return [...acc]
+        }
 
-      return [...acc, { name, [category]: amount ?? 0 }]
-    }, [])
+        return [...acc, { name, [category]: amount ?? 0 }]
+      },
+      []
+    )
+    const categoryNamesObject = categoryList.reduce((acc, value) => {
+      return { ...acc, [value.name]: 0 }
+    }, {})
+    return categoriesHistory.map((item) => ({
+      ...categoryNamesObject,
+      ...item,
+    }))
   }
 
   useEffect(() => {

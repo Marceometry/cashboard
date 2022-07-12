@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Box, Flex } from '@chakra-ui/react'
 import { useDebouncedValue } from '@/hooks'
-import { BarChart, PieChart } from '@/components'
+import { ComposedChart, EmptyData, PieChart } from '@/components'
 import { TableBody, TableHeader } from './components'
-import { filterByText } from './utils'
 import { ChartType, TableProps } from './types'
+import { filterByText } from './utils'
 
 export const Table = ({
   caption,
@@ -54,15 +54,20 @@ export const Table = ({
       />
 
       {currentView === 'table' ? (
-        <TableBody data={filteredData} columns={columns} {...props} />
+        filteredData.length ? (
+          <TableBody data={filteredData} columns={columns} {...props} />
+        ) : (
+          <EmptyData />
+        )
       ) : (
         <Box h='100%'>
           {currentChart?.type === 'pie' ? (
             <PieChart data={currentChart?.data || []} />
           ) : (
-            <BarChart
+            <ComposedChart
+              type={currentChart?.type!}
               data={currentChart?.data || []}
-              bars={currentChart?.bars || []}
+              sections={currentChart?.sections || []}
               isMonth={currentChart?.isMonth}
             />
           )}
