@@ -13,4 +13,4 @@ export const MONTH_LIST = [
   'Dezembro',
 ]
 
-export const YEAR_LIST = ['2022', '2021']
+export const YEAR_LIST = ['2022', '2021', '2020']

@@ -91,12 +91,6 @@ export function TransactionsContextProvider({
         }
         return [...acc, newCategory]
       }
-      if (
-        Math.abs(Number(currentCategory?.balance)) === amount &&
-        currentCategory?.[type] === amount
-      ) {
-        return acc.filter((c) => c.name !== category)
-      }
       const newCategoryList = acc.map((c) => {
         if (c.name !== category) return c
         return {

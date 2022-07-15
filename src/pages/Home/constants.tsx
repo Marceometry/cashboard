@@ -4,6 +4,7 @@ import {
   getFormattedMonthAndYear,
   sortByDate,
 } from '@/utils'
+import { isThisYear } from 'date-fns'
 import { TabsContent } from './components'
 
 export const getTabs = (
@@ -51,7 +52,9 @@ export const getChartData = (
     (acc: ChartDataResponse, item: TransactionModel) => {
       const { amount, type } = item
       const date = new Date(item.date)
-      if (month && date.getMonth() !== month) return [...acc]
+      if (month && (date.getMonth() !== month || !isThisYear(new Date(date)))) {
+        return [...acc]
+      }
 
       const name = month
         ? getFormattedDayAndMonth(date)
