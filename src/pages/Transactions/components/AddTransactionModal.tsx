@@ -76,6 +76,7 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
       formMethods.reset()
       formMethods.setValue('date', data.date)
       formMethods.setValue('type', data.type)
+      formMethods.setValue('category', data.category)
     } else {
       onClose()
     }

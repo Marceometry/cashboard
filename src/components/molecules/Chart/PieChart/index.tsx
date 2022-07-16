@@ -22,7 +22,7 @@ export const PieChart = ({ data }: Props) => {
             cx='50%'
             cy='50%'
             label={CustomizedLabel}
-            outerRadius={200}
+            outerRadius={170}
             fill='#8884d8'
             dataKey='value'
           >

@@ -12,8 +12,8 @@ export type FilterModel = {
 }
 
 export const defaultFilterValues: FilterModel = {
-  selectedMonth: new Date().getMonth() + 1,
-  selectedYear: new Date().getFullYear(),
+  selectedMonth: 0,
+  selectedYear: 0,
   selectedCategories: [],
   maxAmount: '',
   minAmount: '',
@@ -78,12 +78,17 @@ export const getCaption = (filters: FilterModel, data: TransactionModel[]) => {
   if (!filters) return <Balance />
 
   const { selectedMonth, selectedYear } = filters
-  if (!selectedMonth || !selectedYear) return ''
+  if (!selectedYear) return <Balance />
 
-  const month = selectedMonth > 9 ? selectedMonth : `0${selectedMonth}`
+  const month = selectedMonth
+    ? selectedMonth > 9
+      ? selectedMonth
+      : `0${selectedMonth}`
+    : null
+
   return (
     <Flex gap='4'>
-      {month}/{selectedYear}
+      {month ? `${month}/${selectedYear}` : selectedYear}
       <Balance />
     </Flex>
   )
@@ -159,7 +164,7 @@ export const generateChartData = (list: TransactionModel[]) => {
       const { amount, type } = item
       const isIncome = type === 'income'
       const date = new Date(item.date)
-      const name = date.getDate().toString()
+      const name = `${date.getDate()}/${date.getMonth() + 1}`
       const itemIndex = acc.findIndex((accItem) => accItem.name === name)
 
       if (acc[itemIndex]) {

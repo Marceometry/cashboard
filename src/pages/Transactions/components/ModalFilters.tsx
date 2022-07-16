@@ -36,6 +36,17 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
     setAllChecked(checkedAll)
   }, [formMethods, categoryList, selectedCategories])
 
+  const handleClearFilters = () => {
+    formMethods.setValue('selectedMonth', null)
+    formMethods.setValue('selectedYear', null)
+    formMethods.setValue('maxAmount', '')
+    formMethods.setValue('minAmount', '')
+    formMethods.setValue(
+      'selectedCategories',
+      categoryList.map((item) => item.name)
+    )
+  }
+
   const handleSubmit = (data: FilterModel) => {
     handleFilter({
       ...data,
@@ -58,14 +69,23 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
       onConfirm={handleSubmit}
       formMethods={formMethods}
       title='Selecionar Filtros'
+      extraButton={{
+        children: 'Limpar Filtros',
+        onClick: handleClearFilters,
+      }}
     >
       <Grid gap='4'>
         <GridItem>
           <Flex gap='4' alignItems='flex-end'>
-            <Select name='selectedMonth' options={MONTH_LIST} />
+            <Select
+              name='selectedMonth'
+              placeholder='Selecione o mês'
+              options={MONTH_LIST}
+            />
             <Text>de</Text>
             <Select
               name='selectedYear'
+              placeholder='Selecione o ano'
               options={YEAR_LIST.map((item) => ({ label: item, value: item }))}
             />
           </Flex>
