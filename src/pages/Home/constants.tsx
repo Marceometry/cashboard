@@ -4,18 +4,22 @@ import {
   getFormattedMonthAndYear,
   sortByDate,
 } from '@/utils'
-import { isThisYear } from 'date-fns'
+import { isThisMonth, isThisYear } from 'date-fns'
 import { TabsContent } from './components'
+
+export type View = 'total' | 'month' | 'year'
+
+export type DateFilter = 'month' | 'year'
 
 export const getTabs = (
   incomeItems: TransactionModel[],
   outcomeItems: TransactionModel[]
 ) => {
-  const getContent = (month?: number) => (
+  const getContent = (filter?: DateFilter) => (
     <TabsContent
       incomeItems={incomeItems}
       outcomeItems={outcomeItems}
-      month={month}
+      filter={filter}
     />
   )
 
@@ -28,12 +32,12 @@ export const getTabs = (
     {
       key: 2,
       label: 'Este mês',
-      content: getContent(new Date().getMonth()),
+      content: getContent('month'),
     },
     {
       key: 3,
-      label: 'Mês passado',
-      content: getContent(new Date().getMonth() - 1),
+      label: 'Este ano',
+      content: getContent('year'),
     },
   ]
 }
@@ -46,19 +50,23 @@ type ChartDataResponse = Array<{
 export const getChartData = (
   list: TransactionModel[],
   chartType: TransactionType,
-  month: number | null
+  view: View
 ) => {
   return sortByDate(list, true).reduce(
     (acc: ChartDataResponse, item: TransactionModel) => {
       const { amount, type } = item
       const date = new Date(item.date)
-      if (month && (date.getMonth() !== month || !isThisYear(new Date(date)))) {
+      if (
+        (view !== 'total' && !isThisYear(date)) ||
+        (view === 'month' && !isThisMonth(date))
+      ) {
         return [...acc]
       }
 
-      const name = month
-        ? getFormattedDayAndMonth(date)
-        : getFormattedMonthAndYear(date)
+      const name =
+        view === 'month'
+          ? getFormattedDayAndMonth(date)
+          : getFormattedMonthAndYear(date)
       const itemIndex = acc.findIndex((accItem) => accItem.name === name)
 
       if (acc[itemIndex]) {
@@ -77,11 +85,8 @@ export const getChartData = (
   )
 }
 
-export const generateChartData = (
-  list: TransactionModel[],
-  month: number | null
-) => {
-  const incomeData = getChartData(list, 'income', month)
-  const outcomeData = getChartData(list, 'outcome', month)
+export const generateChartData = (list: TransactionModel[], view: View) => {
+  const incomeData = getChartData(list, 'income', view)
+  const outcomeData = getChartData(list, 'outcome', view)
   return { incomeData, outcomeData }
 }

@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { Grid, GridItem } from '@chakra-ui/react'
 import { Card, ComposedChart, MainTemplate, Tabs } from '@/components'
 import { TransactionModel, useTransactions } from '@/contexts'
-import { generateChartData, getTabs } from './constants'
+import { generateChartData, getTabs, View } from './constants'
 
 export const Home = () => {
   const { transactionList } = useTransactions()
-  const [selectedMonth, setSelectedMonth] = useState<number | null>(null)
+  const [currentView, setCurrentView] = useState<View>('total')
 
   const [incomeItems, outcomeItems] = transactionList.reduce(
     (acc, item) => {
@@ -19,26 +19,23 @@ export const Home = () => {
   )
 
   const handleTabsChange = (index: number) => {
-    const currentMonth = new Date().getMonth()
-    let month = null
+    let view: View = 'total'
     switch (index) {
       case 1:
-        month = currentMonth
+        view = 'month'
         break
       case 2:
-        month = currentMonth - 1
-        break
-      default:
+        view = 'year'
         break
     }
-    setSelectedMonth(month)
+    setCurrentView(view)
   }
 
   const tabs = getTabs(incomeItems, outcomeItems)
 
   const { incomeData, outcomeData } = generateChartData(
     transactionList,
-    selectedMonth
+    currentView
   )
 
   return (
@@ -50,7 +47,7 @@ export const Home = () => {
           <GridItem>
             <ComposedChart
               type='area'
-              isMonth={!selectedMonth}
+              isMonth={currentView === 'month'}
               data={incomeData}
               sections={[
                 {
@@ -63,7 +60,7 @@ export const Home = () => {
           <GridItem>
             <ComposedChart
               type='area'
-              isMonth={!selectedMonth}
+              isMonth={currentView === 'month'}
               data={outcomeData}
               sections={[
                 {
