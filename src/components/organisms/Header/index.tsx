@@ -1,6 +1,6 @@
 import { Flex, Heading } from '@chakra-ui/react'
 import { useLocation } from 'react-router-dom'
-import { ToggleColorMode } from '@/components'
+import { UserMenu } from '@/components'
 import { routes } from '@/router'
 
 export const Header = () => {
@@ -13,8 +13,7 @@ export const Header = () => {
   return (
     <Flex as='header' align='center' justify='space-between' gap='8'>
       <Heading>{currentPage}</Heading>
-
-      <ToggleColorMode />
+      <UserMenu />
     </Flex>
   )
 }
