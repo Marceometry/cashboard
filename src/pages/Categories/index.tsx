@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Card, MainTemplate, Table } from '@/components'
-import { TransactionType, useTransactions } from '@/contexts'
+import { TransactionType, useCategories } from '@/contexts'
 import { ModalFilters } from './components'
 import {
   FilterModel,
@@ -13,13 +13,13 @@ import {
 
 export const Categories = () => {
   const { generateCategoriesByDate, generateCategoriesHistory } =
-    useTransactions()
+    useCategories()
   const [currentType, setCurrentType] = useState<TransactionType>('outcome')
   const [filters, setFilters] = useState<FilterModel>({ month: 0, year: 0 })
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
   const [isFilterDisabled, setIsFilterDisabled] = useState(false)
 
-  const areaChartData = generateCategoriesHistory(currentType)
+  const areaChartData = generateCategoriesHistory()
   const categoriesByDate = generateCategoriesByDate(filters.month, filters.year)
   const { data, chartData } = generateData(categoriesByDate, currentType)
 

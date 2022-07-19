@@ -1,10 +1,3 @@
-export type CategoryModel = {
-  name: string
-  income: number
-  outcome: number
-  balance: number
-}
-
 export type TransactionType = 'income' | 'outcome'
 
 export type TransactionModel = {
@@ -23,11 +16,7 @@ export type TransactionsContextData = {
   setIsLoading: (isLoading: boolean) => void
   transactionList: TransactionModel[]
   setTransactionList: (list: TransactionModel[]) => void
-  categoryList: CategoryModel[]
-  setCategoryList: (list: CategoryModel[]) => void
   addTransaction: (transaction: AddTransactionModel) => void
   updateTransaction: (transaction: TransactionModel) => void
   removeTransaction: (transaction: TransactionModel) => void
-  generateCategoriesByDate: (month: number, year: number) => CategoryModel[]
-  generateCategoriesHistory: (chartType: TransactionType) => CategoryModel[]
 }

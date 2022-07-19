@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { Accordion, CheckboxGroup, Input, Modal, Select } from '@/components'
 import { masks, sortAlphabetically } from '@/utils'
 import { MONTH_LIST, YEAR_LIST } from '@/constants'
-import { useTransactions } from '@/contexts'
+import { useCategories } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
 import { defaultFilterValues, FilterModel } from '../constants'
 
@@ -16,7 +16,7 @@ type Props = {
 
 export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
   const storage = useLocalStorage()
-  const { categoryList: contextCategoryList } = useTransactions()
+  const { categoryList: contextCategoryList } = useCategories()
   const categoryList = useMemo(
     () => sortAlphabetically(contextCategoryList, 'name'),
     [contextCategoryList]

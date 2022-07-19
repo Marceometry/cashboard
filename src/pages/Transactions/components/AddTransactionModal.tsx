@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Grid, GridItem, Center } from '@chakra-ui/react'
 import { Modal, Input, Radio } from '@/components'
-import { AddTransactionModel, useTransactions } from '@/contexts'
+import { AddTransactionModel, useCategories, useTransactions } from '@/contexts'
 import { formatDateValue, masks } from '@/utils'
 
 type Props = {
@@ -20,7 +20,8 @@ const defaultValues = {
 }
 
 export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
-  const { transactionList, addTransaction, updateTransaction, categoryList } =
+  const { categoryList } = useCategories()
+  const { transactionList, addTransaction, updateTransaction } =
     useTransactions()
 
   const formMethods = useForm({ defaultValues })
