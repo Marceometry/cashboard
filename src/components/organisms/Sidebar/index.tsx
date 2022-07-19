@@ -19,11 +19,10 @@ export const Sidebar = () => {
       align='center'
       direction='column'
       maxW='container.lg'
-      minW='300px'
       shadow='lg'
       bg={bg}
     >
-      <Heading py='8'>
+      <Heading p='8'>
         <Link to='/'>Cashboard</Link>
       </Heading>
 
@@ -32,12 +31,16 @@ export const Sidebar = () => {
           <ListItem key={route.path}>
             <Link to={route.path}>
               <Text
-                px='8'
+                px='6'
                 py='2'
+                gap='3'
+                display='flex'
+                alignItems='center'
                 fontSize='1.25rem'
                 transition='background 0.1s'
                 _hover={{ background: linkHover }}
               >
+                {route.icon}
                 {route.label}
               </Text>
             </Link>
