@@ -1,4 +1,5 @@
 type LocaStorageItem =
+  | 'account'
   | 'transactions'
   | 'categories'
   | 'transactions-table-filters'
@@ -14,5 +15,9 @@ export const useLocalStorage = () => {
     localStorage.setItem(`@cashboard/${item}`, JSON.stringify(data))
   }
 
-  return { get, set }
+  const remove = (item: LocaStorageItem) => {
+    localStorage.removeItem(`@cashboard/${item}`)
+  }
+
+  return { get, set, remove }
 }

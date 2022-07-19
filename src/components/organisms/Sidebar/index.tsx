@@ -7,7 +7,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
-import { routes } from '@/router'
+import { dashboardRoutes } from '@/router'
 
 export const Sidebar = () => {
   const bg = useColorModeValue('gray.300', 'gray.600')
@@ -27,7 +27,7 @@ export const Sidebar = () => {
       </Heading>
 
       <List width='full' borderTop='1px solid white' pt='2'>
-        {routes.map((route) => (
+        {dashboardRoutes.map((route) => (
           <ListItem key={route.path}>
             <Link to={route.path}>
               <Text
