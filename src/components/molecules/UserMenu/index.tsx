@@ -11,11 +11,13 @@ import {
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { SignOut } from 'phosphor-react'
 import { ThemeIcon } from '@/components'
-import { useAuth } from '@/hooks'
+import { useAuth } from '@/contexts'
 
 export const UserMenu = () => {
   const { user, signOut } = useAuth()
   const { toggleColorMode } = useColorMode()
+
+  if (!user) return null
 
   return (
     <Menu>
@@ -23,11 +25,12 @@ export const UserMenu = () => {
         as={Button}
         px='2'
         borderRadius='999'
-        leftIcon={<Avatar size='sm' name={user.name} src={user.avatarUrl} />}
+        leftIcon={<Avatar size='sm' name={user.name} src={user.photoUrl} />}
         rightIcon={<ChevronDownIcon />}
       >
         {user.name}
       </MenuButton>
+
       <MenuList minWidth='200px'>
         <MenuItem icon={<ThemeIcon />} onClick={toggleColorMode}>
           Alterar Tema

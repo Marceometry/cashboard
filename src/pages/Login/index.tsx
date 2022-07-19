@@ -1,18 +1,21 @@
 import { Center, Grid, GridItem, Heading, Button } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
 import { GoogleLogo } from 'phosphor-react'
 import { LoginTemplate } from '@/components'
-import { useAuth } from '@/hooks'
+import { useAuth } from '@/contexts'
+import { useEffect } from 'react'
 
 export const Login = () => {
-  const { signIn } = useAuth()
+  const navigate = useNavigate()
+  const { signIn, user } = useAuth()
 
   const handleSignIn = () => {
-    const user = {
-      name: 'Marcelino Teixeira',
-      avatarUrl: 'https://github.com/marceometry.png',
-    }
-    signIn(user)
+    signIn()
   }
+
+  useEffect(() => {
+    if (!!user) navigate('/')
+  }, [user])
 
   return (
     <LoginTemplate>
@@ -20,13 +23,9 @@ export const Login = () => {
         <Heading fontSize='3xl'>Entre na sua conta</Heading>
       </Center>
 
-      <Grid mt='8'>
-        <GridItem>
-          <Button leftIcon={<GoogleLogo />} onClick={handleSignIn} w='100%'>
-            Entrar com Google
-          </Button>
-        </GridItem>
-      </Grid>
+      <Button leftIcon={<GoogleLogo />} onClick={handleSignIn} mt='8'>
+        Entrar com Google
+      </Button>
     </LoginTemplate>
   )
 }

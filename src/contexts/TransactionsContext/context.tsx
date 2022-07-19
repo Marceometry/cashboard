@@ -11,7 +11,6 @@ import {
   CategoryModel,
   TransactionModel,
   AddTransactionModel,
-  TransactionType,
 } from '.'
 import { filterByMonth, filterByYear, getFormattedMonthAndYear } from '@/utils'
 
@@ -122,7 +121,7 @@ export function TransactionsContextProvider({
     return generateCategories(transactions)
   }
 
-  const generateCategoriesHistory = (chartType: TransactionType) => {
+  const generateCategoriesHistory = () => {
     const categoriesHistory = transactionList.reduce(
       (acc: any[], item: TransactionModel) => {
         const { amount, category } = item

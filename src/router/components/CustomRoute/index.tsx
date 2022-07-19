@@ -1,5 +1,6 @@
-import { useAuth } from '@/hooks'
 import { Navigate } from 'react-router-dom'
+import { LoadingTemplate } from '@/components'
+import { useAuth } from '@/contexts'
 
 type Props = {
   children: React.ReactNode
@@ -7,7 +8,9 @@ type Props = {
 }
 
 export const CustomRoute = ({ children, isPublic }: Props) => {
-  const { user } = useAuth()
+  const { user, isLoading } = useAuth()
+
+  if (isLoading) return <LoadingTemplate />
 
   if (isPublic || !!user) return <>{children}</>
 
