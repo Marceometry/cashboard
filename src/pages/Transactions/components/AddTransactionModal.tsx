@@ -8,7 +8,7 @@ import { formatDateValue, masks } from '@/utils'
 type Props = {
   isOpen: boolean
   onClose: () => void
-  selectedId?: number
+  selectedId?: string
 }
 
 const defaultValues = {
@@ -21,7 +21,7 @@ const defaultValues = {
 
 export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
   const { categoryList } = useCategories()
-  const { transactionList, addTransaction, updateTransaction } =
+  const { transactionList, addTransaction, updateTransaction, isLoading } =
     useTransactions()
 
   const formMethods = useForm({ defaultValues })
@@ -32,7 +32,7 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
 
   const handleAddNew = () => setKeepModalOpen(true)
 
-  const loadTransactionById = (id: number) => {
+  const loadTransactionById = (id: string) => {
     const selectedTransaction = transactionList.find((item) => item.id === id)
     if (!selectedTransaction) return
     const newFormValues = {
@@ -101,6 +101,7 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
             ? {
                 children: 'Adicionar novo',
                 onClick: handleAddNew,
+                isLoading: isLoading && keepModalOpen,
               }
             : undefined
         }

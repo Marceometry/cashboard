@@ -1,7 +1,7 @@
 export type TransactionType = 'income' | 'outcome'
 
 export type TransactionModel = {
-  id: number
+  id: string
   amount: number
   description: string
   category: string
@@ -13,7 +13,6 @@ export type AddTransactionModel = Omit<TransactionModel, 'id'>
 
 export type TransactionsContextData = {
   isLoading: boolean
-  setIsLoading: (isLoading: boolean) => void
   transactionList: TransactionModel[]
   setTransactionList: (list: TransactionModel[]) => void
   addTransaction: (transaction: AddTransactionModel) => void

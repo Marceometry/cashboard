@@ -5,9 +5,13 @@ import {
   ReactNode,
   useEffect,
 } from 'react'
-import { useLocalStorage } from '@/hooks'
 import { TransactionModel, useTransactions } from '@/contexts'
-import { filterByMonth, filterByYear, getFormattedMonthAndYear } from '@/utils'
+import {
+  filterByMonth,
+  filterByYear,
+  getFormattedMonthAndYear,
+  sortByDate,
+} from '@/utils'
 import { CategoriesContextData, CategoryModel } from '.'
 
 export type CategoriesContextProviderProps = {
@@ -19,11 +23,8 @@ export const CategoriesContext = createContext({} as CategoriesContextData)
 export function CategoriesContextProvider({
   children,
 }: CategoriesContextProviderProps) {
-  const storage = useLocalStorage()
   const { transactionList } = useTransactions()
-  const [categoryList, setCategoryList] = useState<CategoryModel[]>(() =>
-    storage.get('categories', [])
-  )
+  const [categoryList, setCategoryList] = useState<CategoryModel[]>([])
 
   const generateCategories = (
     transactions: TransactionModel[]
@@ -56,7 +57,7 @@ export function CategoriesContextProvider({
   }
 
   const generateCategoriesByDate = (month: number, year: number) => {
-    const transactions = transactionList.filter((item) => {
+    const transactions = sortByDate(transactionList, true).filter((item) => {
       let included = true
       if (month) {
         included = filterByMonth(item.date, month)
@@ -73,7 +74,8 @@ export function CategoriesContextProvider({
   }
 
   const generateCategoriesHistory = () => {
-    const categoriesHistory = transactionList.reduce(
+    const orderedList: TransactionModel[] = sortByDate(transactionList, true)
+    const categoriesHistory = orderedList.reduce(
       (acc: any[], item: TransactionModel) => {
         const { amount, category } = item
         const date = new Date(item.date)
@@ -106,7 +108,6 @@ export function CategoriesContextProvider({
   useEffect(() => {
     const categories = generateCategories(transactionList)
     setCategoryList(categories)
-    storage.set('categories', categories)
   }, [transactionList])
 
   return (

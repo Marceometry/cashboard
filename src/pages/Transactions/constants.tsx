@@ -96,7 +96,7 @@ export const getCaption = (filters: FilterModel, data: TransactionModel[]) => {
 
 type ColumnsProps = {
   handleDeleteTransaction: (row: TransactionModel) => void
-  handleEditTransaction: (id: number) => void
+  handleEditTransaction: (id: string) => void
 }
 
 export const getColumns = ({

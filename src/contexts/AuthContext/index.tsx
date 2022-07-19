@@ -5,7 +5,7 @@ import {
   ReactNode,
   useEffect,
 } from 'react'
-import { useFirebase } from '@/hooks'
+import { useFirebaseAuth } from '@/hooks'
 
 type User = {
   name: string
@@ -27,7 +27,7 @@ export type AuthContextProviderProps = {
 export const AuthContext = createContext({} as AuthContextData)
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
-  const { signInWithGoogle, firebaseSignOut, onAuthChange } = useFirebase()
+  const { signInWithGoogle, firebaseSignOut, onAuthChange } = useFirebaseAuth()
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 

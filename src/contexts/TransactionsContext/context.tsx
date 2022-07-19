@@ -5,7 +5,9 @@ import {
   ReactNode,
   useEffect,
 } from 'react'
-import { useLocalStorage } from '@/hooks'
+import { v4 as uuid } from 'uuid'
+import { useFirebaseDatabase } from '@/hooks'
+import { formatTransaction } from './utils'
 import {
   TransactionsContextData,
   TransactionModel,
@@ -21,63 +23,81 @@ export const TransactionsContext = createContext({} as TransactionsContextData)
 export function TransactionsContextProvider({
   children,
 }: TransactionsContextProviderProps) {
-  const storage = useLocalStorage()
+  const {
+    onAddTransaction,
+    onChangeTransaction,
+    onRemoveTransaction,
+    remoteAddTransaction,
+    remoteRemoveTransaction,
+  } = useFirebaseDatabase()
   const [isLoading, setIsLoading] = useState(false)
-  const [transactionList, setTransactionList] = useState<TransactionModel[]>(
-    () => storage.get('transactions', [])
-  )
+  const [transactionList, setTransactionList] = useState<TransactionModel[]>([])
 
-  const addTransaction = (transaction: AddTransactionModel) => {
-    const newTransaction = {
-      ...transaction,
-      category: transaction.category || 'Outros',
-      amount: Number(transaction.amount),
-      date: new Date(`${transaction.date} 00:00:00`).toISOString(),
+  const addTransaction = async (payload: AddTransactionModel) => {
+    const transaction = formatTransaction({ ...payload, id: uuid() })
+    try {
+      setIsLoading(true)
+      await remoteAddTransaction(transaction)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
     }
-    setTransactionList((oldState) => {
-      const transactionWithId = {
-        ...newTransaction,
-        id: oldState.length
-          ? Math.max(...oldState.map((item) => item.id)) + 1
-          : 1,
-      }
-      const newTransactionList = [...oldState, transactionWithId]
-      return newTransactionList
-    })
   }
 
-  const updateTransaction = (transaction: TransactionModel) => {
-    const newTransaction = {
-      ...transaction,
-      category: transaction.category || 'Outros',
-      amount: Number(transaction.amount),
-      date: new Date(`${transaction.date} 00:00:00`).toISOString(),
+  const updateTransaction = async (payload: TransactionModel) => {
+    const transaction = formatTransaction(payload)
+    try {
+      setIsLoading(true)
+      await remoteAddTransaction(transaction)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
     }
-    setTransactionList((oldState) => {
-      const newTransactionList = oldState.map((item) => {
-        if (item.id !== transaction.id) return item
-        return { ...item, ...newTransaction }
-      })
-      return newTransactionList
-    })
   }
 
-  const removeTransaction = (transaction: TransactionModel) => {
-    setTransactionList((oldState) => {
-      const newList = oldState.filter((item) => item.id !== transaction.id)
-      return newList
-    })
+  const removeTransaction = async (transaction: TransactionModel) => {
+    try {
+      setIsLoading(true)
+      await remoteRemoveTransaction(transaction.id)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   useEffect(() => {
-    storage.set('transactions', transactionList)
-  }, [transactionList])
+    const unsubscribeAdd = onAddTransaction((data) => {
+      setTransactionList((oldState) => [...oldState, data])
+    })
+    const unsubscribeChange = onChangeTransaction((data) => {
+      setTransactionList((oldState) => {
+        const newTransactionList = oldState.map((item) => {
+          if (item.id !== data.id) return item
+          return { ...item, ...data }
+        })
+        return newTransactionList
+      })
+    })
+    const unsubscribeRemove = onRemoveTransaction((data) => {
+      setTransactionList((oldState) => {
+        const newList = oldState.filter((item) => item.id !== data.id)
+        return newList
+      })
+    })
+    return () => {
+      unsubscribeAdd()
+      unsubscribeChange()
+      unsubscribeRemove()
+    }
+  }, [])
 
   return (
     <TransactionsContext.Provider
       value={{
         isLoading,
-        setIsLoading,
         transactionList,
         setTransactionList,
         addTransaction,

@@ -25,9 +25,11 @@ export const Transactions = () => {
     () => storage.get('transactions-table-filters') || defaultFilterValues
   )
 
-  const [selectedTransactionId, setSelectedTransactionId] = useState<number>()
   const [isModalTransactionOpen, setIsModalTransactionOpen] = useState(false)
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
+  const [selectedTransactionId, setSelectedTransactionId] = useState(
+    '' as string | undefined
+  )
 
   useEffect(() => {
     const filteredData = filterData(transactionList, tableFilters)
@@ -39,7 +41,7 @@ export const Transactions = () => {
     storage.set('transactions-table-filters', filters)
   }
 
-  const handleOpenTransactionModal = (selectedId?: number) => {
+  const handleOpenTransactionModal = (selectedId?: string) => {
     setIsModalTransactionOpen(true)
     setSelectedTransactionId(selectedId)
   }
@@ -59,7 +61,7 @@ export const Transactions = () => {
   })
   const columns = getColumns({
     handleDeleteTransaction: handleOpenDeleteDialog,
-    handleEditTransaction: (id: number) => handleOpenTransactionModal(id),
+    handleEditTransaction: (id: string) => handleOpenTransactionModal(id),
   })
 
   return (

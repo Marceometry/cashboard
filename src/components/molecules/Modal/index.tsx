@@ -17,6 +17,7 @@ import { useKeyboardListener } from '@/hooks'
 type ButtonProps = {
   children: string
   onClick: () => void
+  isLoading?: boolean
 }
 
 export type ModalProps = ChakraModalProps & {
