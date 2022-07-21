@@ -5,12 +5,15 @@ import {
   ListItem,
   Text,
   useColorModeValue,
+  useMediaQuery,
 } from '@chakra-ui/react'
 import { Link, useLocation } from 'react-router-dom'
 import { dashboardRoutes } from '@/router'
 
 export const Sidebar = () => {
   const location = useLocation()
+
+  const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)')
 
   const bg = useColorModeValue('gray.300', 'gray.600')
   const activeBg = useColorModeValue('gray.400', 'gray.700')
@@ -25,7 +28,7 @@ export const Sidebar = () => {
       shadow='lg'
       bg={bg}
     >
-      <Heading p='6'>
+      <Heading py='6' px={isLargerThan1280 ? '14' : '5'}>
         <Link to='/'>Cashboard</Link>
       </Heading>
 
