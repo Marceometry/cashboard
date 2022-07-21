@@ -30,6 +30,9 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const signOut = call(
     async () => {
       await firebaseSignOut()
+      setTimeout(() => {
+        window.location.reload()
+      }, 500)
     },
     { toastText: 'Você foi desconectado com sucesso!' }
   )
@@ -37,6 +40,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const handleAuthChange = (currentUser: GoogleUser) => {
     const userInfo = currentUser
       ? {
+          id: currentUser.uid,
           email: currentUser.email,
           name: currentUser.displayName,
           photoUrl: currentUser.photoURL,

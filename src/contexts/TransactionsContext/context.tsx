@@ -6,6 +6,7 @@ import {
   useEffect,
 } from 'react'
 import { v4 as uuid } from 'uuid'
+import { useAuth } from '@/contexts'
 import { useApiCall, useFirebaseDatabase } from '@/hooks'
 import { formatTransaction } from './utils'
 import {
@@ -23,6 +24,7 @@ export const TransactionsContext = createContext({} as TransactionsContextData)
 export function TransactionsContextProvider({
   children,
 }: TransactionsContextProviderProps) {
+  const { user } = useAuth()
   const {
     onAddTransaction,
     onChangeTransaction,
@@ -58,8 +60,9 @@ export function TransactionsContextProvider({
   )
 
   useEffect(() => {
-    const unsubscribeInitialLoad = initialLoad(() => setIsLoading(false))
+    if (!user?.id) return
 
+    const unsubscribeInitialLoad = initialLoad(() => setIsLoading(false))
     const unsubscribeAdd = onAddTransaction((data) => {
       setTransactionList((oldState) => [...oldState, data])
       setIsLoading(false)
@@ -86,7 +89,7 @@ export function TransactionsContextProvider({
       unsubscribeChange()
       unsubscribeRemove()
     }
-  }, [])
+  }, [user?.id])
 
   return (
     <TransactionsContext.Provider
