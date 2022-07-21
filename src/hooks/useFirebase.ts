@@ -1,12 +1,12 @@
 import {
   getDatabase,
-  remove,
-  set,
   ref,
-  onValue,
+  set,
+  remove,
   onChildAdded,
   onChildChanged,
   onChildRemoved,
+  onValue,
 } from 'firebase/database'
 import {
   getAuth,
@@ -45,22 +45,8 @@ export const useFirebaseDatabase = () => {
   const database = getDatabase(firebaseApp)
   const transactionsRef = ref(database, 'transactions')
 
-  const loadTransactionList = (
-    callback: (list: TransactionModel[]) => void
-  ) => {
-    return onValue(
-      transactionsRef,
-      (snapshot) => {
-        const array: TransactionModel[] = []
-        snapshot.forEach((childSnapshot) => {
-          const childKey = childSnapshot.key
-          const childData = childSnapshot.val()
-          array.push({ ...childData, id: childKey })
-        })
-        callback(array)
-      },
-      { onlyOnce: true }
-    )
+  const initialLoad = (callback: () => void) => {
+    return onValue(transactionsRef, callback, { onlyOnce: true })
   }
 
   const remoteAddTransaction = (transaction: TransactionModel) => {
@@ -90,11 +76,11 @@ export const useFirebaseDatabase = () => {
   }
 
   return {
-    loadTransactionList,
     remoteAddTransaction,
     remoteRemoveTransaction,
     onAddTransaction,
     onChangeTransaction,
     onRemoveTransaction,
+    initialLoad,
   }
 }

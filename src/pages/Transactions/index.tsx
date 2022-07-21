@@ -18,7 +18,7 @@ import { filterData } from './utils'
 export const Transactions = () => {
   const storage = useLocalStorage()
   const { openDialog } = useDialog()
-  const { transactionList, removeTransaction } = useTransactions()
+  const { transactionList, removeTransaction, isLoading } = useTransactions()
 
   const [tableData, setTableData] = useState<TransactionModel[]>([])
   const [tableFilters, setTableFilters] = useState(
@@ -73,6 +73,7 @@ export const Transactions = () => {
           buttons={buttons}
           caption={caption}
           sortFunction={sortByDate}
+          isLoading={isLoading}
           charts={[
             {
               type: 'bar',

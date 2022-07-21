@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Grid, GridItem } from '@chakra-ui/react'
-import { Card, ComposedChart, MainTemplate, Tabs } from '@/components'
+import { Card, ComposedChart, Loading, MainTemplate, Tabs } from '@/components'
 import { TransactionModel, useTransactions } from '@/contexts'
 import { generateChartData, getTabs, View } from './constants'
 
 export const Home = () => {
-  const { transactionList } = useTransactions()
+  const { transactionList, isLoading } = useTransactions()
   const [currentView, setCurrentView] = useState<View>('total')
 
   const [incomeItems, outcomeItems] = transactionList.reduce(
@@ -45,30 +45,38 @@ export const Home = () => {
 
         <Grid templateColumns='1fr 1fr' h='100%'>
           <GridItem>
-            <ComposedChart
-              type='area'
-              isMonth={currentView === 'month'}
-              data={incomeData}
-              sections={[
-                {
-                  label: 'Entrada',
-                  color: '#48bb78',
-                },
-              ]}
-            />
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <ComposedChart
+                type='area'
+                isMonth={currentView !== 'month'}
+                data={incomeData}
+                sections={[
+                  {
+                    label: 'Entrada',
+                    color: '#48bb78',
+                  },
+                ]}
+              />
+            )}
           </GridItem>
           <GridItem>
-            <ComposedChart
-              type='area'
-              isMonth={currentView === 'month'}
-              data={outcomeData}
-              sections={[
-                {
-                  label: 'Saída',
-                  color: '#f56565',
-                },
-              ]}
-            />
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <ComposedChart
+                type='area'
+                isMonth={currentView !== 'month'}
+                data={outcomeData}
+                sections={[
+                  {
+                    label: 'Saída',
+                    color: '#f56565',
+                  },
+                ]}
+              />
+            )}
           </GridItem>
         </Grid>
       </Card>

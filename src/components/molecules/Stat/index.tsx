@@ -1,3 +1,4 @@
+import { masks } from '@/utils'
 import {
   Stat as ChakraStat,
   StatLabel,
@@ -22,7 +23,7 @@ export const Stat = ({ label, value, increase }: StatProps) => {
           <StatLabel fontSize='xl'>{label}</StatLabel>
         </Center>
         <StatNumber fontSize='3xl' mt='2'>
-          R$ {value.toLocaleString()}
+          {masks.valueToMoney(value)}
         </StatNumber>
       </Grid>
     </ChakraStat>

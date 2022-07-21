@@ -29,9 +29,10 @@ export function TransactionsContextProvider({
     onRemoveTransaction,
     remoteAddTransaction,
     remoteRemoveTransaction,
+    initialLoad,
   } = useFirebaseDatabase()
-  const [isLoading, setIsLoading] = useState(false)
   const [transactionList, setTransactionList] = useState<TransactionModel[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const addTransaction = async (payload: AddTransactionModel) => {
     const transaction = formatTransaction({ ...payload, id: uuid() })
@@ -40,7 +41,6 @@ export function TransactionsContextProvider({
       await remoteAddTransaction(transaction)
     } catch (error) {
       console.log(error)
-    } finally {
       setIsLoading(false)
     }
   }
@@ -52,7 +52,6 @@ export function TransactionsContextProvider({
       await remoteAddTransaction(transaction)
     } catch (error) {
       console.log(error)
-    } finally {
       setIsLoading(false)
     }
   }
@@ -63,31 +62,35 @@ export function TransactionsContextProvider({
       await remoteRemoveTransaction(transaction.id)
     } catch (error) {
       console.log(error)
-    } finally {
       setIsLoading(false)
     }
   }
 
   useEffect(() => {
+    const unsubscribeInitialLoad = initialLoad(() => setIsLoading(false))
+
     const unsubscribeAdd = onAddTransaction((data) => {
       setTransactionList((oldState) => [...oldState, data])
+      setIsLoading(false)
     })
     const unsubscribeChange = onChangeTransaction((data) => {
       setTransactionList((oldState) => {
-        const newTransactionList = oldState.map((item) => {
+        return oldState.map((item) => {
           if (item.id !== data.id) return item
           return { ...item, ...data }
         })
-        return newTransactionList
       })
+      setIsLoading(false)
     })
     const unsubscribeRemove = onRemoveTransaction((data) => {
       setTransactionList((oldState) => {
         const newList = oldState.filter((item) => item.id !== data.id)
         return newList
       })
+      setIsLoading(false)
     })
     return () => {
+      unsubscribeInitialLoad()
       unsubscribeAdd()
       unsubscribeChange()
       unsubscribeRemove()

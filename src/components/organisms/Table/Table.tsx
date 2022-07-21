@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Box, Flex } from '@chakra-ui/react'
 import { useDebouncedValue } from '@/hooks'
-import { ComposedChart, EmptyData, PieChart } from '@/components'
+import { ComposedChart, EmptyData, Loading, PieChart } from '@/components'
 import { TableBody, TableHeader } from './components'
 import { ChartType, TableProps } from './types'
 import { filterByText } from './utils'
@@ -14,6 +14,7 @@ export const Table = ({
   noSearch,
   charts,
   onViewChange,
+  isLoading,
   ...props
 }: TableProps) => {
   const [filteredData, setFilteredData] = useState<any[]>([])
@@ -53,7 +54,9 @@ export const Table = ({
         charts={charts}
       />
 
-      {currentView === 'table' ? (
+      {isLoading ? (
+        <Loading />
+      ) : currentView === 'table' ? (
         filteredData.length ? (
           <TableBody data={filteredData} columns={columns} {...props} />
         ) : (

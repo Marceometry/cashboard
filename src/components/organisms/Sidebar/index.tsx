@@ -25,7 +25,7 @@ export const Sidebar = () => {
       shadow='lg'
       bg={bg}
     >
-      <Heading p='8'>
+      <Heading p='6'>
         <Link to='/'>Cashboard</Link>
       </Heading>
 

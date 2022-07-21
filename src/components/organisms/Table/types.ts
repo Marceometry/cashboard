@@ -33,6 +33,7 @@ export type TableProps = ChakraTableProps & {
   columns: ColumnProps<any>[]
   buttons?: TableButtons
   caption?: React.ReactNode
+  isLoading?: boolean
   noSearch?: boolean
   sortBy?: string
   sortFunction?: (
