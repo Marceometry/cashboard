@@ -9,10 +9,6 @@ export const Login = () => {
   const navigate = useNavigate()
   const { signIn, user } = useAuth()
 
-  const handleSignIn = () => {
-    signIn()
-  }
-
   useEffect(() => {
     if (!!user) navigate('/')
   }, [user])
@@ -23,7 +19,7 @@ export const Login = () => {
         <Heading fontSize='3xl'>Entre na sua conta</Heading>
       </Center>
 
-      <Button leftIcon={<GoogleLogo />} onClick={handleSignIn} mt='8'>
+      <Button leftIcon={<GoogleLogo />} onClick={signIn} mt='8'>
         Entrar com Google
       </Button>
     </LoginTemplate>

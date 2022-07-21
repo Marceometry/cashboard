@@ -16,7 +16,8 @@ import {
   signOut,
 } from 'firebase/auth'
 import { firebaseApp } from '@/services'
-import { TransactionModel } from '@/contexts'
+import { TransactionModel, useAuth } from '@/contexts'
+import { useEffect, useMemo } from 'react'
 
 export const useFirebaseAuth = () => {
   const auth = getAuth()
@@ -43,18 +44,26 @@ export const useFirebaseAuth = () => {
 
 export const useFirebaseDatabase = () => {
   const database = getDatabase(firebaseApp)
-  const transactionsRef = ref(database, 'transactions')
+  const { user } = useAuth()
+  const userId = user?.id
+  const transactionsRef = ref(database, `users/${userId}/transactions`)
 
   const initialLoad = (callback: () => void) => {
     return onValue(transactionsRef, callback, { onlyOnce: true })
   }
 
   const remoteAddTransaction = (transaction: TransactionModel) => {
-    return set(ref(database, 'transactions/' + transaction.id), transaction)
+    return set(
+      ref(database, `users/${userId}/transactions/${transaction.id}`),
+      {
+        ...transaction,
+        userId,
+      }
+    )
   }
 
   const remoteRemoveTransaction = (id: string) => {
-    return remove(ref(database, 'transactions/' + id))
+    return remove(ref(database, `users/${userId}/transactions/${id}`))
   }
 
   const onAddTransaction = (callback: (data: any) => void) => {
