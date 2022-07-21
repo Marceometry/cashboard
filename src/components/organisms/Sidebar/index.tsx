@@ -1,6 +1,9 @@
+import { useEffect, useRef, useState } from 'react'
 import {
+  Divider,
   Flex,
   Heading,
+  IconButton,
   List,
   ListItem,
   Text,
@@ -9,15 +12,25 @@ import {
 } from '@chakra-ui/react'
 import { Link, useLocation } from 'react-router-dom'
 import { dashboardRoutes } from '@/router'
+import { ChevronLeftIcon, HamburgerIcon } from '@chakra-ui/icons'
+import { useLocalStorage } from '@/hooks'
 
 export const Sidebar = () => {
   const location = useLocation()
-
-  const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)')
+  const storage = useLocalStorage()
+  const [isOpen, setIsOpen] = useState(storage.get('sidebar-default-open'))
+  const headingRef = useRef<HTMLDivElement>(null)
 
   const bg = useColorModeValue('gray.300', 'gray.600')
   const activeBg = useColorModeValue('gray.400', 'gray.700')
   const linkHover = useColorModeValue('gray.400', 'gray.700')
+
+  const [isLargerThan1080] = useMediaQuery('(min-width: 1080px)')
+
+  const toggle = () => {
+    setIsOpen(!isOpen)
+    storage.set('sidebar-default-open', !isOpen)
+  }
 
   return (
     <Flex
@@ -26,13 +39,39 @@ export const Sidebar = () => {
       direction='column'
       maxW='container.lg'
       shadow='lg'
+      width={isOpen ? '237px' : '68px'}
+      transitionProperty='width'
+      transitionDuration='500ms'
+      overflow='hidden'
       bg={bg}
     >
-      <Heading py='6' px={isLargerThan1280 ? '14' : '5'}>
-        <Link to='/'>Cashboard</Link>
+      <Heading
+        py='4'
+        px={isLargerThan1080 && isOpen ? '5' : '5'}
+        size='lg'
+        ref={headingRef}
+      >
+        {isOpen ? (
+          <Flex gap='2'>
+            <IconButton
+              icon={<ChevronLeftIcon />}
+              onClick={toggle}
+              aria-label='Fechar Sidebar'
+            />
+            Cashboard
+          </Flex>
+        ) : (
+          <IconButton
+            icon={<HamburgerIcon />}
+            onClick={toggle}
+            aria-label='Expandir Sidebar'
+          />
+        )}
       </Heading>
 
-      <List width='full' borderTop='1px solid white' pt='2'>
+      <Divider />
+
+      <List width='full'>
         {dashboardRoutes.map((route) => (
           <ListItem key={route.path}>
             <Link to={route.path}>
@@ -50,7 +89,7 @@ export const Sidebar = () => {
                 }
               >
                 {route.icon}
-                {route.label}
+                {isOpen ? route.label : ''}
               </Text>
             </Link>
           </ListItem>

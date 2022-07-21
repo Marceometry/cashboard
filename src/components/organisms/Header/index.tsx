@@ -12,7 +12,7 @@ export const Header = () => {
 
   return (
     <Flex as='header' align='center' justify='space-between' gap='8'>
-      <Heading>{currentPage}</Heading>
+      <Heading size='lg'>{currentPage}</Heading>
       <UserMenu />
     </Flex>
   )
