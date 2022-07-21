@@ -6,7 +6,7 @@ import {
   useEffect,
 } from 'react'
 import { v4 as uuid } from 'uuid'
-import { useFirebaseDatabase } from '@/hooks'
+import { useApiCall, useFirebaseDatabase } from '@/hooks'
 import { formatTransaction } from './utils'
 import {
   TransactionsContextData,
@@ -31,40 +31,31 @@ export function TransactionsContextProvider({
     remoteRemoveTransaction,
     initialLoad,
   } = useFirebaseDatabase()
+  const { call, isLoading, setIsLoading } = useApiCall()
   const [transactionList, setTransactionList] = useState<TransactionModel[]>([])
-  const [isLoading, setIsLoading] = useState(true)
 
-  const addTransaction = async (payload: AddTransactionModel) => {
-    const transaction = formatTransaction({ ...payload, id: uuid() })
-    try {
-      setIsLoading(true)
+  const addTransaction = call(
+    async (payload: AddTransactionModel) => {
+      const transaction = formatTransaction({ ...payload, id: uuid() })
       await remoteAddTransaction(transaction)
-    } catch (error) {
-      console.log(error)
-      setIsLoading(false)
-    }
-  }
+    },
+    { toastText: 'Transação adicionada com sucesso!' }
+  )
 
-  const updateTransaction = async (payload: TransactionModel) => {
-    const transaction = formatTransaction(payload)
-    try {
-      setIsLoading(true)
+  const updateTransaction = call(
+    async (payload: TransactionModel) => {
+      const transaction = formatTransaction(payload)
       await remoteAddTransaction(transaction)
-    } catch (error) {
-      console.log(error)
-      setIsLoading(false)
-    }
-  }
+    },
+    { toastText: 'Transação atualizada com sucesso!' }
+  )
 
-  const removeTransaction = async (transaction: TransactionModel) => {
-    try {
-      setIsLoading(true)
+  const removeTransaction = call(
+    async (transaction: TransactionModel) => {
       await remoteRemoveTransaction(transaction.id)
-    } catch (error) {
-      console.log(error)
-      setIsLoading(false)
-    }
-  }
+    },
+    { toastText: 'Transação excluída com sucesso!' }
+  )
 
   useEffect(() => {
     const unsubscribeInitialLoad = initialLoad(() => setIsLoading(false))
