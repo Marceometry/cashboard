@@ -3,14 +3,21 @@ import { useForm } from 'react-hook-form'
 import { Modal, Select } from '@/components'
 import { MONTH_LIST, YEAR_LIST } from '@/constants'
 import { defaultFilterValues, FilterModel } from '../constants'
+import { useEffect } from 'react'
 
 type Props = {
+  isMonthFilterDisabled: boolean
   isOpen: boolean
   onClose: () => void
   handleFilter: (data: FilterModel) => void
 }
 
-export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
+export const ModalFilters = ({
+  isOpen,
+  onClose,
+  handleFilter,
+  isMonthFilterDisabled,
+}: Props) => {
   const formMethods = useForm({
     defaultValues: defaultFilterValues,
   })
@@ -22,6 +29,11 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
     })
     onClose()
   }
+
+  useEffect(() => {
+    if (!isMonthFilterDisabled) return
+    formMethods.setValue('month', null)
+  }, [isMonthFilterDisabled])
 
   return (
     <Modal
@@ -38,6 +50,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
               placeholder='Selecione o mês'
               name='month'
               options={MONTH_LIST}
+              isDisabled={isMonthFilterDisabled}
             />
             <Text>de</Text>
             <Select

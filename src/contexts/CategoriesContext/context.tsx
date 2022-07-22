@@ -73,10 +73,18 @@ export function CategoriesContextProvider({
     return generateCategories(transactions)
   }
 
-  const generateCategoriesHistory = () => {
+  const generateCategoriesHistory = (year?: number) => {
     const orderedList: TransactionModel[] = sortByDate(transactionList, true)
-    const categoriesHistory = orderedList.reduce(
-      (acc: any[], item: TransactionModel) => {
+    const categoriesHistory = orderedList
+      .filter((item) => {
+        let included = true
+        if (year) {
+          included = filterByYear(item.date, year)
+          if (!included) return
+        }
+        return included
+      })
+      .reduce((acc: any[], item: TransactionModel) => {
         const { amount, category } = item
         const date = new Date(item.date)
 
@@ -93,9 +101,7 @@ export function CategoriesContextProvider({
         }
 
         return [...acc, { name, [category]: amount ?? 0 }]
-      },
-      []
-    )
+      }, [])
     const categoryNamesObject = categoryList.reduce((acc, value) => {
       return { ...acc, [value.name]: 0 }
     }, {})

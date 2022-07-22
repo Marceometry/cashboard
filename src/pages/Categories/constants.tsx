@@ -36,16 +36,12 @@ export const defaultFilterValues = {
 
 export const getCaption = (props: CaptionProps) => <Caption {...props} />
 
-export const getButtons = (
-  handleClick: () => void,
-  isFilterDisabled: boolean
-): TableButtons => ({
+export const getButtons = (handleClick: () => void): TableButtons => ({
   iconButtons: [
     {
       icon: 'filter',
       'aria-label': 'Selecionar Filtros',
       onClick: handleClick,
-      disabled: isFilterDisabled,
     },
   ],
 })

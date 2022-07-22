@@ -17,22 +17,19 @@ export const Categories = () => {
   const [currentType, setCurrentType] = useState<TransactionType>('outcome')
   const [filters, setFilters] = useState<FilterModel>({ month: 0, year: 0 })
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
-  const [isFilterDisabled, setIsFilterDisabled] = useState(false)
+  const [isMonthFilterDisabled, setIsMonthFilterDisabled] = useState(false)
 
-  const areaChartData = generateCategoriesHistory()
+  const areaChartData = generateCategoriesHistory(filters.year)
   const categoriesByDate = generateCategoriesByDate(filters.month, filters.year)
   const { data, chartData } = generateData(categoriesByDate, currentType)
 
   const caption = getCaption({ currentType, setCurrentType })
-  const buttons = getButtons(
-    () => setIsModalFiltersOpen(true),
-    isFilterDisabled
-  )
+  const buttons = getButtons(() => setIsModalFiltersOpen(true))
   const columns = getColumns(currentType)
   const charts = getCharts(chartData, areaChartData)
 
   const handleViewChange = (view: string) => {
-    setIsFilterDisabled(view === 'area')
+    setIsMonthFilterDisabled(view === 'area')
   }
 
   return (
@@ -52,6 +49,7 @@ export const Categories = () => {
         <ModalFilters
           handleFilter={setFilters}
           isOpen={isModalFiltersOpen}
+          isMonthFilterDisabled={isMonthFilterDisabled}
           onClose={() => setIsModalFiltersOpen(false)}
         />
       </Card>
