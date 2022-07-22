@@ -11,7 +11,7 @@ export const Header = () => {
   )?.label
 
   return (
-    <Flex as='header' align='center' justify='space-between' gap='8'>
+    <Flex as='header' align='flex-start' justify='space-between' gap='8'>
       <Heading size='lg'>{currentPage}</Heading>
       <UserMenu />
     </Flex>
