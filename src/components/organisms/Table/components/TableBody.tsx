@@ -1,3 +1,4 @@
+import { useInfiniteScroll } from '@/hooks'
 import {
   Table as ChakraTable,
   Thead,
@@ -9,6 +10,7 @@ import {
   Box,
   useColorModeValue,
 } from '@chakra-ui/react'
+import { useEffect, useRef } from 'react'
 import { TableProps } from '../types'
 
 export const TableBody = ({
@@ -18,8 +20,7 @@ export const TableBody = ({
   sortFunction,
   ...props
 }: TableProps) => {
-  const headerBg = useColorModeValue('gray.300', 'gray.800')
-  const rowBg = useColorModeValue('gray.200', 'gray.600')
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const sortedData = sortBy
     ? data.sort((a, b) => b[sortBy] - a[sortBy])
@@ -27,8 +28,18 @@ export const TableBody = ({
     ? sortFunction(data)
     : data
 
+  const { lastElementRef, paginatedData } = useInfiniteScroll(sortedData)
+
+  const headerBg = useColorModeValue('gray.300', 'gray.800')
+  const rowBg = useColorModeValue('gray.200', 'gray.600')
+
+  useEffect(() => {
+    if (!containerRef.current) return
+    containerRef.current.scrollTo({ top: 0 })
+  }, [sortedData])
+
   return (
-    <Box overflow='auto' h='100%'>
+    <Box ref={containerRef} overflow='auto' h='100%'>
       <ChakraTable {...props}>
         <Thead>
           <Tr>
@@ -39,9 +50,13 @@ export const TableBody = ({
             ))}
           </Tr>
         </Thead>
-        <Tbody overflow='auto'>
-          {sortedData.map((item, index) => (
-            <Tr key={index} bg={rowBg}>
+        <Tbody>
+          {paginatedData.map((item, index) => (
+            <Tr
+              ref={(node) => lastElementRef(node, index)}
+              key={index}
+              bg={rowBg}
+            >
               {columns.map((column, columnIndex) => (
                 <Td key={columnIndex}>
                   {column.customRender

@@ -10,7 +10,7 @@ export const MainTemplate = ({ children }: Props) => {
     <Flex h='100vh'>
       <Sidebar />
       <Flex flex='1' overflow='auto'>
-        <Flex direction='column' w='full' flex='1' p='6' gap='6'>
+        <Flex direction='column' w='full' flex='1' p='5' gap='5'>
           <Header />
           {children}
         </Flex>
