@@ -5,7 +5,7 @@ import {
   ReactNode,
   useEffect,
 } from 'react'
-import { TransactionModel, useTransactions } from '@/contexts'
+import { TransactionModel, TransactionType, useTransactions } from '@/contexts'
 import {
   filterByMonth,
   filterByYear,
@@ -73,8 +73,12 @@ export function CategoriesContextProvider({
     return generateCategories(transactions)
   }
 
-  const generateCategoriesHistory = (year?: number) => {
-    const orderedList: TransactionModel[] = sortByDate(transactionList, true)
+  const generateCategoriesHistory = (type?: TransactionType, year?: number) => {
+    const list = transactionList.filter((item) => {
+      if (!type) return true
+      return item.type === type
+    })
+    const orderedList: TransactionModel[] = sortByDate(list, true)
     const categoriesHistory = orderedList
       .filter((item) => {
         let included = true

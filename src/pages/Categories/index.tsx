@@ -19,7 +19,7 @@ export const Categories = () => {
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
   const [isMonthFilterDisabled, setIsMonthFilterDisabled] = useState(false)
 
-  const areaChartData = generateCategoriesHistory(filters.year)
+  const areaChartData = generateCategoriesHistory(currentType, filters.year)
   const categoriesByDate = generateCategoriesByDate(filters.month, filters.year)
   const { data, chartData } = generateData(categoriesByDate, currentType)
 
