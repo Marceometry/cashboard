@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Flex, Grid, GridItem, Text } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { masks } from '@/utils'
+import { useLocalStorage } from '@/hooks'
 import { Input, Modal, Select } from '@/components'
 import { MONTH_LIST, YEAR_LIST } from '@/constants'
 import { CategoriesFilterModel } from '@/contexts'
@@ -14,14 +15,26 @@ type Props = {
   isMonthDisabled: boolean
 }
 
+const getDefaultFormValues = (data: FilterModel) => {
+  return data
+    ? {
+        minAmount: masks.valueToMoney(Number(data.minAmount)),
+        maxAmount: masks.valueToMoney(Number(data.maxAmount)),
+        month: data.month || null,
+        year: data.year || null,
+      }
+    : defaultEmptyFilterValues
+}
+
 export const ModalFilters = ({
   isOpen,
   onClose,
   handleFilter,
   isMonthDisabled,
 }: Props) => {
+  const storage = useLocalStorage()
   const formMethods = useForm({
-    defaultValues: defaultEmptyFilterValues,
+    defaultValues: getDefaultFormValues(storage.get('categories-page-filters')),
   })
 
   const formatValues = (data: FilterModel) => ({

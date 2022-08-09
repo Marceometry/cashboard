@@ -5,6 +5,7 @@ import {
   TransactionType,
   useCategories,
 } from '@/contexts'
+import { useLocalStorage } from '@/hooks'
 import { ModalFilters } from './components'
 import { defaultFilterValues } from './types'
 import {
@@ -16,13 +17,15 @@ import {
 } from './constants'
 
 export const Categories = () => {
+  const storage = useLocalStorage()
   const { generateFilteredCategories, generateCategoriesHistory } =
     useCategories()
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
   const [isFilterMonthDisabled, setIsFilterMonthDisabled] = useState(false)
   const [currentType, setCurrentType] = useState<TransactionType>('outcome')
-  const [filters, setFilters] =
-    useState<CategoriesFilterModel>(defaultFilterValues)
+  const [filters, setFilters] = useState<CategoriesFilterModel>(
+    storage.get('categories-page-filters') || defaultFilterValues
+  )
 
   const areaChartData = generateCategoriesHistory(filters, currentType)
   const categoriesByDate = generateFilteredCategories(filters, currentType)
@@ -35,6 +38,11 @@ export const Categories = () => {
 
   const handleViewChange = (view: string) => {
     setIsFilterMonthDisabled(view === 'area')
+  }
+
+  const handleFilter = (filters: CategoriesFilterModel) => {
+    setFilters(filters)
+    storage.set('categories-page-filters', filters)
   }
 
   return (
@@ -52,7 +60,7 @@ export const Categories = () => {
         />
 
         <ModalFilters
-          handleFilter={setFilters}
+          handleFilter={handleFilter}
           isOpen={isModalFiltersOpen}
           onClose={() => setIsModalFiltersOpen(false)}
           isMonthDisabled={isFilterMonthDisabled}
