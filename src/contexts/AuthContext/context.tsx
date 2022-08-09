@@ -24,7 +24,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       const { user } = await signInWithGoogle()
       return user.displayName
     },
-    { toastText: (name) => `Bem vindo, ${name}!` }
+    { toastText: (name) => `Bem vindo(a), ${name}!` }
   )
 
   const signOut = call(

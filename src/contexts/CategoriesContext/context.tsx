@@ -111,7 +111,6 @@ export function CategoriesContextProvider({
       },
       []
     )
-
     const categoryNamesObject = categoryList.reduce((acc, value) => {
       return { ...acc, [value.name]: 0 }
     }, {})

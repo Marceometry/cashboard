@@ -31,10 +31,10 @@ export const Categories = () => {
   const categoriesByDate = generateFilteredCategories(filters, currentType)
   const { data, chartData } = generateData(categoriesByDate, currentType)
 
-  const caption = getCaption({ currentType, setCurrentType })
   const buttons = getButtons(() => setIsModalFiltersOpen(true))
-  const columns = getColumns(currentType)
+  const caption = getCaption({ currentType, setCurrentType })
   const charts = getCharts(chartData, areaChartData)
+  const columns = getColumns(currentType)
 
   const handleViewChange = (view: string) => {
     setIsFilterMonthDisabled(view === 'area')

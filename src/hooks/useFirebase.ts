@@ -17,7 +17,6 @@ import {
 } from 'firebase/auth'
 import { firebaseApp } from '@/services'
 import { TransactionModel, useAuth } from '@/contexts'
-import { useEffect, useMemo } from 'react'
 
 export const useFirebaseAuth = () => {
   const auth = getAuth()

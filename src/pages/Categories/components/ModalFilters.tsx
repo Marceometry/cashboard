@@ -57,10 +57,9 @@ export const ModalFilters = ({
   }
 
   useEffect(() => {
-    if (isMonthDisabled) {
-      formMethods.setValue('month', null)
-      handleFilter(formatValues(formMethods.getValues()))
-    }
+    if (!isMonthDisabled) return
+    formMethods.setValue('month', null)
+    handleFilter(formatValues(formMethods.getValues()))
   }, [isMonthDisabled])
 
   return (
