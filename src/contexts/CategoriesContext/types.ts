@@ -1,3 +1,12 @@
+import { TransactionType } from '@/contexts'
+
+export type CategoriesFilterModel = {
+  month: number
+  year: number
+  maxAmount: number
+  minAmount: number
+}
+
 export type CategoryModel = {
   name: string
   income: number
@@ -8,6 +17,6 @@ export type CategoryModel = {
 export type CategoriesContextData = {
   categoryList: CategoryModel[]
   setCategoryList: (list: CategoryModel[]) => void
-  generateCategoriesByDate: (month: number, year: number) => CategoryModel[]
-  generateCategoriesHistory: () => CategoryModel[]
+  generateFilteredCategories: (filters: CategoriesFilterModel, type: TransactionType) => CategoryModel[]
+  generateCategoriesHistory: (filters: CategoriesFilterModel, type: TransactionType) => any[]
 }

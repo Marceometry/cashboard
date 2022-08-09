@@ -3,49 +3,16 @@ import { ChartProps, ColumnProps, TableButtons } from '@/components'
 import { CHART_COLORS } from '@/constants'
 import { CategoryModel, TransactionType } from '@/contexts'
 import { Caption, CaptionProps } from './components'
-
-type ChartType = {
-  name: string
-  value: number
-}
-
-type DataModel = {
-  outcome: number
-  income: number
-  name: string
-  fraction: number
-}
-
-type Response = {
-  data: DataModel[]
-  chartData: {
-    name: string
-    value: number
-  }[]
-}
-
-export type FilterModel = {
-  month: number
-  year: number
-}
-
-export const defaultFilterValues = {
-  month: null,
-  year: null,
-}
+import { ChartType, DataModel, Response } from './types'
 
 export const getCaption = (props: CaptionProps) => <Caption {...props} />
 
-export const getButtons = (
-  handleClick: () => void,
-  isFilterDisabled: boolean
-): TableButtons => ({
+export const getButtons = (handleClick: () => void): TableButtons => ({
   iconButtons: [
     {
       icon: 'filter',
       'aria-label': 'Selecionar Filtros',
       onClick: handleClick,
-      disabled: isFilterDisabled,
     },
   ],
 })
@@ -81,14 +48,12 @@ export const generateData = (
     return value + item[type]
   }, 0)
 
-  const data = orderedList
-    .map((item) => ({
-      name: item.name,
-      income: item.income,
-      outcome: item.outcome,
-      fraction: Math.round((100 * item[type]) / total),
-    }))
-    .splice(0, 10)
+  const data = orderedList.map((item) => ({
+    name: item.name,
+    income: item.income,
+    outcome: item.outcome,
+    fraction: Math.round((100 * item[type]) / total),
+  }))
 
   const chartData = data
     .map((item) => {

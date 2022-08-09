@@ -1,9 +1,13 @@
 import { useState } from 'react'
 import { Card, MainTemplate, Table } from '@/components'
-import { TransactionType, useCategories } from '@/contexts'
-import { ModalFilters } from './components'
 import {
-  FilterModel,
+  CategoriesFilterModel,
+  TransactionType,
+  useCategories,
+} from '@/contexts'
+import { ModalFilters } from './components'
+import { defaultFilterValues } from './types'
+import {
   generateData,
   getColumns,
   getCaption,
@@ -12,27 +16,25 @@ import {
 } from './constants'
 
 export const Categories = () => {
-  const { generateCategoriesByDate, generateCategoriesHistory } =
+  const { generateFilteredCategories, generateCategoriesHistory } =
     useCategories()
-  const [currentType, setCurrentType] = useState<TransactionType>('outcome')
-  const [filters, setFilters] = useState<FilterModel>({ month: 0, year: 0 })
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
-  const [isFilterDisabled, setIsFilterDisabled] = useState(false)
+  const [isFilterMonthDisabled, setIsFilterMonthDisabled] = useState(false)
+  const [currentType, setCurrentType] = useState<TransactionType>('outcome')
+  const [filters, setFilters] =
+    useState<CategoriesFilterModel>(defaultFilterValues)
 
-  const areaChartData = generateCategoriesHistory()
-  const categoriesByDate = generateCategoriesByDate(filters.month, filters.year)
+  const areaChartData = generateCategoriesHistory(filters, currentType)
+  const categoriesByDate = generateFilteredCategories(filters, currentType)
   const { data, chartData } = generateData(categoriesByDate, currentType)
 
   const caption = getCaption({ currentType, setCurrentType })
-  const buttons = getButtons(
-    () => setIsModalFiltersOpen(true),
-    isFilterDisabled
-  )
+  const buttons = getButtons(() => setIsModalFiltersOpen(true))
   const columns = getColumns(currentType)
   const charts = getCharts(chartData, areaChartData)
 
   const handleViewChange = (view: string) => {
-    setIsFilterDisabled(view === 'area')
+    setIsFilterMonthDisabled(view === 'area')
   }
 
   return (
@@ -53,6 +55,7 @@ export const Categories = () => {
           handleFilter={setFilters}
           isOpen={isModalFiltersOpen}
           onClose={() => setIsModalFiltersOpen(false)}
+          isMonthDisabled={isFilterMonthDisabled}
         />
       </Card>
     </MainTemplate>

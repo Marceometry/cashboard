@@ -5,14 +5,14 @@ import {
   ReactNode,
   useEffect,
 } from 'react'
-import { TransactionModel, useTransactions } from '@/contexts'
+import { TransactionModel, TransactionType, useTransactions } from '@/contexts'
 import {
   filterByMonth,
   filterByYear,
   getFormattedMonthAndYear,
   sortByDate,
 } from '@/utils'
-import { CategoriesContextData, CategoryModel } from '.'
+import { CategoriesContextData, CategoriesFilterModel, CategoryModel } from '.'
 
 export type CategoriesContextProviderProps = {
   children: ReactNode
@@ -56,27 +56,42 @@ export function CategoriesContextProvider({
     return categories
   }
 
-  const generateCategoriesByDate = (month: number, year: number) => {
-    const transactions = sortByDate(transactionList, true).filter((item) => {
-      let included = true
-      if (month) {
-        included = filterByMonth(item.date, month)
-        if (!included) return
-      }
-      if (year) {
-        included = filterByYear(item.date, year)
-        if (!included) return
-      }
-      return included
-    })
+  const generateFilteredCategories = (
+    filters: CategoriesFilterModel,
+    type: TransactionType
+  ) => {
+    const { month, year, minAmount, maxAmount } = filters
 
-    return generateCategories(transactions)
+    const transactions = sortByDate(transactionList, true).filter(
+      (item: TransactionModel) => {
+        if (month && !filterByMonth(item.date, month)) return false
+        if (year && !filterByYear(item.date, year)) return false
+        return true
+      }
+    )
+
+    return generateCategories(transactions).filter((item) => {
+      if (minAmount && item[type] < minAmount) return false
+      if (maxAmount && item[type] > maxAmount) return false
+      return true
+    })
   }
 
-  const generateCategoriesHistory = () => {
+  const generateCategoriesHistory = (
+    filters: CategoriesFilterModel,
+    type: TransactionType
+  ) => {
+    const { month, year, minAmount, maxAmount } = filters
     const orderedList: TransactionModel[] = sortByDate(transactionList, true)
+
     const categoriesHistory = orderedList.reduce(
       (acc: any[], item: TransactionModel) => {
+        if (item.type !== type) return acc
+        if (minAmount && item.amount < minAmount) return acc
+        if (maxAmount && item.amount > maxAmount) return acc
+        if (month && !filterByMonth(item.date, month)) return acc
+        if (year && !filterByYear(item.date, year)) return acc
+
         const { amount, category } = item
         const date = new Date(item.date)
 
@@ -96,9 +111,11 @@ export function CategoriesContextProvider({
       },
       []
     )
+
     const categoryNamesObject = categoryList.reduce((acc, value) => {
       return { ...acc, [value.name]: 0 }
     }, {})
+
     return categoriesHistory.map((item) => ({
       ...categoryNamesObject,
       ...item,
@@ -115,7 +132,7 @@ export function CategoriesContextProvider({
       value={{
         categoryList,
         setCategoryList,
-        generateCategoriesByDate,
+        generateFilteredCategories,
         generateCategoriesHistory,
       }}
     >
