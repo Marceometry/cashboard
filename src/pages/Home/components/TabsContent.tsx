@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react'
+import { Flex, useBreakpointValue } from '@chakra-ui/react'
 import { isThisMonth, isThisYear } from 'date-fns'
 import { TransactionModel } from '@/contexts'
 import { Stat } from '@/components'
@@ -23,12 +23,18 @@ const getAmountByDate = (array: TransactionModel[], filter?: DateFilter) => {
 }
 
 export const TabsContent = ({ incomeItems, outcomeItems, filter }: Props) => {
+  const isSmallScreen = useBreakpointValue({ base: true, md: false })
+
   const totalIncome = getAmountByDate(incomeItems, filter)
   const totalOutcome = getAmountByDate(outcomeItems, filter)
 
   return (
     <Flex flex='1' gap='6' direction='column'>
-      <Flex flex='1'>
+      <Flex
+        flex='1'
+        direction={isSmallScreen ? 'column' : 'row'}
+        gap={isSmallScreen ? '4' : ''}
+      >
         <Stat label='Ganhos totais' value={totalIncome} increase />
         <Stat label='Gastos totais' value={totalOutcome} />
       </Flex>

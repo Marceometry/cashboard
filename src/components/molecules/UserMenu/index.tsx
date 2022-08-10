@@ -7,6 +7,7 @@ import {
   MenuItem,
   MenuDivider,
   useColorMode,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { SignOut } from 'phosphor-react'
@@ -14,6 +15,7 @@ import { ThemeIcon } from '@/components'
 import { useAuth } from '@/contexts'
 
 export const UserMenu = () => {
+  const showName = useBreakpointValue({ base: false, sm: true })
   const { user, signOut } = useAuth()
   const { toggleColorMode } = useColorMode()
 
@@ -28,7 +30,7 @@ export const UserMenu = () => {
         leftIcon={<Avatar size='sm' name={user.name} src={user.photoUrl} />}
         rightIcon={<ChevronDownIcon />}
       >
-        {user.name}
+        {showName && user.name}
       </MenuButton>
 
       <MenuList minWidth='200px'>

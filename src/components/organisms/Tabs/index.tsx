@@ -30,7 +30,9 @@ export const Tabs = ({ tabs, ...props }: Props) => {
     >
       <TabList>
         {tabs.map((tab) => (
-          <Tab key={tab.key}>{tab.label}</Tab>
+          <Tab key={tab.key} fontSize={{ base: 'sm', sm: 'md' }}>
+            {tab.label}
+          </Tab>
         ))}
       </TabList>
 

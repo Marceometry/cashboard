@@ -1,3 +1,4 @@
+import { useBreakpointValue } from '@chakra-ui/react'
 import {
   ResponsiveContainer,
   PieChart as RechartsPieChart,
@@ -13,6 +14,8 @@ type Props = {
 }
 
 export const PieChart = ({ data }: Props) => {
+  const radius = useBreakpointValue({ base: 70, lg: 150 })
+
   return (
     <ResponsiveContainer width='100%' height='100%'>
       {data.length ? (
@@ -22,7 +25,7 @@ export const PieChart = ({ data }: Props) => {
             cx='50%'
             cy='50%'
             label={CustomizedLabel}
-            outerRadius={150}
+            outerRadius={radius}
             fill='#8884d8'
             dataKey='value'
           >

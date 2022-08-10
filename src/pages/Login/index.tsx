@@ -1,7 +1,7 @@
-import { Center, Grid, GridItem, Heading, Button } from '@chakra-ui/react'
+import { Center, Heading } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { GoogleLogo } from 'phosphor-react'
-import { LoginTemplate } from '@/components'
+import { Button, LoginTemplate } from '@/components'
 import { useAuth } from '@/contexts'
 import { useEffect } from 'react'
 

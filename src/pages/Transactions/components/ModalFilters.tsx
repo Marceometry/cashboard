@@ -1,5 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Checkbox, Flex, Grid, GridItem, Text } from '@chakra-ui/react'
+import {
+  Checkbox,
+  Flex,
+  Grid,
+  GridItem,
+  Text,
+  useBreakpointValue,
+} from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { Accordion, CheckboxGroup, Input, Modal, Select } from '@/components'
 import { masks, sortAlphabetically } from '@/utils'
@@ -15,6 +22,7 @@ type Props = {
 }
 
 export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
+  const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const storage = useLocalStorage()
   const { categoryList: contextCategoryList } = useCategories()
   const categoryList = useMemo(
@@ -123,7 +131,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
               panel: (
                 <CheckboxGroup
                   name='selectedCategories'
-                  columns={3}
+                  columns={isSmallScreen ? 2 : 3}
                   defaultCheckAll
                   options={categoryList.map((item) => ({
                     label: item.name,

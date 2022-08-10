@@ -7,8 +7,8 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   AlertDialogProps,
-  Button,
 } from '@chakra-ui/react'
+import { Button } from '@/components'
 
 export type DialogProps = Omit<
   AlertDialogProps,

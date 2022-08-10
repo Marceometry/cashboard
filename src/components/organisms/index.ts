@@ -1,4 +1,5 @@
 export * from './Header'
+export * from './MobileSidebar'
 export * from './Sidebar'
 export * from './Table'
 export * from './Tabs'

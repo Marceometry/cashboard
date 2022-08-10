@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { Grid, GridItem } from '@chakra-ui/react'
+import { Grid, GridItem, useBreakpointValue } from '@chakra-ui/react'
 import { Card, ComposedChart, Loading, MainTemplate, Tabs } from '@/components'
 import { TransactionModel, useTransactions } from '@/contexts'
 import { generateChartData, getTabs, View } from './constants'
 
 export const Home = () => {
+  const isSmallScreen = useBreakpointValue({ base: true, md: false })
   const { transactionList, isLoading } = useTransactions()
   const [currentView, setCurrentView] = useState<View>('total')
 
@@ -43,7 +44,8 @@ export const Home = () => {
       <Card>
         <Tabs tabs={tabs} onChange={handleTabsChange} flex='none' />
 
-        <Grid templateColumns='1fr 1fr' h='100%'>
+        {/* {!isSmallScreen && ( */}
+        <Grid templateColumns={isSmallScreen ? '1fr' : '1fr 1fr'} h='100%'>
           <GridItem>
             {isLoading ? (
               <Loading />
@@ -79,6 +81,7 @@ export const Home = () => {
             )}
           </GridItem>
         </Grid>
+        {/* )} */}
       </Card>
     </MainTemplate>
   )

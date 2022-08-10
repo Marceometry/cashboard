@@ -2,7 +2,6 @@ import { UseFormReturn } from 'react-hook-form'
 import {
   Modal as ChakraModal,
   ModalProps as ChakraModalProps,
-  Button,
   Flex,
   ModalBody,
   ModalCloseButton,
@@ -10,8 +9,9 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  useBreakpointValue,
 } from '@chakra-ui/react'
-import { Form } from '@/components'
+import { Button, Form } from '@/components'
 import { useKeyboardListener } from '@/hooks'
 
 type ButtonProps = {
@@ -36,8 +36,9 @@ export const Modal = ({
   onConfirm,
   extraButton,
   formMethods,
-  maxWidth = 600,
+  maxWidth = 660,
 }: ModalProps) => {
+  const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const { useShiftShortcut } = useKeyboardListener()
 
   useShiftShortcut(() => extraButton?.onClick(), 'Enter')
@@ -50,14 +51,19 @@ export const Modal = ({
       isCentered
     >
       <ModalOverlay />
-      <ModalContent maxW={maxWidth} overflow='auto'>
+      <ModalContent maxW={maxWidth} mx={8} overflow='auto'>
         <ModalHeader fontSize='2xl'>{title}</ModalHeader>
         <ModalCloseButton />
         <Form formMethods={formMethods} onSubmit={onConfirm}>
           <ModalBody maxH='50vh'>{children}</ModalBody>
 
           <ModalFooter>
-            <Flex w='full' justify='center' gap='6'>
+            <Flex
+              w='full'
+              justify='center'
+              gap={isSmallScreen ? '3' : '6'}
+              direction={isSmallScreen ? 'column' : 'row'}
+            >
               <Button type='submit' size='lg' w='100%'>
                 Confirmar
               </Button>

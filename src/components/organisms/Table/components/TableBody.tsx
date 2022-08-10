@@ -40,7 +40,10 @@ export const TableBody = ({
 
   return (
     <Box ref={containerRef} overflow='auto' h='100%'>
-      <ChakraTable {...props}>
+      <ChakraTable
+        {...props}
+        size={{ base: 'sm', sm: 'sm', md: 'sm', lg: 'lg' }}
+      >
         <Thead>
           <Tr>
             {columns.map((column, index) => (

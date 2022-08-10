@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Grid, GridItem, Center } from '@chakra-ui/react'
+import { Grid, GridItem, Center, useBreakpointValue } from '@chakra-ui/react'
 import { Modal, Input, Radio } from '@/components'
 import { AddTransactionModel, useCategories, useTransactions } from '@/contexts'
 import { formatDateValue, masks } from '@/utils'
@@ -20,6 +20,7 @@ const defaultValues = {
 }
 
 export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
+  const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const { categoryList } = useCategories()
   const { transactionList, addTransaction, updateTransaction, isLoading } =
     useTransactions()
@@ -106,7 +107,10 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
             : undefined
         }
       >
-        <Grid templateColumns='1fr 1fr' gap='4'>
+        <Grid
+          templateColumns={isSmallScreen ? '1fr' : '1fr 1fr'}
+          gap={isSmallScreen ? '2' : '4'}
+        >
           <GridItem>
             <Input label='Descrição' name='description' required />
           </GridItem>

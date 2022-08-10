@@ -19,7 +19,6 @@ export const Sidebar = () => {
   const location = useLocation()
   const storage = useLocalStorage()
   const [isOpen, setIsOpen] = useState(storage.get('sidebar-default-open'))
-  const headingRef = useRef<HTMLDivElement>(null)
 
   const bg = useColorModeValue('gray.300', 'gray.600')
   const activeBg = useColorModeValue('gray.400', 'gray.700')
@@ -45,12 +44,7 @@ export const Sidebar = () => {
       overflow='hidden'
       bg={bg}
     >
-      <Heading
-        py='4'
-        px={isLargerThan1080 && isOpen ? '5' : '5'}
-        size='lg'
-        ref={headingRef}
-      >
+      <Heading py='4' size='lg' px={isLargerThan1080 && isOpen ? '5' : '5'}>
         {isOpen ? (
           <Flex gap='2'>
             <IconButton
