@@ -9,7 +9,7 @@ import {
   useColorMode,
   useBreakpointValue,
 } from '@chakra-ui/react'
-import { ChevronDownIcon } from '@chakra-ui/icons'
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
 import { SignOut } from 'phosphor-react'
 import { ThemeIcon } from '@/components'
 import { useAuth } from '@/contexts'
@@ -23,26 +23,30 @@ export const UserMenu = () => {
 
   return (
     <Menu>
-      <MenuButton
-        as={Button}
-        px='2'
-        borderRadius='999'
-        leftIcon={<Avatar size='sm' name={user.name} src={user.photoUrl} />}
-        rightIcon={<ChevronDownIcon />}
-      >
-        {showName && user.name}
-      </MenuButton>
+      {({ isOpen }) => (
+        <>
+          <MenuButton
+            as={Button}
+            px='2'
+            borderRadius='999'
+            leftIcon={<Avatar size='sm' name={user.name} src={user.photoUrl} />}
+            rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+          >
+            {showName && user.name}
+          </MenuButton>
 
-      <MenuList minWidth='200px'>
-        <MenuItem icon={<ThemeIcon />} onClick={toggleColorMode}>
-          Alterar Tema
-        </MenuItem>
-        {/* <MenuItem icon={<SettingsIcon />}>Configurações</MenuItem> */}
-        <MenuDivider />
-        <MenuItem icon={<SignOut />} onClick={signOut}>
-          Sair
-        </MenuItem>
-      </MenuList>
+          <MenuList minWidth='200px'>
+            <MenuItem icon={<ThemeIcon />} onClick={toggleColorMode}>
+              Alterar Tema
+            </MenuItem>
+            {/* <MenuItem icon={<SettingsIcon />}>Configurações</MenuItem> */}
+            <MenuDivider />
+            <MenuItem icon={<SignOut />} onClick={signOut}>
+              Sair
+            </MenuItem>
+          </MenuList>
+        </>
+      )}
     </Menu>
   )
 }

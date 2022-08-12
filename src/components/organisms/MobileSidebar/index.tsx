@@ -11,6 +11,7 @@ import {
   ListItem,
   Text,
   useColorModeValue,
+  Divider,
 } from '@chakra-ui/react'
 import { Button } from '@/components'
 import { dashboardRoutes } from '@/router'
@@ -33,6 +34,7 @@ export const MobileSidebar = ({ isOpen, onClose }: Props) => {
       <DrawerContent bg={bg}>
         <DrawerCloseButton top={4} left={4} />
         <DrawerHeader ml={10}>Cashboard</DrawerHeader>
+        <Divider />
 
         <DrawerBody px={0}>
           <List width='full'>

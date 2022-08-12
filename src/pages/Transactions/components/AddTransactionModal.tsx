@@ -167,7 +167,7 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
           <Radio
             required
             name='category'
-            columns={3}
+            columns={isSmallScreen ? 2 : 3}
             options={categoryList.map((category) => ({
               label: category.name,
               value: category.name,
