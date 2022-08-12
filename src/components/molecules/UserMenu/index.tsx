@@ -10,16 +10,26 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react'
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
-import { SignOut } from 'phosphor-react'
+import { Download, SignOut } from 'phosphor-react'
+import { useAuth, useTransactions } from '@/contexts'
 import { ThemeIcon } from '@/components'
-import { useAuth } from '@/contexts'
+import { useDownload } from '@/hooks'
+import { sortByDate } from '@/utils'
 
 export const UserMenu = () => {
   const showName = useBreakpointValue({ base: false, sm: true })
+  const download = useDownload()
   const { user, signOut } = useAuth()
+  const { transactionList } = useTransactions()
   const { toggleColorMode } = useColorMode()
 
   if (!user) return null
+
+  const localBackup = () => {
+    const username = user.name.toUpperCase().replaceAll(' ', '-')
+    const fileName = `cashboard-backup-${username}`
+    download(fileName, sortByDate(transactionList, true), 'json')
+  }
 
   return (
     <Menu>
@@ -38,6 +48,9 @@ export const UserMenu = () => {
           <MenuList minWidth='200px'>
             <MenuItem icon={<ThemeIcon />} onClick={toggleColorMode}>
               Alterar Tema
+            </MenuItem>
+            <MenuItem icon={<Download />} onClick={localBackup}>
+              Backup Local
             </MenuItem>
             {/* <MenuItem icon={<SettingsIcon />}>Configurações</MenuItem> */}
             <MenuDivider />
