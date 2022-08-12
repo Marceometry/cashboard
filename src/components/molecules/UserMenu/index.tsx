@@ -10,25 +10,31 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react'
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
-import { Download, SignOut } from 'phosphor-react'
+import { Download, FileArrowDown, SignOut } from 'phosphor-react'
 import { useAuth, useTransactions } from '@/contexts'
+import { useFileHandle } from '@/hooks'
 import { ThemeIcon } from '@/components'
-import { useDownload } from '@/hooks'
 import { sortByDate } from '@/utils'
+import { useEffect } from 'react'
 
 export const UserMenu = () => {
   const showName = useBreakpointValue({ base: false, sm: true })
-  const download = useDownload()
-  const { user, signOut } = useAuth()
-  const { transactionList } = useTransactions()
   const { toggleColorMode } = useColorMode()
+  const { importFile, fileContent, downloadFile } = useFileHandle()
+  const { transactionList, uploadTransactionList } = useTransactions()
+  const { user, signOut } = useAuth()
+
+  useEffect(() => {
+    if (!fileContent) return
+    uploadTransactionList(fileContent)
+  }, [fileContent])
 
   if (!user) return null
 
   const localBackup = () => {
     const username = user.name.toUpperCase().replaceAll(' ', '-')
     const fileName = `cashboard-backup-${username}`
-    download(fileName, sortByDate(transactionList, true), 'json')
+    downloadFile(fileName, sortByDate(transactionList, true), 'json')
   }
 
   return (
@@ -51,6 +57,9 @@ export const UserMenu = () => {
             </MenuItem>
             <MenuItem icon={<Download />} onClick={localBackup}>
               Backup Local
+            </MenuItem>
+            <MenuItem icon={<FileArrowDown />} onClick={importFile}>
+              Importar arquivo
             </MenuItem>
             {/* <MenuItem icon={<SettingsIcon />}>Configurações</MenuItem> */}
             <MenuDivider />

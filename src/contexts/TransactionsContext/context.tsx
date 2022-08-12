@@ -8,7 +8,7 @@ import {
 import { v4 as uuid } from 'uuid'
 import { useAuth } from '@/contexts'
 import { useApiCall, useFirebaseDatabase } from '@/hooks'
-import { formatTransaction } from './utils'
+import { formatTransaction, isTransactionListInvalid } from './utils'
 import {
   TransactionsContextData,
   TransactionModel,
@@ -36,6 +36,11 @@ export function TransactionsContextProvider({
   const { call, isLoading, setIsLoading } = useApiCall()
   const [transactionList, setTransactionList] = useState<TransactionModel[]>([])
 
+  const addTransactionListItem = call(async (payload: TransactionModel) => {
+    const item = formatTransaction({ ...payload, id: payload.id || uuid() })
+    await remoteAddTransaction(item)
+  })
+
   const addTransaction = call(
     async (payload: AddTransactionModel) => {
       const transaction = formatTransaction({ ...payload, id: uuid() })
@@ -57,6 +62,18 @@ export function TransactionsContextProvider({
       await remoteRemoveTransaction(transaction.id)
     },
     { toastText: 'Transação excluída com sucesso!' }
+  )
+
+  const uploadTransactionList = call(
+    (list: string) => {
+      const parsed: TransactionModel[] = JSON.parse(list)
+
+      const isInvalid = isTransactionListInvalid(parsed)
+      if (isInvalid) throw new Error()
+
+      parsed.forEach((item) => addTransactionListItem(item))
+    },
+    { toastText: 'Upload feito com sucesso!', toastError: 'Arquivo Inválido' }
   )
 
   useEffect(() => {
@@ -100,6 +117,7 @@ export function TransactionsContextProvider({
         addTransaction,
         updateTransaction,
         removeTransaction,
+        uploadTransactionList,
       }}
     >
       {children}

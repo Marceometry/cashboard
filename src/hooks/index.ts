@@ -1,6 +1,6 @@
 export * from './useApiCall'
 export * from './useDebouncedValue'
-export * from './useDownload'
+export * from './useFileHandle'
 export * from './useFirebase'
 export * from './useInfiniteScroll'
 export * from './useKeyboardListener'
