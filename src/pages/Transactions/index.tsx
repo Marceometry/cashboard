@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Table, Card, MainTemplate } from '@/components'
 import { TransactionModel, useDialog, useTransactions } from '@/contexts'
 import { masks, sortByDate } from '@/utils'
@@ -11,6 +11,7 @@ import {
   FilterModel,
   generateChartData,
   chartBars,
+  getIncomeAndOutcome,
 } from './constants'
 import { AddTransactionModal, ModalFilters } from './components'
 import { filterData } from './utils'
@@ -20,20 +21,21 @@ export const Transactions = () => {
   const { openDialog } = useDialog()
   const { transactionList, removeTransaction, isLoading } = useTransactions()
 
-  const [tableData, setTableData] = useState<TransactionModel[]>([])
-  const [tableFilters, setTableFilters] = useState(
-    () => storage.get('transactions-table-filters') || defaultFilterValues
-  )
-
   const [isModalTransactionOpen, setIsModalTransactionOpen] = useState(false)
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
   const [selectedTransactionId, setSelectedTransactionId] = useState(
     '' as string | undefined
   )
+  const [tableFilters, setTableFilters] = useState(
+    () => storage.get('transactions-table-filters') || defaultFilterValues
+  )
+  const [incomeAndOutcome, setIncomeAndOutcome] = useState<[number, number]>([
+    0, 0,
+  ])
 
-  useEffect(() => {
+  const tableData = useMemo(() => {
     const filteredData = filterData(transactionList, tableFilters)
-    setTableData(filteredData)
+    return filteredData
   }, [transactionList, tableFilters])
 
   const handleSetFilters = (filters: FilterModel) => {
@@ -54,7 +56,11 @@ export const Transactions = () => {
     })
   }
 
-  const caption = getCaption(tableFilters, tableData)
+  const handleSearch = (text: string, result: TransactionModel[]) => {
+    setIncomeAndOutcome(getIncomeAndOutcome(result))
+  }
+
+  const caption = getCaption(tableFilters, incomeAndOutcome)
   const buttons = getButtons({
     handleNewTransaction: () => handleOpenTransactionModal(),
     handleOpenModalFilter: () => setIsModalFiltersOpen(true),
@@ -72,6 +78,7 @@ export const Transactions = () => {
           columns={columns}
           buttons={buttons}
           caption={caption}
+          onSearch={handleSearch}
           sortFunction={sortByDate}
           isLoading={isLoading}
           charts={[

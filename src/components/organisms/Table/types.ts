@@ -35,6 +35,7 @@ export type TableProps = ChakraTableProps & {
   caption?: React.ReactNode
   isLoading?: boolean
   noSearch?: boolean
+  onSearch?: (text: string, result: any[]) => void
   sortBy?: string
   sortFunction?: (
     array: any[],

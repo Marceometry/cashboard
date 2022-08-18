@@ -51,8 +51,10 @@ export const getButtons = ({
   ],
 })
 
-export const getCaption = (filters: FilterModel, data: TransactionModel[]) => {
-  const [income, outcome] = data.reduce(
+export const getIncomeAndOutcome = (
+  data: TransactionModel[]
+): [number, number] => {
+  return data.reduce(
     (acc, item) => {
       const index = item.type === 'income' ? 0 : 1
       const value = acc[index] + item.amount
@@ -61,16 +63,18 @@ export const getCaption = (filters: FilterModel, data: TransactionModel[]) => {
     },
     [0, 0]
   )
+}
 
+export const getCaption = (filters: FilterModel, values: [number, number]) => {
   const Balance = () => (
     <Stat>
       <Flex alignItems='center' gap='1'>
         <StatArrow type='increase' />
-        <Text fontSize='md'>{masks.valueToMoney(income)}</Text>
+        <Text fontSize='md'>{masks.valueToMoney(values[0])}</Text>
       </Flex>
       <Flex alignItems='center' gap='1'>
         <StatArrow type='decrease' />
-        <Text fontSize='md'>{masks.valueToMoney(outcome)}</Text>
+        <Text fontSize='md'>{masks.valueToMoney(values[1])}</Text>
       </Flex>
     </Stat>
   )

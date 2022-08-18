@@ -1,4 +1,4 @@
-import { useInfiniteScroll } from '@/hooks'
+import { useEffect, useRef } from 'react'
 import {
   Table as ChakraTable,
   Thead,
@@ -10,7 +10,7 @@ import {
   Box,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { useEffect, useRef } from 'react'
+import { useInfiniteScroll } from '@/hooks'
 import { TableProps } from '../types'
 
 export const TableBody = ({

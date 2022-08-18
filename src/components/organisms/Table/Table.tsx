@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Box, Flex } from '@chakra-ui/react'
 import { useDebouncedValue } from '@/hooks'
 import { ComposedChart, EmptyData, Loading, PieChart } from '@/components'
@@ -14,10 +14,10 @@ export const Table = ({
   noSearch,
   charts,
   onViewChange,
+  onSearch,
   isLoading,
   ...props
 }: TableProps) => {
-  const [filteredData, setFilteredData] = useState<any[]>([])
   const [searchText, setSearchText] = useState('')
   const debouncedSearchText = useDebouncedValue(searchText)
   const [currentView, setCurrentView] = useState<'table' | ChartType>('table')
@@ -31,11 +31,15 @@ export const Table = ({
     return filterByText(data, columns, text)
   }
 
-  useEffect(() => {
-    if (noSearch) return setFilteredData(data)
+  const filteredData = useMemo(() => {
+    if (noSearch) return data
     const searchResult = handleSearch(debouncedSearchText)
-    setFilteredData(searchResult)
+    return searchResult
   }, [data, debouncedSearchText])
+
+  useEffect(() => {
+    onSearch?.(debouncedSearchText, filteredData)
+  }, [debouncedSearchText, filteredData])
 
   useEffect(() => {
     onViewChange?.(currentView)
