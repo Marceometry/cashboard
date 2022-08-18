@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Grid, GridItem, Center, useBreakpointValue } from '@chakra-ui/react'
-import { Modal, Input, Radio } from '@/components'
+import { FormModal, Input, Radio } from '@/components'
 import { AddTransactionModel, useCategories, useTransactions } from '@/contexts'
 import { formatDateValue, masks } from '@/utils'
 
@@ -91,7 +91,7 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
 
   return (
     <>
-      <Modal
+      <FormModal
         isOpen={isOpen}
         onClose={onClose}
         onConfirm={handleSubmit}
@@ -153,10 +153,10 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
             ]}
           />
         </Center>
-      </Modal>
+      </FormModal>
 
       {!!categoryList.length && (
-        <Modal
+        <FormModal
           title='Selecionar Categoria'
           isOpen={isCategoriesModalOpen}
           onClose={() => setIsCategoriesModalOpen(false)}
@@ -173,7 +173,7 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
               value: category.name,
             }))}
           />
-        </Modal>
+        </FormModal>
       )}
     </>
   )

@@ -3,7 +3,7 @@ import { Flex, Grid, GridItem, Text } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { masks } from '@/utils'
 import { useLocalStorage } from '@/hooks'
-import { Input, Modal, Select } from '@/components'
+import { Input, FormModal, Select } from '@/components'
 import { MONTH_LIST, YEAR_LIST } from '@/constants'
 import { CategoriesFilterModel } from '@/contexts'
 import { defaultEmptyFilterValues, FilterModel } from '../types'
@@ -63,7 +63,7 @@ export const ModalFilters = ({
   }, [isMonthDisabled])
 
   return (
-    <Modal
+    <FormModal
       isOpen={isOpen}
       onClose={onClose}
       onConfirm={handleSubmit}
@@ -100,6 +100,6 @@ export const ModalFilters = ({
           </Flex>
         </GridItem>
       </Grid>
-    </Modal>
+    </FormModal>
   )
 }

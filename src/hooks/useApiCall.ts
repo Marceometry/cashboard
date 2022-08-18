@@ -32,6 +32,7 @@ export const useApiCall = () => {
         console.warn(error)
         const text = generateToast(options?.toastError, error)
         toast(text || 'Algo deu errado', 'error')
+      } finally {
         setIsLoading(false)
       }
     }

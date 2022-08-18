@@ -1,5 +1,6 @@
 export * from './Button'
 export * from './CheckboxGroup'
+export * from './CodeBlock'
 export * from './EmptyData'
 export * from './FormControl'
 export * from './IconButton'

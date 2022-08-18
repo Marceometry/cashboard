@@ -8,7 +8,13 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
-import { Accordion, CheckboxGroup, Input, Modal, Select } from '@/components'
+import {
+  Accordion,
+  CheckboxGroup,
+  Input,
+  FormModal,
+  Select,
+} from '@/components'
 import { masks, sortAlphabetically } from '@/utils'
 import { MONTH_LIST, YEAR_LIST } from '@/constants'
 import { useCategories } from '@/contexts'
@@ -71,7 +77,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
   }, [categoryList])
 
   return (
-    <Modal
+    <FormModal
       isOpen={isOpen}
       onClose={onClose}
       onConfirm={handleSubmit}
@@ -143,6 +149,6 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
           ]}
         />
       </Grid>
-    </Modal>
+    </FormModal>
   )
 }
