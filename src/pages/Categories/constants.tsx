@@ -74,7 +74,7 @@ export const getCharts = (
   },
   {
     type: 'area',
-    isMonth: true,
+    labelType: 'month',
     data: areaChartData,
     sections: chartData.map((item, index) => ({
       label: item.name,

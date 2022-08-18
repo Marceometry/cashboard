@@ -13,6 +13,8 @@ import {
 import { EmptyData } from '@/components'
 import { masks } from '@/utils'
 
+export type LabelType = 'month' | 'year' | 'day'
+
 type Section = {
   dataKey?: string
   label: string
@@ -25,13 +27,29 @@ type Data = any & {
 
 type Props = {
   type: 'bar' | 'area'
-  isMonth?: boolean
+  labelType?: LabelType
   sections: Section[]
   data: Data[]
 }
 
-export const ComposedChart = ({ data, sections, type, isMonth }: Props) => {
+export const ComposedChart = ({ data, sections, type, labelType }: Props) => {
   const tooltipBg = useColorModeValue('#f7fafc', '#2d3748')
+
+  const getLabel = () => {
+    let label = ''
+    switch (labelType) {
+      case 'month':
+        label = 'Mês '
+        break
+      case 'year':
+        label = 'Ano '
+        break
+      case 'day':
+        label = 'Dia '
+        break
+    }
+    return label
+  }
 
   return (
     <ResponsiveContainer width='100%' height='100%'>
@@ -53,9 +71,7 @@ export const ComposedChart = ({ data, sections, type, isMonth }: Props) => {
           <Tooltip
             contentStyle={{ backgroundColor: tooltipBg }}
             formatter={(data: number) => masks.valueToMoney(data)}
-            labelFormatter={(name: string) =>
-              `${isMonth ? 'Mês' : 'Dia'} ${name}`
-            }
+            labelFormatter={(name: string) => `${getLabel()}${name}`}
           />
           <Legend />
           {sections.map((section) =>

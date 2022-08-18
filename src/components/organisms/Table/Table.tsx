@@ -71,7 +71,7 @@ export const Table = ({
               type={currentChart?.type!}
               data={currentChart?.data || []}
               sections={currentChart?.sections || []}
-              isMonth={currentChart?.isMonth}
+              labelType={currentChart?.labelType}
             />
           )}
         </Box>

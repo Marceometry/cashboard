@@ -1,32 +1,22 @@
 import { Flex, useBreakpointValue } from '@chakra-ui/react'
-import { isThisMonth, isThisYear } from 'date-fns'
-import { TransactionModel } from '@/contexts'
+import { TransactionType } from '@/contexts'
 import { Stat } from '@/components'
-import { DateFilter } from '../constants'
+import { ChartData } from '../constants'
 
 type Props = {
-  incomeItems: TransactionModel[]
-  outcomeItems: TransactionModel[]
-  filter?: DateFilter
+  data: ChartData
 }
 
-const getAmountByDate = (array: TransactionModel[], filter?: DateFilter) => {
-  const filtered = array.filter((item) => {
-    const date = new Date(item.date)
-    return filter === 'month'
-      ? isThisMonth(date)
-      : filter === 'year'
-      ? isThisYear(date)
-      : true
-  })
-  return filtered.reduce((acc, item) => acc + item.amount, 0)
+const getAmountByType = (array: ChartData, type: TransactionType) => {
+  return array.reduce((acc, item) => acc + item[type], 0)
 }
 
-export const TabsContent = ({ incomeItems, outcomeItems, filter }: Props) => {
+export const TabsContent = ({ data }: Props) => {
   const isSmallScreen = useBreakpointValue({ base: true, md: false })
 
-  const totalIncome = getAmountByDate(incomeItems, filter)
-  const totalOutcome = getAmountByDate(outcomeItems, filter)
+  const totalIncome = getAmountByType(data, 'income')
+  const totalOutcome = getAmountByType(data, 'outcome')
+  const totalBalance = totalIncome - totalOutcome
 
   return (
     <Flex flex='1' gap='6' direction='column'>
@@ -35,8 +25,24 @@ export const TabsContent = ({ incomeItems, outcomeItems, filter }: Props) => {
         direction={isSmallScreen ? 'column' : 'row'}
         gap={isSmallScreen ? '4' : ''}
       >
-        <Stat label='Ganhos totais' value={totalIncome} increase />
-        <Stat label='Gastos totais' value={totalOutcome} />
+        <Stat
+          type='increase'
+          label='Ganhos totais'
+          value={totalIncome}
+          size={isSmallScreen ? 'md' : 'lg'}
+        />
+        <Stat
+          type='decrease'
+          label='Gastos totais'
+          value={totalOutcome}
+          size={isSmallScreen ? 'md' : 'lg'}
+        />
+        <Stat
+          type='balance'
+          label='Total economizado'
+          value={totalBalance}
+          size={isSmallScreen ? 'md' : 'lg'}
+        />
       </Flex>
     </Flex>
   )

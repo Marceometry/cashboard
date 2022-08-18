@@ -6,23 +6,27 @@ import {
   StatArrow,
   Grid,
   Center,
+  Box,
 } from '@chakra-ui/react'
 
 export type StatProps = {
   label: string
   value: number
-  increase?: boolean
+  type: 'increase' | 'decrease' | 'balance'
+  size?: 'lg' | 'md'
 }
 
-export const Stat = ({ label, value, increase }: StatProps) => {
+const Balance = () => <Box w='2.5' h='2.5' bg='blue.400' rounded='full' />
+
+export const Stat = ({ label, value, type, size = 'lg' }: StatProps) => {
   return (
     <ChakraStat>
       <Grid placeItems='center'>
         <Center gap='2'>
-          <StatArrow type={increase ? 'increase' : 'decrease'} />
-          <StatLabel fontSize='xl'>{label}</StatLabel>
+          {type === 'balance' ? <Balance /> : <StatArrow type={type} />}
+          <StatLabel fontSize={size === 'lg' ? 'xl' : 'md'}>{label}</StatLabel>
         </Center>
-        <StatNumber fontSize='3xl' mt='2'>
+        <StatNumber fontSize={size === 'lg' ? '3xl' : 'lg'} mt='2'>
           {masks.valueToMoney(value)}
         </StatNumber>
       </Grid>

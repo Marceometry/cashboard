@@ -77,6 +77,7 @@ export const Transactions = () => {
           charts={[
             {
               type: 'bar',
+              labelType: 'day',
               sections: chartBars,
               data: generateChartData(tableData),
             },

@@ -1,87 +1,44 @@
 import { useState } from 'react'
-import { Grid, GridItem, useBreakpointValue } from '@chakra-ui/react'
+import { useTransactions } from '@/contexts'
 import { Card, ComposedChart, Loading, MainTemplate, Tabs } from '@/components'
-import { TransactionModel, useTransactions } from '@/contexts'
-import { generateChartData, getTabs, View } from './constants'
+import { getChartData, getChartSections, getTabs, View } from './constants'
 
 export const Home = () => {
-  const isSmallScreen = useBreakpointValue({ base: true, md: false })
   const { transactionList, isLoading } = useTransactions()
-  const [currentView, setCurrentView] = useState<View>('total')
+  const [currentView, setCurrentView] = useState<View>('month')
 
-  const [incomeItems, outcomeItems] = transactionList.reduce(
-    (acc, item) => {
-      const index = item.type === 'income' ? 0 : 1
-      const value = [...acc[index], item]
-      acc[index] = value
-      return acc
-    },
-    [[], []] as TransactionModel[][]
-  )
+  const chartData = getChartData(transactionList, currentView)
+  const chartSections = getChartSections(currentView)
 
+  const tabs = getTabs(chartData)
   const handleTabsChange = (index: number) => {
-    let view: View = 'total'
+    let view: View = 'month'
     switch (index) {
-      case 1:
+      case 0:
         view = 'month'
         break
-      case 2:
+      case 1:
         view = 'year'
         break
     }
     setCurrentView(view)
   }
 
-  const tabs = getTabs(incomeItems, outcomeItems)
-
-  const { incomeData, outcomeData } = generateChartData(
-    transactionList,
-    currentView
-  )
-
   return (
     <MainTemplate>
       <Card>
         <Tabs tabs={tabs} onChange={handleTabsChange} flex='none' />
 
-        {/* {!isSmallScreen && ( */}
-        <Grid templateColumns={isSmallScreen ? '1fr' : '1fr 1fr'} h='100%'>
-          <GridItem>
-            {isLoading ? (
-              <Loading />
-            ) : (
-              <ComposedChart
-                type='area'
-                isMonth={currentView !== 'month'}
-                data={incomeData}
-                sections={[
-                  {
-                    label: 'Entrada',
-                    color: '#48bb78',
-                  },
-                ]}
-              />
-            )}
-          </GridItem>
-          <GridItem>
-            {isLoading ? (
-              <Loading />
-            ) : (
-              <ComposedChart
-                type='area'
-                isMonth={currentView !== 'month'}
-                data={outcomeData}
-                sections={[
-                  {
-                    label: 'Saída',
-                    color: '#f56565',
-                  },
-                ]}
-              />
-            )}
-          </GridItem>
-        </Grid>
-        {/* )} */}
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <ComposedChart
+            type='area'
+            labelType={currentView}
+            sections={chartSections}
+            data={chartData}
+          />
+        )}
       </Card>
     </MainTemplate>
   )

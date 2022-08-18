@@ -1,6 +1,6 @@
 import React from 'react'
 import { TableProps as ChakraTableProps } from '@chakra-ui/react'
-import { IconButtonProps } from '@/components'
+import { IconButtonProps, LabelType } from '@/components'
 
 export type ColumnProps<T> = {
   label: string
@@ -25,7 +25,7 @@ export type ChartProps = {
   type: ChartType
   data: any[]
   sections?: any[]
-  isMonth?: boolean
+  labelType?: LabelType
 }
 
 export type TableProps = ChakraTableProps & {
