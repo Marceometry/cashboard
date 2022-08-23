@@ -36,11 +36,6 @@ export function TransactionsContextProvider({
   const { call, isLoading, setIsLoading } = useApiCall()
   const [transactionList, setTransactionList] = useState<TransactionModel[]>([])
 
-  const addTransactionListItem = call(async (payload: TransactionModel) => {
-    const item = formatTransaction({ ...payload, id: payload.id || uuid() })
-    await remoteAddTransaction(item)
-  })
-
   const addTransaction = call(
     async (payload: AddTransactionModel) => {
       const transaction = formatTransaction({ ...payload, id: uuid() })
@@ -63,6 +58,11 @@ export function TransactionsContextProvider({
     },
     { toastText: 'Transação excluída com sucesso!' }
   )
+
+  const addTransactionListItem = call(async (payload: TransactionModel) => {
+    const item = formatTransaction({ ...payload, id: payload.id || uuid() })
+    await remoteAddTransaction(item)
+  })
 
   const uploadTransactionList = call(
     (list: string) => {

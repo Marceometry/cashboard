@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Grid, GridItem, Center, useBreakpointValue } from '@chakra-ui/react'
-import { FormModal, Input, Radio } from '@/components'
-import { AddTransactionModel, useCategories, useTransactions } from '@/contexts'
+import { useBreakpointValue } from '@chakra-ui/react'
+import { FormModal, Radio } from '@/components'
 import { formatDateValue, masks } from '@/utils'
+import {
+  AddTransactionModel,
+  useCategories,
+  useTags,
+  useTransactions,
+} from '@/contexts'
+import { Form } from './Form'
 
 type Props = {
   isOpen: boolean
@@ -16,11 +22,13 @@ const defaultValues = {
   category: '',
   description: '',
   type: 'outcome',
+  tags: [] as string[],
   date: formatDateValue(new Date()),
 }
 
 export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
+  const { tagList } = useTags()
   const { categoryList } = useCategories()
   const { transactionList, addTransaction, updateTransaction, isLoading } =
     useTransactions()
@@ -30,8 +38,6 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
 
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false)
   const [keepModalOpen, setKeepModalOpen] = useState(false)
-
-  const handleAddNew = () => setKeepModalOpen(true)
 
   const loadTransactionById = (id: string) => {
     const selectedTransaction = transactionList.find((item) => item.id === id)
@@ -101,58 +107,17 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
           !selectedId
             ? {
                 children: 'Adicionar novo',
-                onClick: handleAddNew,
                 isLoading: isLoading && keepModalOpen,
+                onClick: () => setKeepModalOpen(true),
               }
             : undefined
         }
       >
-        <Grid
-          templateColumns={isSmallScreen ? '1fr' : '1fr 1fr'}
-          gap={isSmallScreen ? '2' : '4'}
-        >
-          <GridItem>
-            <Input label='Descrição' name='description' required />
-          </GridItem>
-          <GridItem>
-            <Input
-              label='Valor'
-              name='amount'
-              required
-              mask={masks.monetaryValue}
-            />
-          </GridItem>
-
-          <GridItem>
-            <Input label='Data' name='date' type='date' required />
-          </GridItem>
-          <GridItem>
-            <Input
-              label='Categoria'
-              name='category'
-              rightIcon={
-                categoryList.length
-                  ? {
-                      icon: 'list',
-                      hasTooltip: true,
-                      'aria-label': 'Selecionar Categoria',
-                      onClick: () => setIsCategoriesModalOpen(true),
-                    }
-                  : undefined
-              }
-            />
-          </GridItem>
-        </Grid>
-
-        <Center mt='6'>
-          <Radio
-            name='type'
-            options={[
-              { label: 'Entrada', value: 'income' },
-              { label: 'Saída', value: 'outcome' },
-            ]}
-          />
-        </Center>
+        <Form
+          tagList={tagList}
+          categoryList={categoryList}
+          handleOpenCategoriesModal={() => setIsCategoriesModalOpen(true)}
+        />
       </FormModal>
 
       {!!categoryList.length && (

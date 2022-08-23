@@ -19,7 +19,7 @@ import { masks, sortAlphabetically } from '@/utils'
 import { MONTH_LIST, YEAR_LIST } from '@/constants'
 import { useCategories } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
-import { defaultFilterValues, FilterModel } from '../constants'
+import { defaultFilterValues, FilterModel } from '../../constants'
 
 type Props = {
   isOpen: boolean

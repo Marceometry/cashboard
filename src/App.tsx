@@ -3,6 +3,7 @@ import {
   AuthContextProvider,
   CategoriesContextProvider,
   DialogContextProvider,
+  TagsContextProvider,
   TransactionsContextProvider,
 } from '@/contexts'
 import { Router } from '@/router'
@@ -14,9 +15,11 @@ export const App = () => {
       <AuthContextProvider>
         <TransactionsContextProvider>
           <CategoriesContextProvider>
-            <DialogContextProvider>
-              <Router />
-            </DialogContextProvider>
+            <TagsContextProvider>
+              <DialogContextProvider>
+                <Router />
+              </DialogContextProvider>
+            </TagsContextProvider>
           </CategoriesContextProvider>
         </TransactionsContextProvider>
       </AuthContextProvider>

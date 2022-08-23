@@ -7,8 +7,9 @@ export const useFileHandle = () => {
   const toast = useToast()
 
   useEffect(() => {
-    const element = document.createElement("input")
-    element.type = "file"
+    const element = document.createElement('input')
+    element.type = 'file'
+    element.style.display = 'none'
     element.onchange = (e: any) => {
       const reader = new FileReader()
       reader.onload = async (e) => {
@@ -23,7 +24,7 @@ export const useFileHandle = () => {
   }, [])
 
   const downloadFile = (name: string, content: any, extension: string = 'txt') => {
-    const element = document.createElement("a")
+    const element = document.createElement('a')
     const textFile = new Blob([JSON.stringify(content)])
     element.href = URL.createObjectURL(textFile)
     element.download = `${name}.${extension}`

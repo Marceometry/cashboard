@@ -10,8 +10,9 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.1",
     "@chakra-ui/react": "^2.1.0",
-    "@emotion/react": "^11",
+    "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11",
+    "chakra-react-select": "^4.1.4",
     "date-fns": "^2.28.0",
     "firebase": "^9.9.0",
     "framer-motion": "^6",

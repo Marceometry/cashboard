@@ -11,6 +11,7 @@ export const formatTransaction = (
   description: payload.description,
   amount: Number(payload.amount),
   category: payload.category || 'Outros',
+  tags: payload.tags || [],
   date: payload.date.length === 10
     ? new Date(`${payload.date} 00:00:00`).toISOString()
     : new Date(payload.date).toISOString(),
