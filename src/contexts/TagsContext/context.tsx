@@ -19,12 +19,36 @@ export function TagsContextProvider({ children }: TagsContextProviderProps) {
   const [tagList, setTagList] = useState<TagModel[]>([])
 
   const generateTags = (transactions: TransactionModel[]): TagModel[] => {
-    const newTags = transactions.reduce((acc, transaction) => {
-      const { tags = [] } = transaction
-      const newTagList = tags.map((tag) => ({ name: tag }))
-      return [...acc, ...newTagList]
+    console.log(tagList)
+    const newTagList = transactions.reduce((acc: TagModel[], transaction) => {
+      const { type, amount, tags = [] } = transaction
+      const isIncome = type === 'income'
+      if (!!tags.length) console.log(tags)
+      tags.forEach((tag) => {
+        const tagIndex = acc.findIndex((item) => item.name === tag)
+
+        if (tagIndex < 0) {
+          return acc.push({
+            name: tag,
+            income: isIncome ? amount : 0,
+            outcome: !isIncome ? amount : 0,
+            balance: isIncome ? amount : -amount,
+          })
+        }
+
+        const { name, income, outcome, balance } = acc[tagIndex]
+        acc[tagIndex] = {
+          name,
+          income: isIncome ? income! + amount : income,
+          outcome: !isIncome ? outcome! + amount : outcome,
+          balance: isIncome ? balance! + amount : balance! - amount,
+        }
+      })
+
+      return acc
     }, [] as TagModel[])
-    return newTags
+    console.log(newTagList)
+    return newTagList
   }
 
   useEffect(() => {
@@ -33,13 +57,7 @@ export function TagsContextProvider({ children }: TagsContextProviderProps) {
   }, [transactionList])
 
   return (
-    <TagsContext.Provider
-      value={{
-        tagList,
-      }}
-    >
-      {children}
-    </TagsContext.Provider>
+    <TagsContext.Provider value={{ tagList }}>{children}</TagsContext.Provider>
   )
 }
 

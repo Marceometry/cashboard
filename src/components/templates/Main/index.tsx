@@ -1,5 +1,5 @@
 import { Flex, useBreakpointValue } from '@chakra-ui/react'
-import { Sidebar, Header } from '@/components'
+import { Sidebar, Header, Card } from '@/components'
 
 type Props = {
   children: React.ReactNode
@@ -14,7 +14,7 @@ export const MainTemplate = ({ children }: Props) => {
       <Flex flex='1' overflow='auto'>
         <Flex direction='column' w='full' flex='1' p='5' gap='5'>
           <Header isSidebarAppearing={showSidebar} />
-          {children}
+          <Card>{children}</Card>
         </Flex>
       </Flex>
     </Flex>

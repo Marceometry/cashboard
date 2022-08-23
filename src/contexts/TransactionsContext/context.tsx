@@ -88,7 +88,7 @@ export function TransactionsContextProvider({
       setTransactionList((oldState) => {
         return oldState.map((item) => {
           if (item.id !== data.id) return item
-          return { ...item, ...data }
+          return formatTransaction(data)
         })
       })
       setIsLoading(false)

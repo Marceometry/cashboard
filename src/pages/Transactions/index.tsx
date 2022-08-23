@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
-import { Table, Card, MainTemplate } from '@/components'
 import { TransactionModel, useDialog, useTransactions } from '@/contexts'
+import { Table, MainTemplate } from '@/components'
 import { masks, sortByDate } from '@/utils'
 import { useLocalStorage } from '@/hooks'
 import {
@@ -72,25 +72,23 @@ export const Transactions = () => {
 
   return (
     <MainTemplate>
-      <Card>
-        <Table
-          data={tableData}
-          columns={columns}
-          buttons={buttons}
-          caption={caption}
-          onSearch={handleSearch}
-          sortFunction={sortByDate}
-          isLoading={isLoading}
-          charts={[
-            {
-              type: 'bar',
-              labelType: 'day',
-              sections: chartBars,
-              data: generateChartData(tableData),
-            },
-          ]}
-        />
-      </Card>
+      <Table
+        data={tableData}
+        columns={columns}
+        buttons={buttons}
+        caption={caption}
+        onSearch={handleSearch}
+        sortFunction={sortByDate}
+        isLoading={isLoading}
+        charts={[
+          {
+            type: 'bar',
+            labelType: 'day',
+            sections: chartBars,
+            data: generateChartData(tableData),
+          },
+        ]}
+      />
 
       <AddTransactionModal
         isOpen={isModalTransactionOpen}

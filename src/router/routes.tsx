@@ -1,5 +1,5 @@
-import { ChartPie, House, Swap } from 'phosphor-react'
-import { Categories, Home, Login, Transactions } from '@/pages'
+import { ChartPie, House, Swap, Tag } from 'phosphor-react'
+import { Categories, Home, Login, Tags, Transactions } from '@/pages'
 
 type Route = {
   path: string
@@ -27,6 +27,12 @@ export const dashboardRoutes: Route[] = [
     path: '/categories',
     element: <Categories />,
     icon: <ChartPie />,
+  },
+  {
+    label: 'Tags',
+    path: '/tags',
+    element: <Tags />,
+    icon: <Tag />,
   },
 ]
 

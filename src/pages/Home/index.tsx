@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTransactions } from '@/contexts'
-import { Card, ComposedChart, Loading, MainTemplate, Tabs } from '@/components'
+import { ComposedChart, Loading, MainTemplate, Tabs } from '@/components'
 import { getChartData, getChartSections, getTabs, View } from './constants'
 
 export const Home = () => {
@@ -26,20 +26,18 @@ export const Home = () => {
 
   return (
     <MainTemplate>
-      <Card>
-        <Tabs tabs={tabs} onChange={handleTabsChange} flex='none' />
+      <Tabs tabs={tabs} onChange={handleTabsChange} flex='none' />
 
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <ComposedChart
-            type='area'
-            labelType={currentView}
-            sections={chartSections}
-            data={chartData}
-          />
-        )}
-      </Card>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <ComposedChart
+          type='area'
+          labelType={currentView}
+          sections={chartSections}
+          data={chartData}
+        />
+      )}
     </MainTemplate>
   )
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Card, MainTemplate, Table } from '@/components'
+import { MainTemplate, Table } from '@/components'
 import {
   CategoriesFilterModel,
   TransactionType,
@@ -47,25 +47,23 @@ export const Categories = () => {
 
   return (
     <MainTemplate>
-      <Card position='relative'>
-        <Table
-          sortBy={currentType}
-          buttons={buttons}
-          columns={columns}
-          caption={caption}
-          charts={charts}
-          data={data}
-          onViewChange={handleViewChange}
-          noSearch
-        />
+      <Table
+        sortBy={currentType}
+        buttons={buttons}
+        columns={columns}
+        caption={caption}
+        charts={charts}
+        data={data}
+        onViewChange={handleViewChange}
+        noSearch
+      />
 
-        <ModalFilters
-          handleFilter={handleFilter}
-          isOpen={isModalFiltersOpen}
-          onClose={() => setIsModalFiltersOpen(false)}
-          isMonthDisabled={isFilterMonthDisabled}
-        />
-      </Card>
+      <ModalFilters
+        handleFilter={handleFilter}
+        isOpen={isModalFiltersOpen}
+        onClose={() => setIsModalFiltersOpen(false)}
+        isMonthDisabled={isFilterMonthDisabled}
+      />
     </MainTemplate>
   )
 }

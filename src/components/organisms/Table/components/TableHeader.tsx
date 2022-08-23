@@ -35,7 +35,7 @@ export const TableHeader = ({
       {caption && <Heading fontSize='3xl'>{caption}</Heading>}
 
       <Flex gap='4' flexDirection={{ base: 'column', sm: 'row' }}>
-        {(!noSearch || currentView === 'table') && (
+        {!noSearch && currentView === 'table' && (
           <SearchInput searchText={searchText} setSearchText={setSearchText} />
         )}
 

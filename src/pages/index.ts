@@ -1,4 +1,5 @@
 export * from './Login'
 export * from './Home'
 export * from './Categories'
+export * from './Tags'
 export * from './Transactions'
