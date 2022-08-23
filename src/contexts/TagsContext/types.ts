@@ -8,4 +8,5 @@ export type TagModel = {
 
 export type TagsContextData = {
   tagList: TagModel[]
+  isLoading: boolean
 }

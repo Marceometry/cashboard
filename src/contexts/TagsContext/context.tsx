@@ -15,15 +15,14 @@ export type TagsContextProviderProps = {
 export const TagsContext = createContext({} as TagsContextData)
 
 export function TagsContextProvider({ children }: TagsContextProviderProps) {
-  const { transactionList } = useTransactions()
+  const { transactionList, isLoading } = useTransactions()
   const [tagList, setTagList] = useState<TagModel[]>([])
 
   const generateTags = (transactions: TransactionModel[]): TagModel[] => {
-    console.log(tagList)
     const newTagList = transactions.reduce((acc: TagModel[], transaction) => {
       const { type, amount, tags = [] } = transaction
       const isIncome = type === 'income'
-      if (!!tags.length) console.log(tags)
+
       tags.forEach((tag) => {
         const tagIndex = acc.findIndex((item) => item.name === tag)
 
@@ -47,7 +46,6 @@ export function TagsContextProvider({ children }: TagsContextProviderProps) {
 
       return acc
     }, [] as TagModel[])
-    console.log(newTagList)
     return newTagList
   }
 
@@ -57,7 +55,9 @@ export function TagsContextProvider({ children }: TagsContextProviderProps) {
   }, [transactionList])
 
   return (
-    <TagsContext.Provider value={{ tagList }}>{children}</TagsContext.Provider>
+    <TagsContext.Provider value={{ tagList, isLoading }}>
+      {children}
+    </TagsContext.Provider>
   )
 }
 

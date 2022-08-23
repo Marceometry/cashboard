@@ -18,7 +18,7 @@ import {
 
 export const Categories = () => {
   const storage = useLocalStorage()
-  const { generateFilteredCategories, generateCategoriesHistory } =
+  const { generateFilteredCategories, generateCategoriesHistory, isLoading } =
     useCategories()
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
   const [isFilterMonthDisabled, setIsFilterMonthDisabled] = useState(false)
@@ -49,6 +49,7 @@ export const Categories = () => {
     <MainTemplate>
       <Table
         sortBy={currentType}
+        isLoading={isLoading}
         buttons={buttons}
         columns={columns}
         caption={caption}

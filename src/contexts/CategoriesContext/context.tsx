@@ -23,7 +23,7 @@ export const CategoriesContext = createContext({} as CategoriesContextData)
 export function CategoriesContextProvider({
   children,
 }: CategoriesContextProviderProps) {
-  const { transactionList } = useTransactions()
+  const { transactionList, isLoading } = useTransactions()
   const [categoryList, setCategoryList] = useState<CategoryModel[]>([])
 
   const generateCategories = (
@@ -129,6 +129,7 @@ export function CategoriesContextProvider({
   return (
     <CategoriesContext.Provider
       value={{
+        isLoading,
         categoryList,
         setCategoryList,
         generateFilteredCategories,

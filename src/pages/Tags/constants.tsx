@@ -1,9 +1,11 @@
 import { Text } from '@chakra-ui/react'
-import { ColumnProps } from '@/components'
+import { Button, ColumnProps } from '@/components'
 import { masks } from '@/utils'
 import { DataModel } from './types'
 
-export const columns: ColumnProps<DataModel>[] = [
+export const getColumns = (
+  handleOpenTransactions: (props: DataModel) => void
+): ColumnProps<DataModel>[] => [
   {
     label: 'Tag',
     field: 'name',
@@ -27,6 +29,15 @@ export const columns: ColumnProps<DataModel>[] = [
       <Text color={props.balance > 0 ? '#48bb78' : '#f56565'}>
         {masks.valueToMoney(props.balance)}
       </Text>
+    ),
+  },
+  {
+    label: '',
+    field: '',
+    customRender: (props) => (
+      <Button variant='link' onClick={() => handleOpenTransactions(props)}>
+        Ver transações
+      </Button>
     ),
   },
 ]

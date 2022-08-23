@@ -15,6 +15,7 @@ export type CategoryModel = {
 }
 
 export type CategoriesContextData = {
+  isLoading: boolean
   categoryList: CategoryModel[]
   setCategoryList: (list: CategoryModel[]) => void
   generateFilteredCategories: (filters: CategoriesFilterModel, type: TransactionType) => CategoryModel[]
