@@ -43,9 +43,10 @@ export const IconButton = (props: IconButtonProps) => {
 
   return (
     <Tooltip
-      label={props['aria-label']}
       isDisabled={!hasTooltip}
+      label={props['aria-label']}
       placement='top'
+      openDelay={1000}
       gutter={14}
       hasArrow
     >

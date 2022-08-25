@@ -6,10 +6,6 @@ export const masks = {
     }).format(value)
   },
 
-  valueToMonetaryValue(value: number | string) {
-    return `R$ ${Number(value).toLocaleString()}`
-  },
-
   monetaryValue(value: string | number, maxNumberCharacter = 12) {
     let cleanValue = String(value)?.toString().replace(/\D/g, '')
 

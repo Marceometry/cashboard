@@ -64,14 +64,17 @@ export function TransactionsContextProvider({
     await remoteAddTransaction(item)
   })
 
+  const updateTransactionList = call((list: TransactionModel[]) => {
+    list.forEach((item) => addTransactionListItem(item))
+  })
+
   const uploadTransactionList = call(
     (list: string) => {
       const parsed: TransactionModel[] = JSON.parse(list)
 
       const isInvalid = isTransactionListInvalid(parsed)
       if (isInvalid) throw new Error()
-
-      parsed.forEach((item) => addTransactionListItem(item))
+      updateTransactionList(parsed)
     },
     { toastText: 'Upload feito com sucesso!', toastError: 'Arquivo Inválido' }
   )
@@ -117,6 +120,7 @@ export function TransactionsContextProvider({
         addTransaction,
         updateTransaction,
         removeTransaction,
+        updateTransactionList,
         uploadTransactionList,
       }}
     >

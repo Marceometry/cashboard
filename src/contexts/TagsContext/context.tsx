@@ -7,6 +7,7 @@ import {
 } from 'react'
 import { TransactionModel, useTransactions } from '@/contexts'
 import { TagsContextData, TagModel } from '.'
+import { useApiCall } from '@/hooks'
 
 export type TagsContextProviderProps = {
   children: ReactNode
@@ -15,7 +16,9 @@ export type TagsContextProviderProps = {
 export const TagsContext = createContext({} as TagsContextData)
 
 export function TagsContextProvider({ children }: TagsContextProviderProps) {
-  const { transactionList, isLoading } = useTransactions()
+  const { call } = useApiCall()
+  const { transactionList, updateTransactionList, isLoading } =
+    useTransactions()
   const [tagList, setTagList] = useState<TagModel[]>([])
 
   const generateTags = (transactions: TransactionModel[]): TagModel[] => {
@@ -38,9 +41,9 @@ export function TagsContextProvider({ children }: TagsContextProviderProps) {
         const { name, income, outcome, balance } = acc[tagIndex]
         acc[tagIndex] = {
           name,
-          income: isIncome ? income! + amount : income,
-          outcome: !isIncome ? outcome! + amount : outcome,
-          balance: isIncome ? balance! + amount : balance! - amount,
+          income: isIncome ? income + amount : income,
+          outcome: !isIncome ? outcome + amount : outcome,
+          balance: isIncome ? balance + amount : balance - amount,
         }
       })
 
@@ -49,13 +52,26 @@ export function TagsContextProvider({ children }: TagsContextProviderProps) {
     return newTagList
   }
 
+  const deleteTag = call(
+    (tagToDelete: string) => {
+      const transactions = transactionList
+        .filter((item) => item.tags?.find((tag) => tag === tagToDelete))
+        .map((item) => ({
+          ...item,
+          tags: item.tags?.filter((tag) => tag !== tagToDelete),
+        }))
+      updateTransactionList(transactions)
+    },
+    { toastText: 'Tag excluída com sucesso!' }
+  )
+
   useEffect(() => {
     const tags = generateTags(transactionList)
     setTagList(tags)
   }, [transactionList])
 
   return (
-    <TagsContext.Provider value={{ tagList, isLoading }}>
+    <TagsContext.Provider value={{ tagList, deleteTag, isLoading }}>
       {children}
     </TagsContext.Provider>
   )

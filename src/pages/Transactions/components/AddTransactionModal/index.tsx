@@ -44,7 +44,7 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
     if (!selectedTransaction) return
     const newFormValues = {
       ...selectedTransaction,
-      amount: masks.valueToMonetaryValue(selectedTransaction.amount),
+      amount: masks.monetaryValue(selectedTransaction.amount.toFixed(2)),
       date: formatDateValue(new Date(selectedTransaction.date)),
     }
     formMethods.reset(newFormValues || defaultValues)
