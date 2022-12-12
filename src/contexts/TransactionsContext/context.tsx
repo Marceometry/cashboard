@@ -79,6 +79,18 @@ export function TransactionsContextProvider({
     { toastText: 'Upload feito com sucesso!', toastError: 'Arquivo Inválido' }
   )
 
+  const getFilterableYearList = () => {
+    const yearList = transactionList.reduce((array, item) => {
+      const year = new Date(item.date).getFullYear()
+      if (array.includes(year)) return array
+      return [...array, year]
+    }, [] as number[])
+
+    return yearList
+      .sort((a, b) => b - a)
+      .map((year) => ({ label: year, value: year }))
+  }
+
   useEffect(() => {
     if (!user?.id) return
 
@@ -122,6 +134,7 @@ export function TransactionsContextProvider({
         removeTransaction,
         updateTransactionList,
         uploadTransactionList,
+        getFilterableYearList,
       }}
     >
       {children}

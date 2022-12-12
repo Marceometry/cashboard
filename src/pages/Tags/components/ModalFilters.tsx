@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form'
 import { masks } from '@/utils'
 import { useLocalStorage } from '@/hooks'
 import { Input, FormModal, Select } from '@/components'
-import { MONTH_LIST, YEAR_LIST } from '@/constants'
-import { CategoriesFilterModel } from '@/contexts'
+import { MONTH_LIST } from '@/constants'
+import { CategoriesFilterModel, useTransactions } from '@/contexts'
 import { defaultEmptyFilterValues, FilterModel } from '../types'
 
 type Props = {
@@ -32,6 +32,7 @@ export const ModalFilters = ({
   handleFilter,
   isMonthDisabled,
 }: Props) => {
+  const { getFilterableYearList } = useTransactions()
   const storage = useLocalStorage()
   const formMethods = useForm({
     defaultValues: getDefaultFormValues(storage.get('categories-page-filters')),
@@ -87,7 +88,7 @@ export const ModalFilters = ({
             <Select
               name='year'
               placeholder='Selecione o ano'
-              options={YEAR_LIST.map((item) => ({ label: item, value: item }))}
+              options={getFilterableYearList()}
             />
           </Flex>
         </GridItem>

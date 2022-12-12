@@ -1,3 +1,5 @@
+import { Option } from '@/components'
+
 export type TransactionType = 'income' | 'outcome'
 
 export type TransactionModel = {
@@ -21,4 +23,5 @@ export type TransactionsContextData = {
   removeTransaction: (transaction: TransactionModel) => void
   updateTransactionList: (list: TransactionModel[]) => void
   uploadTransactionList: (list: string) => void
+  getFilterableYearList: () => Option[]
 }
