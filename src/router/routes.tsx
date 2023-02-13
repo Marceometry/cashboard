@@ -11,7 +11,7 @@ type Route = {
 
 export const dashboardRoutes: Route[] = [
   {
-    label: 'Home',
+    label: 'Resumo',
     path: '/',
     element: <Home />,
     icon: <House />,
