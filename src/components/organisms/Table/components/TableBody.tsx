@@ -30,8 +30,7 @@ export const TableBody = ({
 
   const { lastElementRef, paginatedData } = useInfiniteScroll(sortedData)
 
-  const headerBg = useColorModeValue('gray.300', 'gray.800')
-  const rowBg = useColorModeValue('gray.200', 'gray.600')
+  const headerBgAndBorder = useColorModeValue('gray.300', 'gray.800')
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -47,7 +46,7 @@ export const TableBody = ({
         <Thead>
           <Tr>
             {columns.map((column, index) => (
-              <Th bg={headerBg} key={index}>
+              <Th bg={headerBgAndBorder} key={index}>
                 {column.label}
               </Th>
             ))}
@@ -55,13 +54,9 @@ export const TableBody = ({
         </Thead>
         <Tbody>
           {paginatedData.map((item, index) => (
-            <Tr
-              ref={(node) => lastElementRef(node, index)}
-              key={index}
-              bg={rowBg}
-            >
+            <Tr ref={(node) => lastElementRef(node, index)} key={index}>
               {columns.map((column, columnIndex) => (
-                <Td key={columnIndex}>
+                <Td key={columnIndex} borderColor={headerBgAndBorder}>
                   {column.customRender
                     ? column.customRender(item)
                     : item[column.field]}
