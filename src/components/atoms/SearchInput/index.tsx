@@ -7,15 +7,21 @@ import {
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 import { IconButton } from '@/components'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useDebouncedValue } from '@/hooks'
 
 type Props = InputProps & {
-  searchText: string
-  setSearchText: (value: string) => void
+  debouncedOnChange: (value: string) => void
 }
 
-export const SearchInput = ({ searchText, setSearchText, ...props }: Props) => {
+export const SearchInput = ({ debouncedOnChange, ...props }: Props) => {
+  const [searchText, setSearchText] = useState('')
+  const debouncedSearchText = useDebouncedValue(searchText)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    debouncedOnChange(debouncedSearchText)
+  }, [debouncedSearchText])
 
   return (
     <InputGroup w='auto'>

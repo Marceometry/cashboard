@@ -6,8 +6,7 @@ type HeaderProps = {
   caption?: React.ReactNode
   noSearch?: boolean
   buttons?: TableButtons
-  searchText: string
-  setSearchText: (value: string) => void
+  onInputSearch: (value: string) => void
   toggleChart: (chartType: ChartType) => void
   currentView: 'table' | ChartType
   charts?: ChartProps[]
@@ -17,8 +16,7 @@ export const TableHeader = ({
   caption,
   noSearch,
   buttons,
-  searchText,
-  setSearchText,
+  onInputSearch,
   toggleChart,
   currentView,
   charts,
@@ -36,7 +34,7 @@ export const TableHeader = ({
 
       <Flex gap='4' flexDirection={{ base: 'column', sm: 'row' }}>
         {!noSearch && currentView === 'table' && (
-          <SearchInput searchText={searchText} setSearchText={setSearchText} />
+          <SearchInput debouncedOnChange={onInputSearch} />
         )}
 
         <Flex gap='4' justify='center'>
