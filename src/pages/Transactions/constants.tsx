@@ -1,19 +1,19 @@
 import { Center, Flex, Stat, StatArrow, Text } from '@chakra-ui/react'
 import { ColumnProps, IconButton, TableButtons } from '@/components'
-import { TransactionModel, TransactionType } from '@/contexts'
+import { TransactionModel } from '@/contexts'
 import { masks, sortByDate } from '@/utils'
 
 export type FilterModel = {
-  selectedMonth: number
-  selectedYear: number
+  selectedMonth: number | null
+  selectedYear: number | null
   selectedCategories: string[]
   minAmount: string
   maxAmount: string
 }
 
 export const defaultFilterValues: FilterModel = {
-  selectedMonth: 0,
-  selectedYear: 0,
+  selectedMonth: null,
+  selectedYear: null,
   selectedCategories: [],
   maxAmount: '',
   minAmount: '',
