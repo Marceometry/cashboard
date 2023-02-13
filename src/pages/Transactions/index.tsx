@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useBreakpointValue } from '@chakra-ui/react'
 import { TransactionModel, useDialog, useTransactions } from '@/contexts'
 import { Table, MainTemplate } from '@/components'
 import { masks, sortByDate } from '@/utils'
@@ -6,14 +7,12 @@ import { useLocalStorage } from '@/hooks'
 import {
   getButtons,
   getColumns,
-  getCaption,
-  defaultFilterValues,
-  FilterModel,
   generateChartData,
   chartBars,
   getIncomeAndOutcome,
 } from './constants'
-import { AddTransactionModal, ModalFilters } from './components'
+import { defaultFilterValues, FilterModel } from './types'
+import { AddTransactionModal, ModalFilters, TableCaption } from './components'
 import { filterData } from './utils'
 
 export const Transactions = () => {
@@ -60,15 +59,14 @@ export const Transactions = () => {
     setIncomeAndOutcome(getIncomeAndOutcome(result))
   }
 
-  const caption = getCaption(tableFilters, incomeAndOutcome)
-  const buttons = getButtons({
-    handleNewTransaction: () => handleOpenTransactionModal(),
-    handleOpenModalFilter: () => setIsModalFiltersOpen(true),
-  })
-  const columns = getColumns({
-    handleDeleteTransaction: handleOpenDeleteDialog,
-    handleEditTransaction: (id: string) => handleOpenTransactionModal(id),
-  })
+  const caption = (
+    <TableCaption filters={tableFilters} values={incomeAndOutcome} />
+  )
+  const buttons = getButtons(
+    () => handleOpenTransactionModal(),
+    () => setIsModalFiltersOpen(true)
+  )
+  const columns = getColumns(handleOpenDeleteDialog, handleOpenTransactionModal)
 
   return (
     <MainTemplate>

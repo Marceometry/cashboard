@@ -27,7 +27,7 @@ export const getColumns = (
     label: 'Balanço',
     field: 'balance',
     customRender: (props) => (
-      <Text color={props.balance > 0 ? '#48bb78' : '#f56565'}>
+      <Text color={props.balance > 0 ? 'green.400' : 'red.300'}>
         {masks.valueToMoney(props.balance)}
       </Text>
     ),

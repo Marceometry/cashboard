@@ -15,11 +15,11 @@ import {
   FormModal,
   Select,
 } from '@/components'
-import { masks, sortAlphabetically } from '@/utils'
 import { MONTH_LIST } from '@/constants'
-import { useCategories, useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
-import { defaultFilterValues, FilterModel } from '../../constants'
+import { masks, sortAlphabetically } from '@/utils'
+import { useCategories, useTransactions } from '@/contexts'
+import { defaultFilterValues, FilterModel } from '../../types'
 
 type Props = {
   isOpen: boolean
