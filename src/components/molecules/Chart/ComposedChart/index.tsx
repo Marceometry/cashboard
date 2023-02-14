@@ -1,14 +1,14 @@
 import { useColorModeValue } from '@chakra-ui/react'
 import {
-  ComposedChart as RechartsComposedChart,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
   Area,
   Bar,
+  CartesianGrid,
+  Legend,
+  ComposedChart as RechartsComposedChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from 'recharts'
 import { EmptyData } from '@/components'
 import { masks } from '@/utils'

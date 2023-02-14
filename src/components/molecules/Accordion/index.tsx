@@ -1,10 +1,10 @@
 import {
-  Accordion as ChakraAccordion,
-  AccordionProps,
-  AccordionItem,
   AccordionButton,
   AccordionIcon,
+  AccordionItem,
   AccordionPanel,
+  AccordionProps,
+  Accordion as ChakraAccordion,
   Flex,
 } from '@chakra-ui/react'
 

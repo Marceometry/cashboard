@@ -1,27 +1,27 @@
 import {
   createContext,
-  useContext,
-  useState,
   ReactNode,
+  useContext,
   useEffect,
+  useState,
 } from 'react'
 import { v4 as uuid } from 'uuid'
 import { useAuth } from '@/contexts'
 import { useApiCall, useFirebaseDatabase } from '@/hooks'
 import {
-  formatTransaction,
-  isTransactionListInvalid,
-  getYearList,
-  generateCategories,
-  generateTags,
-} from './utils'
-import {
-  TransactionsContextData,
-  TransactionModel,
   AddTransactionModel,
   CategoryModel,
   TagModel,
+  TransactionModel,
+  TransactionsContextData,
 } from './types'
+import {
+  formatTransaction,
+  generateCategories,
+  generateTags,
+  getYearList,
+  isTransactionListInvalid,
+} from './utils'
 
 export type TransactionsContextProviderProps = {
   children: ReactNode
@@ -32,6 +32,7 @@ export const TransactionsContext = createContext({} as TransactionsContextData)
 export function TransactionsContextProvider({
   children,
 }: TransactionsContextProviderProps) {
+  const { call, isLoading, setIsLoading } = useApiCall()
   const { user } = useAuth()
   const {
     onAddTransaction,
@@ -39,9 +40,7 @@ export function TransactionsContextProvider({
     onRemoveTransaction,
     remoteAddTransaction,
     remoteRemoveTransaction,
-    initialLoad,
   } = useFirebaseDatabase()
-  const { call, isLoading, setIsLoading } = useApiCall()
 
   const [transactionList, setTransactionList] = useState<TransactionModel[]>([])
   const [categoryList, setCategoryList] = useState<CategoryModel[]>([])
@@ -90,6 +89,12 @@ export function TransactionsContextProvider({
     { toastText: 'Upload feito com sucesso!', toastError: 'Arquivo Inválido' }
   )
 
+  const clearState = () => {
+    setTransactionList([])
+    setCategoryList([])
+    setTagList([])
+  }
+
   const getAvailableYearList = () => getYearList(transactionList)
 
   useEffect(() => {
@@ -100,9 +105,8 @@ export function TransactionsContextProvider({
   }, [transactionList])
 
   useEffect(() => {
-    if (!user?.id) return
+    if (!user?.id) return clearState()
 
-    const unsubscribeInitialLoad = initialLoad(() => setIsLoading(false))
     const unsubscribeAdd = onAddTransaction((data) => {
       setTransactionList((oldState) => [...oldState, data])
       setIsLoading(false)
@@ -124,7 +128,6 @@ export function TransactionsContextProvider({
       setIsLoading(false)
     })
     return () => {
-      unsubscribeInitialLoad()
       unsubscribeAdd()
       unsubscribeChange()
       unsubscribeRemove()

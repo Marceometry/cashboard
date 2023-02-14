@@ -1,5 +1,5 @@
-import { Checkbox, useCheckboxGroup, Grid } from '@chakra-ui/react'
 import { useController, useFormContext } from 'react-hook-form'
+import { Checkbox, Grid, useCheckboxGroup } from '@chakra-ui/react'
 
 type Option = {
   label: string

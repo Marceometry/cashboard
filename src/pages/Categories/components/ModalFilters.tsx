@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import {
   Checkbox,
   Flex,
@@ -7,18 +8,17 @@ import {
   Text,
   useBreakpointValue,
 } from '@chakra-ui/react'
-import { useForm } from 'react-hook-form'
-import { masks, sortAlphabetically } from '@/utils'
-import { useLocalStorage } from '@/hooks'
 import {
-  Input,
-  FormModal,
-  Select,
   Accordion,
   CheckboxGroup,
+  FormModal,
+  Input,
+  Select,
 } from '@/components'
 import { MONTH_LIST } from '@/constants'
 import { CategoriesFilterModel, useTransactions } from '@/contexts'
+import { useLocalStorage } from '@/hooks'
+import { masks, sortAlphabetically } from '@/utils'
 import { defaultEmptyFilterValues, FilterModel } from '../types'
 
 type Props = {

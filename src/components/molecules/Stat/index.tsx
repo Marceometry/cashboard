@@ -1,13 +1,13 @@
-import { masks } from '@/utils'
 import {
+  Box,
+  Center,
   Stat as ChakraStat,
+  Grid,
+  StatArrow,
   StatLabel,
   StatNumber,
-  StatArrow,
-  Grid,
-  Center,
-  Box,
 } from '@chakra-ui/react'
+import { masks } from '@/utils'
 
 export type StatProps = {
   label: string

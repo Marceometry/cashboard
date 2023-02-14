@@ -1,4 +1,4 @@
-import { Heading, Flex } from '@chakra-ui/react'
+import { Flex, Heading } from '@chakra-ui/react'
 import { Button, IconButton, SearchInput } from '@/components'
 import { ChartProps, ChartType, TableButtons } from '../types'
 

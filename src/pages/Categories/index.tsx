@@ -8,14 +8,14 @@ import {
 } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
 import { ModalFilters } from './components'
-import { defaultFilterValues } from './types'
 import {
   generateData,
-  getColumns,
+  getButtons,
   getCaption,
   getCharts,
-  getButtons,
+  getColumns,
 } from './constants'
+import { defaultFilterValues } from './types'
 
 export const Categories = () => {
   const storage = useLocalStorage()

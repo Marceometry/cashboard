@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { ChevronLeftIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
   Divider,
   Flex,
@@ -8,10 +10,8 @@ import {
   ListItem,
   Text,
 } from '@chakra-ui/react'
-import { Link, useLocation } from 'react-router-dom'
-import { dashboardRoutes } from '@/router'
-import { ChevronLeftIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { useLocalStorage } from '@/hooks'
+import { dashboardRoutes } from '@/router'
 
 export const Sidebar = () => {
   const location = useLocation()

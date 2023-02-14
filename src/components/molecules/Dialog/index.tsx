@@ -26,7 +26,7 @@ export const Dialog = ({
   title,
   body,
 }: DialogProps) => {
-  const cancelRef = useRef(null)
+  const cancelRef = useRef<HTMLButtonElement | null>(null)
 
   const handleConfirm = () => {
     onConfirm?.()
@@ -49,12 +49,12 @@ export const Dialog = ({
           <AlertDialogBody>{body}</AlertDialogBody>
 
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
-              Cancelar
-            </Button>
-            <Button colorScheme='orange' onClick={handleConfirm} ml={3}>
-              Confirmar
-            </Button>
+            <Button onClick={onClose}>Cancelar</Button>
+            {onConfirm && (
+              <Button colorScheme='orange' onClick={handleConfirm} ml={3}>
+                Confirmar
+              </Button>
+            )}
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialogOverlay>

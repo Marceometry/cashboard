@@ -1,9 +1,9 @@
 import {
   FormControl as ChakraFormControl,
   FormControlProps,
-  FormLabel,
-  FormHelperText,
   FormErrorMessage,
+  FormHelperText,
+  FormLabel,
 } from '@chakra-ui/react'
 
 type Props = FormControlProps & {

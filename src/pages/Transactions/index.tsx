@@ -1,17 +1,17 @@
 import { useMemo, useState } from 'react'
+import { MainTemplate, Table } from '@/components'
 import { TransactionModel, useDialog, useTransactions } from '@/contexts'
-import { Table, MainTemplate } from '@/components'
-import { masks, sortByDate } from '@/utils'
 import { useLocalStorage } from '@/hooks'
+import { masks, sortByDate } from '@/utils'
+import { AddTransactionModal, ModalFilters, TableCaption } from './components'
 import {
+  chartBars,
+  generateChartData,
   getButtons,
   getColumns,
-  generateChartData,
-  chartBars,
   getIncomeAndOutcome,
 } from './constants'
 import { defaultFilterValues, FilterModel } from './types'
-import { AddTransactionModal, ModalFilters, TableCaption } from './components'
 import { filterData } from './utils'
 
 export const Transactions = () => {

@@ -1,17 +1,17 @@
 import { Link, useLocation } from 'react-router-dom'
 import {
+  Divider,
   Drawer,
   DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
   List,
   ListItem,
   Text,
   useColorModeValue,
-  Divider,
 } from '@chakra-ui/react'
 import { Button } from '@/components'
 import { dashboardRoutes } from '@/router'

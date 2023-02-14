@@ -1,7 +1,7 @@
-import { masks } from '@/utils'
 import { ChartProps, ColumnProps, TableButtons } from '@/components'
 import { CHART_COLORS } from '@/constants'
 import { CategoryModel, TransactionType } from '@/contexts'
+import { masks } from '@/utils'
 import { Caption, CaptionProps } from './components'
 import { ChartType, DataModel, Response } from './types'
 

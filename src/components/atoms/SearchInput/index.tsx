@@ -1,13 +1,13 @@
+import { useEffect, useRef, useState } from 'react'
+import { SearchIcon } from '@chakra-ui/icons'
 import {
+  Input,
   InputGroup,
   InputLeftElement,
-  Input,
-  InputRightElement,
   InputProps,
+  InputRightElement,
 } from '@chakra-ui/react'
-import { SearchIcon } from '@chakra-ui/icons'
 import { IconButton } from '@/components'
-import { useEffect, useRef, useState } from 'react'
 import { useDebouncedValue } from '@/hooks'
 
 type Props = InputProps & {

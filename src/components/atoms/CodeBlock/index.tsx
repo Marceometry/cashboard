@@ -1,8 +1,8 @@
-import { Box, Flex } from '@chakra-ui/react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { Box, Flex } from '@chakra-ui/react'
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import { useCopy, useFileHandle } from '@/hooks'
 import { IconButton } from '@/components'
+import { useCopy, useFileHandle } from '@/hooks'
 
 type Props = {
   codeString?: string

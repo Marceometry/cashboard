@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form'
 import {
-  Flex,
   Input as ChakraInput,
+  Flex,
   InputGroup,
   InputProps,
   InputRightElement,

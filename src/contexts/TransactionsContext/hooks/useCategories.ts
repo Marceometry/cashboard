@@ -4,12 +4,12 @@ import {
   getFormattedMonthAndYear,
   sortByDate,
 } from '@/utils'
+import { useTransactions } from '../context'
 import {
+  CategoriesFilterModel,
   TransactionModel,
   TransactionType,
-  CategoriesFilterModel,
 } from '../types'
-import { useTransactions } from '../context'
 import { generateCategories } from '../utils'
 
 export const useCategories = () => {

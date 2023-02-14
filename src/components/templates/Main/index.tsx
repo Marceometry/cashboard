@@ -1,5 +1,5 @@
 import { Flex, useBreakpointValue } from '@chakra-ui/react'
-import { Sidebar, Header, Card } from '@/components'
+import { Card, Header, Sidebar } from '@/components'
 
 type Props = {
   children: React.ReactNode

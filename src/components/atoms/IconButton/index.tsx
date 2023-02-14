@@ -1,9 +1,9 @@
+import { AddIcon, DeleteIcon, EditIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
   IconButton as ChakraIconButton,
   IconButtonProps as ChakraIconButtonProps,
   Tooltip,
 } from '@chakra-ui/react'
-import { AddIcon, DeleteIcon, EditIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
   ChartBar,
   ChartLine,

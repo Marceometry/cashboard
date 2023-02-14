@@ -1,7 +1,7 @@
-import { CreatableSelect } from 'chakra-react-select'
-import { Controller, useFormContext } from 'react-hook-form'
-import { FormControl } from '@/components'
 import { useState } from 'react'
+import { Controller, useFormContext } from 'react-hook-form'
+import { CreatableSelect } from 'chakra-react-select'
+import { FormControl } from '@/components'
 
 type Option = {
   label: string

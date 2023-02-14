@@ -1,5 +1,5 @@
-import { Select as ChakraSelect, SelectProps } from '@chakra-ui/react'
 import { useFormContext } from 'react-hook-form'
+import { Select as ChakraSelect, SelectProps } from '@chakra-ui/react'
 
 export type Option = {
   label: string | number

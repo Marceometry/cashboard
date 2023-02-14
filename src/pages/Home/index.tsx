@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useTransactions } from '@/contexts'
 import { ComposedChart, Loading, MainTemplate, Tabs } from '@/components'
+import { useTransactions } from '@/contexts'
 import { getChartData, getChartSections, getTabs, View } from './constants'
 
 export const Home = () => {

@@ -1,28 +1,27 @@
 import {
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth'
+import {
   getDatabase,
-  ref,
-  set,
-  remove,
   onChildAdded,
   onChildChanged,
   onChildRemoved,
-  onValue,
+  ref,
+  remove,
+  set,
 } from 'firebase/database'
-import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signOut,
-} from 'firebase/auth'
-import { firebaseApp } from '@/services'
 import { TransactionModel, useAuth } from '@/contexts'
+import { firebaseApp } from '@/services'
 
 export const useFirebaseAuth = () => {
   const auth = getAuth()
-  const authProvider = new GoogleAuthProvider()
 
   const signInWithGoogle = () => {
+    const authProvider = new GoogleAuthProvider()
     return signInWithPopup(auth, authProvider)
   }
 
@@ -45,39 +44,33 @@ export const useFirebaseDatabase = () => {
   const database = getDatabase(firebaseApp)
   const { user } = useAuth()
   const userId = user?.id
-  const transactionsRef = ref(database, `users/${userId}/transactions`)
-
-  const initialLoad = (callback: () => void) => {
-    return onValue(transactionsRef, callback, { onlyOnce: true })
-  }
+  const transactionsPath = `users/${userId}/transactions`
+  const transactionsRef = ref(database, transactionsPath)
 
   const remoteAddTransaction = (transaction: TransactionModel) => {
-    return set(
-      ref(database, `users/${userId}/transactions/${transaction.id}`),
-      {
-        ...transaction,
-        userId,
-      }
-    )
+    return set(ref(database, `${transactionsPath}/${transaction.id}`), {
+      ...transaction,
+      userId,
+    })
   }
 
   const remoteRemoveTransaction = (id: string) => {
-    return remove(ref(database, `users/${userId}/transactions/${id}`))
+    return remove(ref(database, `${transactionsPath}/${id}`))
   }
 
-  const onAddTransaction = (callback: (data: any) => void) => {
+  const onAddTransaction = (callback: (data: TransactionModel) => void) => {
     return onChildAdded(transactionsRef, (data) => {
       callback({ id: data.key, ...data.val() })
     })
   }
 
-  const onChangeTransaction = (callback: (data: any) => void) => {
+  const onChangeTransaction = (callback: (data: TransactionModel) => void) => {
     return onChildChanged(transactionsRef, (data) => {
       callback({ id: data.key, ...data.val() })
     })
   }
 
-  const onRemoveTransaction = (callback: (data: any) => void) => {
+  const onRemoveTransaction = (callback: (data: TransactionModel) => void) => {
     return onChildRemoved(transactionsRef, (data) => {
       callback({ id: data.key, ...data.val() })
     })
@@ -89,6 +82,5 @@ export const useFirebaseDatabase = () => {
     onAddTransaction,
     onChangeTransaction,
     onRemoveTransaction,
-    initialLoad,
   }
 }

@@ -15,7 +15,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "prettier", "@typescript-eslint"],
+  "plugins": ["react", "prettier", "import", "@typescript-eslint"],
   "rules": {
     "prettier/prettier": ["warn", { "endOfLine": "auto" }],
     "react/jsx-filename-extension": ["warn", { "extensions": [".ts", ".tsx"] }],
@@ -25,6 +25,34 @@
     "import/prefer-default-export": "off",
     "jsx-quotes": ["error", "prefer-single"],
     "quotes": ["error", "single"],
-    "semi": ["error", "never"]
+    "semi": ["error", "never"],
+    "sort-imports": [
+      "warn",
+      { "ignoreCase": true, "ignoreDeclarationSort": true }
+    ],
+    "import/order": [
+      "warn",
+      {
+        "groups": [
+          "external",
+          "builtin",
+          "internal",
+          "sibling",
+          "parent",
+          "index"
+        ],
+        "pathGroups": [
+          { "group": "external", "pattern": "react**", "position": "before" },
+          { "group": "internal", "pattern": "@/components" },
+          { "group": "internal", "pattern": "@/constants" },
+          { "group": "internal", "pattern": "@/contexts" },
+          { "group": "internal", "pattern": "@/hooks" },
+          { "group": "internal", "pattern": "@/pages" },
+          { "group": "internal", "pattern": "@/utils" }
+        ],
+        "pathGroupsExcludedImportTypes": ["internal"],
+        "alphabetize": { "order": "asc", "caseInsensitive": true }
+      }
+    ]
   }
 }

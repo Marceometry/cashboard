@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react'
+import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
 import {
-  Button as ChakraButton,
-  Menu,
-  MenuButton,
   Avatar,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  useColorMode,
-  useBreakpointValue,
-  Text,
+  Button as ChakraButton,
   Code,
   Flex,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Text,
+  useBreakpointValue,
+  useColorMode,
 } from '@chakra-ui/react'
-import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
 import { Download, FileArrowDown, SignOut } from 'phosphor-react'
 import { Button, CodeBlock, Modal, ThemeIcon } from '@/components'
 import { useAuth, useTransactions } from '@/contexts'
