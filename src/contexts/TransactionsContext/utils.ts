@@ -1,7 +1,10 @@
 import { v4 as uuid } from 'uuid'
+import { CategoryModel, TagModel } from '@/contexts'
 import { TransactionModel } from './types'
 
-const error = () => { throw new Error() }
+const error = () => {
+  throw new Error()
+}
 
 export const formatTransaction = (
   payload: TransactionModel
@@ -12,9 +15,10 @@ export const formatTransaction = (
   amount: Number(payload.amount),
   category: payload.category || 'Outros',
   tags: payload.tags || [],
-  date: payload.date.length === 10
-    ? new Date(`${payload.date} 00:00:00`).toISOString()
-    : new Date(payload.date).toISOString(),
+  date:
+    payload.date.length === 10
+      ? new Date(`${payload.date} 00:00:00`).toISOString()
+      : new Date(payload.date).toISOString(),
 })
 
 export const isTransactionInvalid = (item: TransactionModel) => {
@@ -48,4 +52,77 @@ export const isTransactionListInvalid = (list: TransactionModel[]) => {
   } catch (error) {
     return true
   }
+}
+
+export const getYearList = (transactionList: TransactionModel[]) => {
+  const yearList = transactionList.reduce((array, item) => {
+    const year = new Date(item.date).getFullYear()
+    if (array.includes(year)) return array
+    return [...array, year]
+  }, [] as number[])
+
+  return yearList
+    .sort((a, b) => b - a)
+    .map((year) => ({ label: year, value: year }))
+}
+
+export const generateCategories = (
+  transactions: TransactionModel[]
+): CategoryModel[] => {
+  const categories = transactions.reduce((acc, transaction) => {
+    const { category, amount, type } = transaction
+    const isIncome = type === 'income'
+    const currentCategory = acc.find((c) => c.name === category)
+    if (!currentCategory) {
+      const newCategory = {
+        name: category,
+        income: isIncome ? amount : 0,
+        outcome: !isIncome ? amount : 0,
+        balance: isIncome ? amount : -amount,
+      }
+      return [...acc, newCategory]
+    }
+    const newCategoryList = acc.map((c) => {
+      if (c.name !== category) return c
+      return {
+        ...c,
+        income: isIncome ? c.income + amount : c.income,
+        outcome: !isIncome ? c.outcome + amount : c.outcome,
+        balance: isIncome ? c.balance + amount : c.balance - amount,
+      }
+    })
+    return newCategoryList
+  }, [] as CategoryModel[])
+  return categories
+}
+
+export const generateTags = (transactions: TransactionModel[]): TagModel[] => {
+  const newTagList = transactions.reduce((acc: TagModel[], transaction) => {
+    const { type, amount, tags = [] } = transaction
+    const isIncome = type === 'income'
+
+    tags.forEach((tag) => {
+      const tagIndex = acc.findIndex((item) => item.name === tag)
+
+      if (tagIndex < 0) {
+        return acc.push({
+          name: tag,
+          income: isIncome ? amount : 0,
+          outcome: !isIncome ? amount : 0,
+          balance: isIncome ? amount : -amount,
+        })
+      }
+
+      const { name, income, outcome, balance } = acc[tagIndex]
+      acc[tagIndex] = {
+        name,
+        income: isIncome ? income + amount : income,
+        outcome: !isIncome ? outcome + amount : outcome,
+        balance: isIncome ? balance + amount : balance - amount,
+      }
+    })
+
+    return acc
+  }, [] as TagModel[])
+  return newTagList
 }

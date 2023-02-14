@@ -39,7 +39,8 @@ export const UserMenu = () => {
 
   const localBackup = () => {
     const username = user.name.toUpperCase().replaceAll(' ', '-')
-    const fileName = `cashboard-backup-${username}`
+    const date = new Date().toISOString().split('T')[0]
+    const fileName = `cashboard-backup-${username}-${date}`
     downloadFile(fileName, sortByDate(transactionList, true), 'json')
   }
 

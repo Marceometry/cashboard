@@ -51,8 +51,8 @@ export const ModalFilters = ({
   isMonthDisabled,
 }: Props) => {
   const storage = useLocalStorage()
-  const { getFilterableYearList } = useTransactions()
-  const { categoryList: contextCategoryList } = useCategories()
+  const { categoryList: contextCategoryList, getAvailableYearList } =
+    useTransactions()
   const categoryList = useMemo(
     () => sortAlphabetically(contextCategoryList, 'name'),
     [contextCategoryList]
@@ -134,7 +134,7 @@ export const ModalFilters = ({
             <Select
               name='year'
               placeholder='Selecione o ano'
-              options={getFilterableYearList()}
+              options={getAvailableYearList()}
             />
           </Flex>
         </GridItem>

@@ -8,12 +8,20 @@ import {
 import { v4 as uuid } from 'uuid'
 import { useAuth } from '@/contexts'
 import { useApiCall, useFirebaseDatabase } from '@/hooks'
-import { formatTransaction, isTransactionListInvalid } from './utils'
+import {
+  formatTransaction,
+  isTransactionListInvalid,
+  getYearList,
+  generateCategories,
+  generateTags,
+} from './utils'
 import {
   TransactionsContextData,
   TransactionModel,
   AddTransactionModel,
-} from '.'
+  CategoryModel,
+  TagModel,
+} from './types'
 
 export type TransactionsContextProviderProps = {
   children: ReactNode
@@ -34,7 +42,10 @@ export function TransactionsContextProvider({
     initialLoad,
   } = useFirebaseDatabase()
   const { call, isLoading, setIsLoading } = useApiCall()
+
   const [transactionList, setTransactionList] = useState<TransactionModel[]>([])
+  const [categoryList, setCategoryList] = useState<CategoryModel[]>([])
+  const [tagList, setTagList] = useState<TagModel[]>([])
 
   const addTransaction = call(
     async (payload: AddTransactionModel) => {
@@ -79,17 +90,14 @@ export function TransactionsContextProvider({
     { toastText: 'Upload feito com sucesso!', toastError: 'Arquivo Inválido' }
   )
 
-  const getFilterableYearList = () => {
-    const yearList = transactionList.reduce((array, item) => {
-      const year = new Date(item.date).getFullYear()
-      if (array.includes(year)) return array
-      return [...array, year]
-    }, [] as number[])
+  const getAvailableYearList = () => getYearList(transactionList)
 
-    return yearList
-      .sort((a, b) => b - a)
-      .map((year) => ({ label: year, value: year }))
-  }
+  useEffect(() => {
+    const categories = generateCategories(transactionList)
+    setCategoryList(categories)
+    const tags = generateTags(transactionList)
+    setTagList(tags)
+  }, [transactionList])
 
   useEffect(() => {
     if (!user?.id) return
@@ -129,12 +137,14 @@ export function TransactionsContextProvider({
         isLoading,
         transactionList,
         setTransactionList,
+        categoryList,
+        tagList,
         addTransaction,
         updateTransaction,
         removeTransaction,
         updateTransactionList,
         uploadTransactionList,
-        getFilterableYearList,
+        getAvailableYearList,
       }}
     >
       {children}

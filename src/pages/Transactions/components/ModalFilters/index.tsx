@@ -20,7 +20,7 @@ import {
 import { MONTH_LIST } from '@/constants'
 import { useLocalStorage } from '@/hooks'
 import { masks, sortAlphabetically } from '@/utils'
-import { useCategories, useTransactions } from '@/contexts'
+import { useTransactions } from '@/contexts'
 import { defaultFilterValues, FilterModel } from '../../types'
 
 type Props = {
@@ -30,10 +30,10 @@ type Props = {
 }
 
 export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
-  const { getFilterableYearList } = useTransactions()
+  const { categoryList: contextCategoryList, getAvailableYearList } =
+    useTransactions()
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const storage = useLocalStorage()
-  const { categoryList: contextCategoryList } = useCategories()
   const categoryList = useMemo(
     () => sortAlphabetically(contextCategoryList, 'name'),
     [contextCategoryList]
@@ -104,7 +104,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
             <Select
               name='selectedYear'
               placeholder='Selecione o ano'
-              options={getFilterableYearList()}
+              options={getAvailableYearList()}
             />
           </Flex>
         </GridItem>

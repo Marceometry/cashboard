@@ -1,60 +1,19 @@
 import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from 'react'
-import { TransactionModel, TransactionType, useTransactions } from '@/contexts'
-import {
   filterByMonth,
   filterByYear,
   getFormattedMonthAndYear,
   sortByDate,
 } from '@/utils'
-import { CategoriesContextData, CategoriesFilterModel, CategoryModel } from '.'
+import {
+  TransactionModel,
+  TransactionType,
+  CategoriesFilterModel,
+} from '../types'
+import { useTransactions } from '../context'
+import { generateCategories } from '../utils'
 
-export type CategoriesContextProviderProps = {
-  children: ReactNode
-}
-
-export const CategoriesContext = createContext({} as CategoriesContextData)
-
-export function CategoriesContextProvider({
-  children,
-}: CategoriesContextProviderProps) {
-  const { transactionList, isLoading } = useTransactions()
-  const [categoryList, setCategoryList] = useState<CategoryModel[]>([])
-
-  const generateCategories = (
-    transactions: TransactionModel[]
-  ): CategoryModel[] => {
-    const categories = transactions.reduce((acc, transaction) => {
-      const { category, amount, type } = transaction
-      const isIncome = type === 'income'
-      const currentCategory = acc.find((c) => c.name === category)
-      if (!currentCategory) {
-        const newCategory = {
-          name: category,
-          income: isIncome ? amount : 0,
-          outcome: !isIncome ? amount : 0,
-          balance: isIncome ? amount : -amount,
-        }
-        return [...acc, newCategory]
-      }
-      const newCategoryList = acc.map((c) => {
-        if (c.name !== category) return c
-        return {
-          ...c,
-          income: isIncome ? c.income + amount : c.income,
-          outcome: !isIncome ? c.outcome + amount : c.outcome,
-          balance: isIncome ? c.balance + amount : c.balance - amount,
-        }
-      })
-      return newCategoryList
-    }, [] as CategoryModel[])
-    return categories
-  }
+export const useCategories = () => {
+  const { transactionList, categoryList } = useTransactions()
 
   const generateFilteredCategories = (
     filters: CategoriesFilterModel,
@@ -133,24 +92,5 @@ export function CategoriesContextProvider({
     }))
   }
 
-  useEffect(() => {
-    const categories = generateCategories(transactionList)
-    setCategoryList(categories)
-  }, [transactionList])
-
-  return (
-    <CategoriesContext.Provider
-      value={{
-        isLoading,
-        categoryList,
-        setCategoryList,
-        generateFilteredCategories,
-        generateCategoriesHistory,
-      }}
-    >
-      {children}
-    </CategoriesContext.Provider>
-  )
+  return { generateFilteredCategories, generateCategoriesHistory }
 }
-
-export const useCategories = () => useContext(CategoriesContext)

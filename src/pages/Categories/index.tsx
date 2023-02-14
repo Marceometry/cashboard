@@ -4,6 +4,7 @@ import {
   CategoriesFilterModel,
   TransactionType,
   useCategories,
+  useTransactions,
 } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
 import { ModalFilters } from './components'
@@ -18,7 +19,8 @@ import {
 
 export const Categories = () => {
   const storage = useLocalStorage()
-  const { generateFilteredCategories, generateCategoriesHistory, isLoading } =
+  const { isLoading } = useTransactions()
+  const { generateFilteredCategories, generateCategoriesHistory } =
     useCategories()
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
   const [isFilterMonthDisabled, setIsFilterMonthDisabled] = useState(false)

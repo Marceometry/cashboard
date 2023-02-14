@@ -1,9 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import {
   AuthContextProvider,
-  CategoriesContextProvider,
   DialogContextProvider,
-  TagsContextProvider,
   TransactionsContextProvider,
 } from '@/contexts'
 import { Router } from '@/router'
@@ -14,13 +12,9 @@ export const App = () => {
     <ChakraProvider theme={theme}>
       <AuthContextProvider>
         <TransactionsContextProvider>
-          <CategoriesContextProvider>
-            <TagsContextProvider>
-              <DialogContextProvider>
-                <Router />
-              </DialogContextProvider>
-            </TagsContextProvider>
-          </CategoriesContextProvider>
+          <DialogContextProvider>
+            <Router />
+          </DialogContextProvider>
         </TransactionsContextProvider>
       </AuthContextProvider>
     </ChakraProvider>

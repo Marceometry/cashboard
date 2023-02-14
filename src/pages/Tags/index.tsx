@@ -6,35 +6,29 @@ import {
   useTags,
   useTransactions,
 } from '@/contexts'
-import { sortByDate } from '@/utils'
 import { getColumns, getTransactionsColumns } from './constants'
 
 export const Tags = () => {
-  const { transactionList, updateTransaction } = useTransactions()
-  const { tagList, deleteTag, isLoading } = useTags()
+  const { deleteTag, transactionsByTag, removeTagFromTransaction } = useTags()
+  const { tagList, isLoading } = useTransactions()
   const [selectedTag, setSelectedTag] = useState('')
   const [isTransactionsModalOpen, setIsTransactionsModalOpen] = useState(false)
 
-  const transactions: TransactionModel[] = sortByDate(transactionList).filter(
-    (item) => item.tags?.find((tag: string) => tag === selectedTag)
-  )
+  const transactions: TransactionModel[] = transactionsByTag(selectedTag)
 
-  const handleOpenTransactions = (props: TagModel) => {
+  const handleOpenTransactionsModal = (props: TagModel) => {
     setSelectedTag(props.name)
     setIsTransactionsModalOpen(true)
   }
 
-  const removeTagFromTransaction = (id: string) => {
-    const transaction = transactions.find((item) => item.id === id)
-    if (!transaction) return
-    updateTransaction({
-      ...transaction,
-      tags: transaction?.tags?.filter((tag) => tag !== selectedTag),
-    })
+  const handleRemoveTagFromTransaction = (id: string) => {
+    removeTagFromTransaction(id, selectedTag, transactions)
   }
 
-  const columns = getColumns(handleOpenTransactions, deleteTag)
-  const transactionsColumns = getTransactionsColumns(removeTagFromTransaction)
+  const columns = getColumns(handleOpenTransactionsModal, deleteTag)
+  const transactionsColumns = getTransactionsColumns(
+    handleRemoveTagFromTransaction
+  )
 
   return (
     <MainTemplate>

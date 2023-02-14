@@ -3,12 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useBreakpointValue } from '@chakra-ui/react'
 import { FormModal, Radio } from '@/components'
 import { formatDateValue, masks } from '@/utils'
-import {
-  AddTransactionModel,
-  useCategories,
-  useTags,
-  useTransactions,
-} from '@/contexts'
+import { AddTransactionModel, useTransactions } from '@/contexts'
 import { Form } from './Form'
 
 type Props = {
@@ -28,10 +23,14 @@ const defaultValues = {
 
 export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
-  const { tagList } = useTags()
-  const { categoryList } = useCategories()
-  const { transactionList, addTransaction, updateTransaction, isLoading } =
-    useTransactions()
+  const {
+    transactionList,
+    addTransaction,
+    updateTransaction,
+    isLoading,
+    categoryList,
+    tagList,
+  } = useTransactions()
 
   const formMethods = useForm({ defaultValues })
   const categoriesFormMethods = useForm()
