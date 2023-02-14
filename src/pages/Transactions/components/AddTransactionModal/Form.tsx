@@ -35,9 +35,6 @@ export const Form = ({
         </GridItem>
 
         <GridItem>
-          <Input label='Data' name='date' type='date' required />
-        </GridItem>
-        <GridItem>
           <Input
             label='Categoria'
             name='category'
@@ -45,13 +42,15 @@ export const Form = ({
               categoryList.length
                 ? {
                     icon: 'list',
-                    hasTooltip: true,
                     'aria-label': 'Selecionar Categoria',
                     onClick: handleOpenCategoriesModal,
                   }
                 : undefined
             }
           />
+        </GridItem>
+        <GridItem>
+          <Input label='Data' name='date' type='date' required />
         </GridItem>
       </Grid>
 

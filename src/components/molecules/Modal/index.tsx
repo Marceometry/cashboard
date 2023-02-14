@@ -34,7 +34,7 @@ export const Modal = ({
       <ModalContent maxW={maxWidth} mx={8} overflow='auto'>
         <ModalHeader fontSize='2xl'>{title}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody maxH='50vh'>{children}</ModalBody>
+        <ModalBody>{children}</ModalBody>
 
         <ModalFooter>{modalFooter}</ModalFooter>
       </ModalContent>
