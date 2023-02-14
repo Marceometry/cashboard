@@ -1,11 +1,28 @@
-import { useEffect } from 'react'
-import { Flex, Grid, GridItem, Text } from '@chakra-ui/react'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  Checkbox,
+  Flex,
+  Grid,
+  GridItem,
+  Text,
+  useBreakpointValue,
+} from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
-import { masks } from '@/utils'
+import { masks, sortAlphabetically } from '@/utils'
 import { useLocalStorage } from '@/hooks'
-import { Input, FormModal, Select } from '@/components'
+import {
+  Input,
+  FormModal,
+  Select,
+  Accordion,
+  CheckboxGroup,
+} from '@/components'
 import { MONTH_LIST } from '@/constants'
-import { CategoriesFilterModel, useTransactions } from '@/contexts'
+import {
+  CategoriesFilterModel,
+  useCategories,
+  useTransactions,
+} from '@/contexts'
 import { defaultEmptyFilterValues, FilterModel } from '../types'
 
 type Props = {
@@ -22,6 +39,7 @@ const getDefaultFormValues = (data: FilterModel) => {
         maxAmount: masks.valueToMoney(Number(data.maxAmount)),
         month: data.month || null,
         year: data.year || null,
+        selectedCategories: data.selectedCategories || [],
       }
     : defaultEmptyFilterValues
 }
@@ -32,17 +50,41 @@ export const ModalFilters = ({
   handleFilter,
   isMonthDisabled,
 }: Props) => {
-  const { getFilterableYearList } = useTransactions()
   const storage = useLocalStorage()
+  const { getFilterableYearList } = useTransactions()
+  const { categoryList: contextCategoryList } = useCategories()
+  const categoryList = useMemo(
+    () => sortAlphabetically(contextCategoryList, 'name'),
+    [contextCategoryList]
+  )
   const formMethods = useForm({
     defaultValues: getDefaultFormValues(storage.get('categories-page-filters')),
   })
+  const selectedCategories = formMethods.watch('selectedCategories')
+  const [isIndeterminate, setIsIndeterminate] = useState(true)
+  const [allChecked, setAllChecked] = useState(true)
+  const isSmallScreen = useBreakpointValue({ base: true, sm: false })
+
+  useEffect(() => {
+    const checkedAll = selectedCategories.length === categoryList.length
+    const indeterminate = selectedCategories.length > 0 && !checkedAll
+    setIsIndeterminate(indeterminate)
+    setAllChecked(checkedAll)
+  }, [formMethods, categoryList, selectedCategories])
+
+  useEffect(() => {
+    formMethods.setValue(
+      'selectedCategories',
+      categoryList.map((item) => item.name)
+    )
+  }, [categoryList])
 
   const formatValues = (data: FilterModel) => ({
     minAmount: masks.unMaskMonetaryValue(data.minAmount),
     maxAmount: masks.unMaskMonetaryValue(data.maxAmount),
     month: Number(data.month),
     year: Number(data.year),
+    selectedCategories: allChecked ? [] : data.selectedCategories,
   })
 
   const handleSubmit = (data: FilterModel) => {
@@ -55,6 +97,10 @@ export const ModalFilters = ({
     formMethods.setValue('year', null)
     formMethods.setValue('maxAmount', '')
     formMethods.setValue('minAmount', '')
+    formMethods.setValue(
+      'selectedCategories',
+      categoryList.map((item) => item.name)
+    )
   }
 
   useEffect(() => {
@@ -100,6 +146,42 @@ export const ModalFilters = ({
             <Input flex='1' name='maxAmount' mask={masks.monetaryValue} />
           </Flex>
         </GridItem>
+
+        <Accordion
+          items={[
+            {
+              key: 1,
+              button: (
+                <Checkbox
+                  w='fit-content'
+                  isChecked={allChecked}
+                  isIndeterminate={isIndeterminate}
+                  onChange={(e) =>
+                    formMethods.setValue(
+                      'selectedCategories',
+                      e.target.checked
+                        ? categoryList.map((item) => item.name)
+                        : []
+                    )
+                  }
+                >
+                  Todas as categorias
+                </Checkbox>
+              ),
+              panel: (
+                <CheckboxGroup
+                  name='selectedCategories'
+                  columns={isSmallScreen ? 2 : 3}
+                  defaultCheckAll
+                  options={categoryList.map((item) => ({
+                    label: item.name,
+                    value: item.name,
+                  }))}
+                />
+              ),
+            },
+          ]}
+        />
       </Grid>
     </FormModal>
   )

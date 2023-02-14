@@ -60,12 +60,18 @@ export function CategoriesContextProvider({
     filters: CategoriesFilterModel,
     type: TransactionType
   ) => {
-    const { month, year, minAmount, maxAmount } = filters
+    const { month, year, minAmount, maxAmount, selectedCategories } = filters
 
     const transactions = sortByDate(transactionList, true).filter(
       (item: TransactionModel) => {
         if (month && !filterByMonth(item.date, month)) return false
         if (year && !filterByYear(item.date, year)) return false
+        if (
+          selectedCategories.length &&
+          !selectedCategories.includes(item.category)
+        ) {
+          return false
+        }
         return true
       }
     )
@@ -81,7 +87,7 @@ export function CategoriesContextProvider({
     filters: CategoriesFilterModel,
     type: TransactionType
   ) => {
-    const { month, year, minAmount, maxAmount } = filters
+    const { month, year, minAmount, maxAmount, selectedCategories } = filters
     const orderedList: TransactionModel[] = sortByDate(transactionList, true)
 
     const categoriesHistory = orderedList.reduce(
@@ -91,6 +97,12 @@ export function CategoriesContextProvider({
         if (maxAmount && item.amount > maxAmount) return acc
         if (month && !filterByMonth(item.date, month)) return acc
         if (year && !filterByYear(item.date, year)) return acc
+        if (
+          selectedCategories.length &&
+          !selectedCategories.includes(item.category)
+        ) {
+          return acc
+        }
 
         const { amount, category } = item
         const date = new Date(item.date)

@@ -1,4 +1,7 @@
+import { TransactionType } from '@/contexts'
+
 export type FilterModel = {
+  type: 'all' | TransactionType
   selectedMonth: number | null
   selectedYear: number | null
   selectedCategories: string[]
@@ -12,6 +15,7 @@ export const defaultFilterValues: FilterModel = {
   selectedCategories: [],
   maxAmount: '',
   minAmount: '',
+  type: 'all',
 }
 
 export const emptyFilterValues: FilterModel = {
@@ -20,4 +24,5 @@ export const emptyFilterValues: FilterModel = {
   selectedCategories: [],
   maxAmount: '',
   minAmount: '',
+  type: 'all',
 }

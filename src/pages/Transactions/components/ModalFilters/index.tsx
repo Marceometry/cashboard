@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
+  Center,
   Checkbox,
   Flex,
   Grid,
@@ -14,6 +15,7 @@ import {
   Input,
   FormModal,
   Select,
+  Radio,
 } from '@/components'
 import { MONTH_LIST } from '@/constants'
 import { useLocalStorage } from '@/hooks'
@@ -52,6 +54,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
   }, [formMethods, categoryList, selectedCategories])
 
   const handleClearFilters = () => {
+    formMethods.setValue('type', 'all')
     formMethods.setValue('selectedMonth', null)
     formMethods.setValue('selectedYear', null)
     formMethods.setValue('maxAmount', '')
@@ -150,6 +153,18 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
           ]}
         />
       </Grid>
+
+      <Center mt='4'>
+        <Radio
+          name='type'
+          columns={3}
+          options={[
+            { label: 'Todas', value: 'all' },
+            { label: 'Entrada', value: 'income' },
+            { label: 'Saída', value: 'outcome' },
+          ]}
+        />
+      </Center>
     </FormModal>
   )
 }

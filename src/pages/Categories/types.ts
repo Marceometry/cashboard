@@ -25,6 +25,7 @@ export type FilterModel = {
   year: number | null
   maxAmount: string
   minAmount: string
+  selectedCategories: string[]
 }
 
 export const defaultEmptyFilterValues: FilterModel = {
@@ -32,6 +33,7 @@ export const defaultEmptyFilterValues: FilterModel = {
   year: null,
   maxAmount: '',
   minAmount: '',
+  selectedCategories: [],
 }
 
 export const defaultFilterValues: CategoriesFilterModel = {
@@ -39,4 +41,5 @@ export const defaultFilterValues: CategoriesFilterModel = {
   year: 0,
   maxAmount: 0,
   minAmount: 0,
+  selectedCategories: [],
 }

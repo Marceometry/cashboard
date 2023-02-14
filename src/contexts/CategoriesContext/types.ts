@@ -5,6 +5,7 @@ export type CategoriesFilterModel = {
   year: number
   maxAmount: number
   minAmount: number
+  selectedCategories: string[]
 }
 
 export type CategoryModel = {
@@ -18,6 +19,12 @@ export type CategoriesContextData = {
   isLoading: boolean
   categoryList: CategoryModel[]
   setCategoryList: (list: CategoryModel[]) => void
-  generateFilteredCategories: (filters: CategoriesFilterModel, type: TransactionType) => CategoryModel[]
-  generateCategoriesHistory: (filters: CategoriesFilterModel, type: TransactionType) => any[]
+  generateFilteredCategories: (
+    filters: CategoriesFilterModel,
+    type: TransactionType
+  ) => CategoryModel[]
+  generateCategoriesHistory: (
+    filters: CategoriesFilterModel,
+    type: TransactionType
+  ) => any[]
 }

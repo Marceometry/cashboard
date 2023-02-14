@@ -1,5 +1,5 @@
 import { filterByMonth, filterByYear, masks } from '@/utils'
-import { FilterModel } from './constants'
+import { FilterModel } from './types'
 
 export const filterByMinAmount = (amount: string, itemAmount: number) => {
   const numberAmount = masks.unMaskMonetaryValue(amount)
@@ -23,11 +23,16 @@ export const filterData = (data: any[], filters: FilterModel) => {
     selectedCategories,
     minAmount,
     maxAmount,
+    type,
   } = filters
 
   return data.filter((item) => {
     let included = true
 
+    if (type && type !== 'all') {
+      included = type === item.type
+      if (!included) return
+    }
     if (minAmount) {
       included = filterByMinAmount(minAmount, item.amount)
       if (!included) return
