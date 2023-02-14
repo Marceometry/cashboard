@@ -24,9 +24,7 @@ type Props = {
 export const MobileSidebar = ({ isOpen, onClose }: Props) => {
   const location = useLocation()
 
-  const bg = useColorModeValue('gray.300', 'gray.600')
-  const activeBg = useColorModeValue('gray.400', 'gray.700')
-  const linkHover = useColorModeValue('gray.400', 'gray.700')
+  const bg = useColorModeValue('gray.300', 'gray.700')
 
   return (
     <Drawer isOpen={isOpen} onClose={onClose} placement='left'>
@@ -48,11 +46,9 @@ export const MobileSidebar = ({ isOpen, onClose }: Props) => {
                     display='flex'
                     alignItems='center'
                     fontSize='1.25rem'
-                    transition='background 0.1s'
-                    _hover={{ background: linkHover }}
-                    backgroundColor={
-                      location.pathname === route.path ? activeBg : ''
-                    }
+                    transition='color 0.2s'
+                    _hover={{ color: 'green.400' }}
+                    color={location.pathname === route.path ? 'green.400' : ''}
                   >
                     {route.icon}
                     {isOpen ? route.label : ''}
