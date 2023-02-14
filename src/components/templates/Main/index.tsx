@@ -9,7 +9,7 @@ export const MainTemplate = ({ children }: Props) => {
   const showSidebar = useBreakpointValue({ base: false, sm: true })
 
   return (
-    <Flex h='100vh'>
+    <Flex h={window.innerHeight} maxH='100vh'>
       {showSidebar && <Sidebar />}
       <Flex flex='1' overflow='auto'>
         <Flex direction='column' w='full' flex='1' p='5' gap='5'>
