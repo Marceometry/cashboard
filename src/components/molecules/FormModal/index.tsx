@@ -23,7 +23,7 @@ type ButtonProps = {
 type FormModalProps = ChakraModalProps & {
   title: string
   formMethods: UseFormReturn<any, object>
-  onConfirm?: (data?: any) => void
+  onConfirm: (data?: any) => void
   extraButton?: ButtonProps
   maxWidth?: number
 }

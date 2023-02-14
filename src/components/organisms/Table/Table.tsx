@@ -69,7 +69,7 @@ export const Table = ({
             <PieChart data={currentChart?.data || []} />
           ) : (
             <ComposedChart
-              type={currentChart?.type!}
+              type={currentChart?.type}
               data={currentChart?.data || []}
               sections={currentChart?.sections || []}
               labelType={currentChart?.labelType}

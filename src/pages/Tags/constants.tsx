@@ -4,7 +4,7 @@ import { TagModel, TransactionModel } from '@/contexts'
 import { masks } from '@/utils'
 
 export const getColumns = (
-  handleOpenTransactions: (props: TagModel) => void,
+  handleOpenTransactions: (name: string) => void,
   handleDeleteTag: (tag: string) => void
 ): ColumnProps<TagModel>[] => [
   {
@@ -35,8 +35,8 @@ export const getColumns = (
   {
     label: '',
     field: '',
-    customRender: (props) => (
-      <Button variant='link' onClick={() => handleOpenTransactions(props)}>
+    customRender: ({ name }) => (
+      <Button variant='link' onClick={() => handleOpenTransactions(name)}>
         Ver transações
       </Button>
     ),

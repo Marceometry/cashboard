@@ -1,11 +1,6 @@
 import { useState } from 'react'
 import { MainTemplate, Modal, Table } from '@/components'
-import {
-  TagModel,
-  TransactionModel,
-  useTags,
-  useTransactions,
-} from '@/contexts'
+import { TransactionModel, useTags, useTransactions } from '@/contexts'
 import { getColumns, getTransactionsColumns } from './constants'
 
 export const Tags = () => {
@@ -16,8 +11,8 @@ export const Tags = () => {
 
   const transactions: TransactionModel[] = transactionsByTag(selectedTag)
 
-  const handleOpenTransactionsModal = (props: TagModel) => {
-    setSelectedTag(props.name)
+  const handleOpenTransactionsModal = (name: string) => {
+    setSelectedTag(name)
     setIsTransactionsModalOpen(true)
   }
 

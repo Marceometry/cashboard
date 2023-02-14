@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import {
   Divider,
   Flex,
@@ -7,8 +7,6 @@ import {
   List,
   ListItem,
   Text,
-  useColorModeValue,
-  useMediaQuery,
 } from '@chakra-ui/react'
 import { Link, useLocation } from 'react-router-dom'
 import { dashboardRoutes } from '@/router'
@@ -19,7 +17,6 @@ export const Sidebar = () => {
   const location = useLocation()
   const storage = useLocalStorage()
   const [isOpen, setIsOpen] = useState(storage.get('sidebar-default-open'))
-  const [isLargerThan1080] = useMediaQuery('(min-width: 1080px)')
 
   const toggle = () => {
     setIsOpen(!isOpen)

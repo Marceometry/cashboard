@@ -18,11 +18,7 @@ import {
   CheckboxGroup,
 } from '@/components'
 import { MONTH_LIST } from '@/constants'
-import {
-  CategoriesFilterModel,
-  useCategories,
-  useTransactions,
-} from '@/contexts'
+import { CategoriesFilterModel, useTransactions } from '@/contexts'
 import { defaultEmptyFilterValues, FilterModel } from '../types'
 
 type Props = {

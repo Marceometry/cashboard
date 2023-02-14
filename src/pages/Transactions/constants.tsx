@@ -1,4 +1,4 @@
-import { Center, StatArrow, Text } from '@chakra-ui/react'
+import { Center, Text } from '@chakra-ui/react'
 import { ColumnProps, IconButton, TableButtons } from '@/components'
 import { TransactionModel } from '@/contexts'
 import { masks, sortByDate } from '@/utils'

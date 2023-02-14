@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { useBreakpointValue } from '@chakra-ui/react'
 import { TransactionModel, useDialog, useTransactions } from '@/contexts'
 import { Table, MainTemplate } from '@/components'
 import { masks, sortByDate } from '@/utils'

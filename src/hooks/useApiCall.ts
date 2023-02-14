@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useToast } from '@/hooks'
 
-type Callback<T> = (args: T) => (Promise<any> | any)
+type Callback<T> = (args: T) => Promise<any> | any
 
 type Options = {
   toastText?: string | ((data: any) => string)
@@ -14,9 +14,7 @@ export const useApiCall = () => {
 
   const generateToast = (toastText?: any, data?: any) => {
     if (!toastText) return
-    return typeof toastText === 'function'
-      ? toastText(data)
-      : toastText
+    return typeof toastText === 'function' ? toastText(data) : toastText
   }
 
   const call = <T = void>(callback: Callback<T>, options?: Options) => {

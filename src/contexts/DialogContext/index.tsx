@@ -6,7 +6,6 @@ type DialogProps = Omit<DialogComponentProps, 'isOpen' | 'onClose'>
 const defaultDialogProps: DialogProps = {
   title: '',
   body: '',
-  onConfirm: () => {},
 }
 
 export type DialogContextData = {

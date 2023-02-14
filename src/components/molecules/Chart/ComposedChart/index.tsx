@@ -26,13 +26,18 @@ type Data = any & {
 }
 
 type Props = {
-  type: 'bar' | 'area'
+  type?: 'bar' | 'area'
   labelType?: LabelType
   sections: Section[]
   data: Data[]
 }
 
-export const ComposedChart = ({ data, sections, type, labelType }: Props) => {
+export const ComposedChart = ({
+  data,
+  sections,
+  labelType,
+  type = 'area',
+}: Props) => {
   const tooltipBg = useColorModeValue('#f7fafc', '#2d3748')
 
   const getLabel = () => {

@@ -13,7 +13,7 @@ export const useFileHandle = () => {
     element.onchange = (e: any) => {
       const reader = new FileReader()
       reader.onload = async (e) => {
-        const text = (e.target?.result)
+        const text = e.target?.result
         setFileContent(text as string)
       }
       reader.readAsText(e.target.files[0])
@@ -23,7 +23,7 @@ export const useFileHandle = () => {
     setInput(element)
   }, [])
 
-  const downloadFile = (name: string, content: any, extension: string = 'txt') => {
+  const downloadFile = (name: string, content: any, extension = 'txt') => {
     const element = document.createElement('a')
     const textFile = new Blob([JSON.stringify(content)])
     element.href = URL.createObjectURL(textFile)

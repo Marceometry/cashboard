@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { PieLabel, Sector } from 'recharts'
 import { masks } from '@/utils'
 import { RADIAN } from './constants'
@@ -13,7 +14,7 @@ export const CustomizedLabel: PieLabel<any> = ({
   fill,
   payload,
   percent,
-  index,
+  // index,
 }) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5
   const x = cx + radius * Math.cos(-midAngle * RADIAN)

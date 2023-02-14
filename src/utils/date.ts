@@ -23,5 +23,5 @@ export const getFormattedMonthAndYear = (
 
 export const getFormattedDayAndMonth = (originalDate: Date | string) => {
   const date = new Date(originalDate)
-  return format(date, `dd/MM`)
+  return format(date, 'dd/MM')
 }

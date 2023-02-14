@@ -16,7 +16,7 @@ export type DialogProps = Omit<
 > & {
   title: string
   body: string
-  onConfirm: () => void
+  onConfirm?: () => void
 }
 
 export const Dialog = ({
@@ -29,7 +29,7 @@ export const Dialog = ({
   const cancelRef = useRef(null)
 
   const handleConfirm = () => {
-    onConfirm()
+    onConfirm?.()
     onClose()
   }
 
