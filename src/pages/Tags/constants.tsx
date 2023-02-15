@@ -1,7 +1,7 @@
 import { Text } from '@chakra-ui/react'
 import { Button, ColumnProps, IconButton } from '@/components'
 import { TagModel, TransactionModel } from '@/contexts'
-import { masks } from '@/utils'
+import { currency } from '@/utils'
 
 export const getColumns = (
   handleOpenTransactions: (name: string) => void,
@@ -15,20 +15,20 @@ export const getColumns = (
     label: 'Entrada',
     field: 'income',
     customRender: (props) =>
-      props.income ? masks.valueToMoney(props.income) : '-',
+      props.income ? currency.valueToMoney(props.income) : '-',
   },
   {
     label: 'Saída',
     field: 'outcome',
     customRender: (props) =>
-      props.outcome ? masks.valueToMoney(props.outcome) : '-',
+      props.outcome ? currency.valueToMoney(props.outcome) : '-',
   },
   {
     label: 'Balanço',
     field: 'balance',
     customRender: (props) => (
       <Text color={props.balance > 0 ? 'green.400' : 'red.300'}>
-        {masks.valueToMoney(props.balance)}
+        {currency.valueToMoney(props.balance)}
       </Text>
     ),
   },
@@ -62,7 +62,7 @@ export const getTransactionsColumns = (
     field: 'amount',
     customRender: ({ amount, type }) => (
       <Text color={type === 'income' ? '#48bb78' : '#f56565'}>
-        {masks.valueToMoney(amount)}
+        {currency.valueToMoney(amount)}
       </Text>
     ),
   },

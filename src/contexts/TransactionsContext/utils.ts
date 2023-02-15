@@ -1,3 +1,4 @@
+import { isValid } from 'date-fns'
 import { v4 as uuid } from 'uuid'
 import { CategoryModel, TagModel } from '@/contexts'
 import { TransactionModel } from './types'
@@ -8,18 +9,24 @@ const error = () => {
 
 export const formatTransaction = (
   payload: TransactionModel
-): TransactionModel => ({
-  id: payload.id,
-  type: payload.type,
-  description: payload.description,
-  amount: Number(payload.amount),
-  category: payload.category || 'Outros',
-  tags: payload.tags || [],
-  date:
-    payload.date.length === 10
-      ? new Date(`${payload.date} 00:00:00`).toISOString()
-      : new Date(payload.date).toISOString(),
-})
+): TransactionModel => {
+  let date = new Date().toDateString()
+  const payloadDate = new Date(payload.date)
+
+  if (isValid(payloadDate)) {
+    date = payloadDate.toISOString()
+  }
+
+  return {
+    id: payload.id,
+    type: payload.type,
+    description: payload.description,
+    amount: Number(payload.amount),
+    category: payload.category || 'Outros',
+    tags: payload.tags || [],
+    date,
+  }
+}
 
 export const isTransactionInvalid = (item: TransactionModel) => {
   try {

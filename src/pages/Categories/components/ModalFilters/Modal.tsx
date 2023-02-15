@@ -18,8 +18,11 @@ import {
 import { MONTH_LIST } from '@/constants'
 import { CategoriesFilterModel, useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
-import { masks, sortAlphabetically } from '@/utils'
-import { defaultEmptyFilterValues, FilterModel } from '../types'
+import { currency, sortAlphabetically } from '@/utils'
+import {
+  filterCategoriesFormDefaultValues,
+  FilterCategoriesFormInputs,
+} from './validation'
 
 type Props = {
   isOpen: boolean
@@ -28,16 +31,16 @@ type Props = {
   isMonthDisabled: boolean
 }
 
-const getDefaultFormValues = (data: FilterModel) => {
+const getDefaultFormValues = (data: FilterCategoriesFormInputs) => {
   return data
     ? {
-        minAmount: masks.valueToMoney(Number(data.minAmount)),
-        maxAmount: masks.valueToMoney(Number(data.maxAmount)),
+        minAmount: currency.valueToMoney(Number(data.minAmount)),
+        maxAmount: currency.valueToMoney(Number(data.maxAmount)),
         month: data.month || null,
         year: data.year || null,
         selectedCategories: data.selectedCategories || [],
       }
-    : defaultEmptyFilterValues
+    : filterCategoriesFormDefaultValues
 }
 
 export const ModalFilters = ({
@@ -75,15 +78,15 @@ export const ModalFilters = ({
     )
   }, [categoryList])
 
-  const formatValues = (data: FilterModel) => ({
-    minAmount: masks.unMaskMonetaryValue(data.minAmount),
-    maxAmount: masks.unMaskMonetaryValue(data.maxAmount),
+  const formatValues = (data: FilterCategoriesFormInputs) => ({
+    minAmount: currency.unMaskMonetaryValue(data.minAmount),
+    maxAmount: currency.unMaskMonetaryValue(data.maxAmount),
     month: Number(data.month),
     year: Number(data.year),
     selectedCategories: allChecked ? [] : data.selectedCategories,
   })
 
-  const handleSubmit = (data: FilterModel) => {
+  const handleSubmit = (data: FilterCategoriesFormInputs) => {
     handleFilter(formatValues(data))
     onClose()
   }
@@ -137,9 +140,9 @@ export const ModalFilters = ({
 
         <GridItem>
           <Flex gap='4' alignItems='flex-end'>
-            <Input flex='1' name='minAmount' mask={masks.monetaryValue} />
+            <Input flex='1' name='minAmount' mask={currency.monetaryValue} />
             <Text>até</Text>
-            <Input flex='1' name='maxAmount' mask={masks.monetaryValue} />
+            <Input flex='1' name='maxAmount' mask={currency.monetaryValue} />
           </Flex>
         </GridItem>
 

@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { MainTemplate, Table } from '@/components'
 import { TransactionModel, useDialog, useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
-import { masks, sortByDate } from '@/utils'
+import { currency, sortByDate } from '@/utils'
 import { AddTransactionModal, ModalFilters, TableCaption } from './components'
 import {
   chartBars,
@@ -11,11 +11,15 @@ import {
   getColumns,
   getIncomeAndOutcome,
 } from './constants'
-import { defaultFilterValues, FilterModel } from './types'
 import { filterData } from './utils'
+import {
+  filterTransactionsFormDefaultValues,
+  FilterTransactionsFormInputs,
+} from './validation'
 
 export const Transactions = () => {
   const storage = useLocalStorage()
+  const storagedFilterValues = storage.get('transactions-table-filters')
   const { openDialog } = useDialog()
   const { transactionList, removeTransaction, isLoading } = useTransactions()
 
@@ -24,9 +28,10 @@ export const Transactions = () => {
   const [selectedTransactionId, setSelectedTransactionId] = useState(
     '' as string | undefined
   )
-  const [tableFilters, setTableFilters] = useState(
-    () => storage.get('transactions-table-filters') || defaultFilterValues
-  )
+  const [tableFilters, setTableFilters] =
+    useState<FilterTransactionsFormInputs>(
+      () => storagedFilterValues || filterTransactionsFormDefaultValues
+    )
   const [incomeAndOutcome, setIncomeAndOutcome] = useState<[number, number]>([
     0, 0,
   ])
@@ -36,7 +41,7 @@ export const Transactions = () => {
     return filteredData
   }, [transactionList, tableFilters])
 
-  const handleSetFilters = (filters: FilterModel) => {
+  const handleSetFilters = (filters: FilterTransactionsFormInputs) => {
     setTableFilters(filters)
     storage.set('transactions-table-filters', filters)
   }
@@ -48,7 +53,7 @@ export const Transactions = () => {
 
   const handleOpenDeleteDialog = (row: TransactionModel) => {
     openDialog({
-      title: `${row.description} | ${masks.valueToMoney(row.amount)}`,
+      title: `${row.description} | ${currency.valueToMoney(row.amount)}`,
       body: 'Deseja realmente excluir esta transação? Essa ação não pode ser desfeita.',
       onConfirm: () => removeTransaction(row),
     })

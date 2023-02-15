@@ -36,9 +36,7 @@ export const Input = ({
   } = useFormContext()
   const error = errors[name]?.message as string | undefined
 
-  const inputRegister = register(name, {
-    required: required ? 'Este campo é obrigatório' : '',
-  })
+  const inputRegister = register(name)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (mask) e.target.value = mask(e.target.value)
@@ -46,7 +44,7 @@ export const Input = ({
   }
 
   return (
-    <Flex alignItems='flex-end' gap='2' flex={flex}>
+    <Flex flex={flex}>
       <FormControl
         name={name}
         label={label}

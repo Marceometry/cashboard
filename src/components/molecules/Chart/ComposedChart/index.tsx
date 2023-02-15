@@ -11,7 +11,7 @@ import {
   YAxis,
 } from 'recharts'
 import { EmptyData } from '@/components'
-import { masks } from '@/utils'
+import { currency } from '@/utils'
 
 export type LabelType = 'month' | 'year' | 'day'
 
@@ -75,7 +75,7 @@ export const ComposedChart = ({
           <YAxis />
           <Tooltip
             contentStyle={{ backgroundColor: tooltipBg }}
-            formatter={(data: number) => masks.valueToMoney(data)}
+            formatter={(data: number) => currency.valueToMoney(data)}
             labelFormatter={(name: string) => `${getLabel()}${name}`}
           />
           <Legend />

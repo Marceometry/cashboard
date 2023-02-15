@@ -1,7 +1,7 @@
 import { ChartProps, ColumnProps, TableButtons } from '@/components'
 import { CHART_COLORS } from '@/constants'
 import { CategoryModel, TransactionType } from '@/contexts'
-import { masks } from '@/utils'
+import { currency } from '@/utils'
 import { Caption, CaptionProps } from './components'
 import { ChartType, DataModel, Response } from './types'
 
@@ -25,7 +25,7 @@ export const getColumns = (type: TransactionType): ColumnProps<DataModel>[] => [
   {
     label: 'Quantidade',
     field: type,
-    customRender: (props) => masks.valueToMoney(props[type]),
+    customRender: (props) => currency.valueToMoney(props[type]),
   },
   {
     label: 'Fração',

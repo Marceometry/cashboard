@@ -2,26 +2,27 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useBreakpointValue } from '@chakra-ui/react'
 import { FormModal, Radio } from '@/components'
-import { AddTransactionModel, useTransactions } from '@/contexts'
-import { formatDateValue, masks } from '@/utils'
+import { useTransactions } from '@/contexts'
+import { currency, formatDateToInput, formatInputToISOString } from '@/utils'
 import { Form } from './Form'
+import {
+  addTransactionFormDefaultValues,
+  AddTransactionFormInputs,
+  addTransactionFormResolver,
+  CategoryFormInputs,
+} from './validation'
 
-type Props = {
+type AddTransactionModalProps = {
   isOpen: boolean
   onClose: () => void
   selectedId?: string
 }
 
-const defaultValues = {
-  amount: '' as any,
-  category: '',
-  description: '',
-  type: 'outcome',
-  tags: [] as string[],
-  date: formatDateValue(new Date()),
-}
-
-export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
+export const AddTransactionModal = ({
+  isOpen,
+  onClose,
+  selectedId,
+}: AddTransactionModalProps) => {
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const {
     transactionList,
@@ -32,8 +33,11 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
     tagList,
   } = useTransactions()
 
-  const formMethods = useForm({ defaultValues })
-  const categoriesFormMethods = useForm()
+  const formMethods = useForm({
+    defaultValues: addTransactionFormDefaultValues,
+    resolver: addTransactionFormResolver,
+  })
+  const categoriesFormMethods = useForm<CategoryFormInputs>()
 
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false)
   const [keepModalOpen, setKeepModalOpen] = useState(false)
@@ -41,16 +45,17 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
   const loadTransactionById = (id: string) => {
     const selectedTransaction = transactionList.find((item) => item.id === id)
     if (!selectedTransaction) return
-    const newFormValues = {
+    const newFormValues: AddTransactionFormInputs = {
       ...selectedTransaction,
-      amount: masks.monetaryValue(selectedTransaction.amount.toFixed(2)),
-      date: formatDateValue(new Date(selectedTransaction.date)),
+      tags: selectedTransaction.tags || [],
+      amount: currency.monetaryValue(selectedTransaction.amount.toFixed(2)),
+      date: formatDateToInput(new Date(selectedTransaction.date)),
     }
-    formMethods.reset(newFormValues || defaultValues)
+    formMethods.reset(newFormValues || addTransactionFormDefaultValues)
   }
 
   useEffect(() => {
-    formMethods.reset(defaultValues)
+    formMethods.reset(addTransactionFormDefaultValues)
   }, [isOpen])
 
   useEffect(() => {
@@ -63,10 +68,11 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
     loadTransactionById(selectedId)
   }, [isOpen, selectedId])
 
-  const handleSubmit = (data: AddTransactionModel) => {
+  const handleSubmit = (data: AddTransactionFormInputs) => {
     const payload = {
       ...data,
-      amount: masks.unMaskMonetaryValue(data.amount),
+      date: formatInputToISOString(data.date),
+      amount: currency.unMaskMonetaryValue(data.amount),
     }
     if (selectedId) {
       updateTransaction({
@@ -89,7 +95,7 @@ export const AddTransactionModal = ({ isOpen, onClose, selectedId }: Props) => {
     }
   }
 
-  const handleSelectCategory = ({ category }: { category: string }) => {
+  const handleSelectCategory = ({ category }: CategoryFormInputs) => {
     formMethods.setValue('category', category)
     setIsCategoriesModalOpen(false)
   }

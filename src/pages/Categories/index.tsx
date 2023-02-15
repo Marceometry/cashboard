@@ -7,7 +7,7 @@ import {
   useTransactions,
 } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
-import { ModalFilters } from './components'
+import { filterCategoriesFormDefaultValues, ModalFilters } from './components'
 import {
   generateData,
   getButtons,
@@ -15,7 +15,6 @@ import {
   getCharts,
   getColumns,
 } from './constants'
-import { defaultFilterValues } from './types'
 
 export const Categories = () => {
   const storage = useLocalStorage()
@@ -26,7 +25,7 @@ export const Categories = () => {
   const [isFilterMonthDisabled, setIsFilterMonthDisabled] = useState(false)
   const [currentType, setCurrentType] = useState<TransactionType>('outcome')
   const [filters, setFilters] = useState<CategoriesFilterModel>(
-    storage.get('categories-page-filters') || defaultFilterValues
+    storage.get('categories-page-filters') || filterCategoriesFormDefaultValues
   )
 
   const areaChartData = generateCategoriesHistory(filters, currentType)

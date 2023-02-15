@@ -108,7 +108,7 @@ export function TransactionsContextProvider({
     if (!user?.id) return clearState()
 
     const unsubscribeAdd = onAddTransaction((data) => {
-      setTransactionList((oldState) => [...oldState, data])
+      setTransactionList((oldState) => [...oldState, formatTransaction(data)])
       setIsLoading(false)
     })
     const unsubscribeChange = onChangeTransaction((data) => {

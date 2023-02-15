@@ -1,7 +1,7 @@
 import { Center, Text } from '@chakra-ui/react'
 import { ColumnProps, IconButton, TableButtons } from '@/components'
 import { TransactionModel } from '@/contexts'
-import { masks, sortByDate } from '@/utils'
+import { currency, sortByDate } from '@/utils'
 
 export const getButtons = (
   handleNewTransaction: () => void,
@@ -46,7 +46,7 @@ export const getColumns = (
       field: 'amount',
       customRender: ({ amount, type }) => (
         <Text color={type === 'income' ? 'green.400' : 'red.300'}>
-          {masks.valueToMoney(amount)}
+          {currency.valueToMoney(amount)}
         </Text>
       ),
     },

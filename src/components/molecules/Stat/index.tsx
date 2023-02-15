@@ -7,7 +7,7 @@ import {
   StatLabel,
   StatNumber,
 } from '@chakra-ui/react'
-import { masks } from '@/utils'
+import { currency } from '@/utils'
 
 export type StatProps = {
   label: string
@@ -27,7 +27,7 @@ export const Stat = ({ label, value, type, size = 'lg' }: StatProps) => {
           <StatLabel fontSize={size === 'lg' ? 'xl' : 'md'}>{label}</StatLabel>
         </Center>
         <StatNumber fontSize={size === 'lg' ? '3xl' : 'lg'} mt='2'>
-          {masks.valueToMoney(value)}
+          {currency.valueToMoney(value)}
         </StatNumber>
       </Grid>
     </ChakraStat>

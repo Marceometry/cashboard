@@ -9,7 +9,7 @@ export type TransactionModel = {
   category: string
   date: string
   type: TransactionType
-  tags?: string[]
+  tags: string[]
 }
 
 export type AddTransactionModel = Omit<TransactionModel, 'id'>

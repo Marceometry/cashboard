@@ -1,9 +1,9 @@
 import { Flex, Stat, StatArrow, Text } from '@chakra-ui/react'
-import { masks } from '@/utils'
-import { FilterModel } from '../../types'
+import { currency } from '@/utils'
+import { FilterTransactionsFormInputs } from '../../validation'
 
 type TableCaptionProps = {
-  filters: FilterModel
+  filters: FilterTransactionsFormInputs
   values: [number, number]
 }
 
@@ -12,11 +12,11 @@ export const TableCaption = ({ filters, values }: TableCaptionProps) => {
     <Stat>
       <Flex alignItems='center' gap='1'>
         <StatArrow type='increase' />
-        <Text fontSize='md'>{masks.valueToMoney(values[0])}</Text>
+        <Text fontSize='md'>{currency.valueToMoney(values[0])}</Text>
       </Flex>
       <Flex alignItems='center' gap='1'>
         <StatArrow type='decrease' />
-        <Text fontSize='md'>{masks.valueToMoney(values[1])}</Text>
+        <Text fontSize='md'>{currency.valueToMoney(values[1])}</Text>
       </Flex>
     </Stat>
   )
@@ -26,10 +26,11 @@ export const TableCaption = ({ filters, values }: TableCaptionProps) => {
   const { selectedMonth, selectedYear } = filters
   if (!selectedYear) return <Balance />
 
-  const month = selectedMonth
-    ? selectedMonth > 9
-      ? selectedMonth
-      : `0${selectedMonth}`
+  const monthAsNumber = Number(selectedMonth)
+  const month = monthAsNumber
+    ? monthAsNumber > 9
+      ? monthAsNumber
+      : `0${monthAsNumber}`
     : null
 
   return (

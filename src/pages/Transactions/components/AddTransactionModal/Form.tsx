@@ -1,7 +1,7 @@
 import { Center, Grid, GridItem, useBreakpointValue } from '@chakra-ui/react'
 import { Input, MultiSelect, Radio } from '@/components'
 import { CategoryModel, TagModel } from '@/contexts'
-import { masks } from '@/utils'
+import { currency } from '@/utils'
 
 type Props = {
   tagList: TagModel[]
@@ -30,7 +30,7 @@ export const Form = ({
             label='Valor'
             name='amount'
             required
-            mask={masks.monetaryValue}
+            mask={currency.monetaryValue}
           />
         </GridItem>
 
