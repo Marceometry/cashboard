@@ -7,19 +7,27 @@ import { currency } from '@/utils'
 import { AddTransactionFormInputs } from './validation'
 
 type Props = {
+  isEditingTransaction: boolean
   handleOpenCategoriesModal: () => void
 }
 
-export const Form = ({ handleOpenCategoriesModal }: Props) => {
+export const Form = ({
+  isEditingTransaction,
+  handleOpenCategoriesModal,
+}: Props) => {
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const { categoryList, tagList, getFilteredMostRepeatedTransactions } =
     useTransactions()
   const { watch, setValue } = useFormContext<AddTransactionFormInputs>()
 
-  const description = watch('description')
-  const descriptionDatalist = getFilteredMostRepeatedTransactions(description)
+  const description = !isEditingTransaction ? watch('description') : ''
+  const descriptionDatalist = !isEditingTransaction
+    ? getFilteredMostRepeatedTransactions(description)
+    : []
 
   useEffect(() => {
+    if (isEditingTransaction) return
+
     const item = descriptionDatalist.find(
       (item) => item.description === description
     )
@@ -28,7 +36,7 @@ export const Form = ({ handleOpenCategoriesModal }: Props) => {
     setValue('category', item.category)
     setValue('amount', currency.maskMonetaryValue(item.amount))
     setValue('type', item.type)
-  }, [description, descriptionDatalist])
+  }, [description, descriptionDatalist, isEditingTransaction])
 
   return (
     <>

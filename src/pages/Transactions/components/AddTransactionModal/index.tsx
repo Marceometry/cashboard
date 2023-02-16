@@ -118,6 +118,7 @@ export const AddTransactionModal = ({
         }
       >
         <Form
+          isEditingTransaction={!!selectedId}
           handleOpenCategoriesModal={() => setIsCategoriesModalOpen(true)}
         />
       </FormModal>
