@@ -11,30 +11,25 @@ const error = () => {
 export const formatTransaction = (
   payload: TransactionModel
 ): TransactionModel => {
-  let date = new Date().toDateString()
-  const payloadDate = new Date(payload.date)
-
-  if (isValid(payloadDate)) {
-    date = payloadDate.toISOString()
-  }
+  if (isTransactionInvalid(payload)) throw new Error()
 
   return {
     id: payload.id,
     type: payload.type,
     description: payload.description,
-    amount: Number(payload.amount),
+    amount: payload.amount,
     category: payload.category || 'Outros',
     tags: payload.tags || [],
-    date,
+    date: new Date(payload.date).toISOString(),
   }
 }
 
 export const isTransactionInvalid = (item: TransactionModel) => {
   try {
     if (!item.description) error()
-    if (!item.category) error()
+    if (typeof item.category !== 'string') error()
     if (item.type !== 'income' && item.type !== 'outcome') error()
-    if (!new Date(item.date).getDate()) error()
+    if (!isValid(new Date(item.date))) error()
     if (isNaN(item.amount)) error()
 
     return false
