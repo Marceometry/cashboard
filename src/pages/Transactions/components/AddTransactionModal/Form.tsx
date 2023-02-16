@@ -1,20 +1,34 @@
+import { useEffect } from 'react'
+import { useFormContext } from 'react-hook-form'
 import { Center, Grid, GridItem, useBreakpointValue } from '@chakra-ui/react'
 import { Input, MultiSelect, Radio } from '@/components'
-import { CategoryModel, TagModel } from '@/contexts'
+import { useTransactions } from '@/contexts'
 import { currency } from '@/utils'
+import { AddTransactionFormInputs } from './validation'
 
 type Props = {
-  tagList: TagModel[]
-  categoryList: CategoryModel[]
   handleOpenCategoriesModal: () => void
 }
 
-export const Form = ({
-  tagList,
-  categoryList,
-  handleOpenCategoriesModal,
-}: Props) => {
+export const Form = ({ handleOpenCategoriesModal }: Props) => {
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
+  const { categoryList, tagList, getFilteredMostRepeatedTransactions } =
+    useTransactions()
+  const { watch, setValue } = useFormContext<AddTransactionFormInputs>()
+
+  const description = watch('description')
+  const descriptionDatalist = getFilteredMostRepeatedTransactions(description)
+
+  useEffect(() => {
+    const item = descriptionDatalist.find(
+      (item) => item.description === description
+    )
+    if (!item) return
+
+    setValue('category', item.category)
+    setValue('amount', currency.monetaryValue(item.amount.toFixed(2)))
+    setValue('type', item.type)
+  }, [description, descriptionDatalist])
 
   return (
     <>
@@ -23,17 +37,27 @@ export const Form = ({
         gap={isSmallScreen ? '2' : '4'}
       >
         <GridItem>
-          <Input label='Descrição' name='description' required />
+          <Input
+            label='Descrição'
+            name='description'
+            autoComplete='off'
+            datalist={descriptionDatalist.map((item) => item.description)}
+            required
+          />
         </GridItem>
         <GridItem>
           <Input
+            autoComplete='off'
             label='Valor'
             name='amount'
-            required
             mask={currency.monetaryValue}
+            required
           />
         </GridItem>
 
+        <GridItem>
+          <Input label='Data' name='date' type='date' required />
+        </GridItem>
         <GridItem>
           <Input
             label='Categoria'
@@ -48,9 +72,6 @@ export const Form = ({
                 : undefined
             }
           />
-        </GridItem>
-        <GridItem>
-          <Input label='Data' name='date' type='date' required />
         </GridItem>
       </Grid>
 

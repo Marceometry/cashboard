@@ -17,7 +17,7 @@ export type AddTransactionModel = Omit<TransactionModel, 'id'>
 export type TransactionsContextData = {
   isLoading: boolean
   transactionList: TransactionModel[]
-  setTransactionList: (list: TransactionModel[]) => void
+  mostRepeatedTransactions: TransactionModel[]
   categoryList: CategoryModel[]
   tagList: TagModel[]
   addTransaction: (transaction: AddTransactionModel) => void
@@ -26,6 +26,7 @@ export type TransactionsContextData = {
   updateTransactionList: (list: TransactionModel[]) => void
   uploadTransactionList: (list: string) => void
   getAvailableYearList: () => Option[]
+  getFilteredMostRepeatedTransactions: (text: string) => TransactionModel[]
 }
 
 export type TagModel = {

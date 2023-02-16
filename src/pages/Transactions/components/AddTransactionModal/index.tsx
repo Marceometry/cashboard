@@ -25,12 +25,11 @@ export const AddTransactionModal = ({
 }: AddTransactionModalProps) => {
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const {
+    isLoading,
+    categoryList,
     transactionList,
     addTransaction,
     updateTransaction,
-    isLoading,
-    categoryList,
-    tagList,
   } = useTransactions()
 
   const formMethods = useForm({
@@ -119,8 +118,6 @@ export const AddTransactionModal = ({
         }
       >
         <Form
-          tagList={tagList}
-          categoryList={categoryList}
           handleOpenCategoriesModal={() => setIsCategoriesModalOpen(true)}
         />
       </FormModal>

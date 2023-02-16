@@ -32,6 +32,9 @@ const styles = {
       overflow: 'hidden',
       height: '100vh',
     },
+    '[list]::-webkit-calendar-picker-indicator, *::-webkit-list-button': {
+      display: 'none !important',
+    },
   }),
 }
 

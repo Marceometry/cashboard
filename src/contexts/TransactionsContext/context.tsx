@@ -16,8 +16,10 @@ import {
   TransactionsContextData,
 } from './types'
 import {
+  filterMostRepeatedTransactions,
   formatTransaction,
   generateCategories,
+  generateMostRepeatedTransactions,
   generateTags,
   getYearList,
   isTransactionListInvalid,
@@ -43,6 +45,9 @@ export function TransactionsContextProvider({
   } = useFirebaseDatabase()
 
   const [transactionList, setTransactionList] = useState<TransactionModel[]>([])
+  const [mostRepeatedTransactions, setMostRepeatedTransactions] = useState<
+    TransactionModel[]
+  >([])
   const [categoryList, setCategoryList] = useState<CategoryModel[]>([])
   const [tagList, setTagList] = useState<TagModel[]>([])
 
@@ -97,11 +102,16 @@ export function TransactionsContextProvider({
 
   const getAvailableYearList = () => getYearList(transactionList)
 
+  const getFilteredMostRepeatedTransactions = (text: string) =>
+    filterMostRepeatedTransactions(text, mostRepeatedTransactions)
+
   useEffect(() => {
     const categories = generateCategories(transactionList)
     setCategoryList(categories)
     const tags = generateTags(transactionList)
     setTagList(tags)
+    const mostRepeated = generateMostRepeatedTransactions(transactionList)
+    setMostRepeatedTransactions(mostRepeated)
   }, [transactionList])
 
   useEffect(() => {
@@ -139,7 +149,7 @@ export function TransactionsContextProvider({
       value={{
         isLoading,
         transactionList,
-        setTransactionList,
+        mostRepeatedTransactions,
         categoryList,
         tagList,
         addTransaction,
@@ -148,6 +158,7 @@ export function TransactionsContextProvider({
         updateTransactionList,
         uploadTransactionList,
         getAvailableYearList,
+        getFilteredMostRepeatedTransactions,
       }}
     >
       {children}

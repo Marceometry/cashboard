@@ -16,6 +16,7 @@ type Props = InputProps & {
   helperText?: string
   rightIcon?: IconButtonProps
   flex?: string
+  datalist?: string[]
   mask?: (value: string) => any
 }
 
@@ -27,6 +28,7 @@ export const Input = ({
   helperText,
   rightIcon,
   mask,
+  datalist,
   flex,
   ...props
 }: Props) => {
@@ -35,6 +37,9 @@ export const Input = ({
     formState: { errors },
   } = useFormContext()
   const error = errors[name]?.message as string | undefined
+
+  const hasDatalist = !!datalist?.length
+  const datalistName = `${name}-datalist`
 
   const inputRegister = register(name)
 
@@ -59,11 +64,20 @@ export const Input = ({
             id={name}
             onChange={handleChange}
             placeholder={placeholder || mask?.('') || label}
+            list={hasDatalist ? datalistName : undefined}
           />
           {rightIcon && (
             <InputRightElement>
               <IconButton {...rightIcon} borderRadius={0} mb={error ? 6 : 0} />
             </InputRightElement>
+          )}
+
+          {!!datalist?.length && (
+            <datalist id={datalistName}>
+              {datalist.map((text) => (
+                <option value={text} key={text} />
+              ))}
+            </datalist>
           )}
         </InputGroup>
       </FormControl>

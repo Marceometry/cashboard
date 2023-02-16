@@ -1,6 +1,7 @@
 import { isValid } from 'date-fns'
 import { v4 as uuid } from 'uuid'
 import { CategoryModel, TagModel } from '@/contexts'
+import { sortByDate } from '@/utils'
 import { TransactionModel } from './types'
 
 const error = () => {
@@ -132,4 +133,41 @@ export const generateTags = (transactions: TransactionModel[]): TagModel[] => {
     return acc
   }, [] as TagModel[])
   return newTagList
+}
+
+type AccumulatorModel = Array<
+  TransactionModel & {
+    count: number
+  }
+>
+
+export const generateMostRepeatedTransactions = (
+  transactions: TransactionModel[]
+): TransactionModel[] => {
+  const sortedTransactions: TransactionModel[] = sortByDate(transactions, true)
+
+  const mostRepeated = sortedTransactions.reduce((acc, transaction) => {
+    const itemIndex = acc.findIndex(
+      (item) =>
+        item.description.toLowerCase() === transaction.description.toLowerCase()
+    )
+    if (itemIndex < 0) return [...acc, { ...transaction, count: 1 }]
+    acc[itemIndex] = { ...transaction, count: acc[itemIndex].count + 1 }
+    return acc
+  }, [] as AccumulatorModel)
+
+  const response = mostRepeated.sort((a, b) => b.count - a.count)
+
+  return response
+}
+
+export const filterMostRepeatedTransactions = (
+  text: string,
+  transactions: TransactionModel[]
+): TransactionModel[] => {
+  const response = transactions.filter((item) =>
+    item.description.toLowerCase().includes(text.toLowerCase())
+  )
+
+  return response.slice(0, 5)
 }
