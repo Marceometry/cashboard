@@ -3,10 +3,12 @@ export const currency = {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
-    }).format(value)
+    }).format(
+      value / 100 // value is in cents
+    )
   },
 
-  monetaryValue(value: string | number, maxNumberCharacter = 12) {
+  maskMonetaryValue(value: string | number, maxNumberCharacter = 12) {
     let cleanValue = String(value)?.toString().replace(/\D/g, '')
 
     if (cleanValue.startsWith('0')) cleanValue = cleanValue.replace('0', '')
@@ -30,7 +32,7 @@ export const currency = {
     const response = String(value)
       ?.replace('R$ ', '')
       .replace('.', '')
-      .replace(',', '.')
+      .replace(',', '')
 
     return Number(response)
   },

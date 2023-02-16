@@ -26,7 +26,7 @@ export const Form = ({ handleOpenCategoriesModal }: Props) => {
     if (!item) return
 
     setValue('category', item.category)
-    setValue('amount', currency.monetaryValue(item.amount.toFixed(2)))
+    setValue('amount', currency.maskMonetaryValue(item.amount))
     setValue('type', item.type)
   }, [description, descriptionDatalist])
 
@@ -50,7 +50,7 @@ export const Form = ({ handleOpenCategoriesModal }: Props) => {
             autoComplete='off'
             label='Valor'
             name='amount'
-            mask={currency.monetaryValue}
+            mask={currency.maskMonetaryValue}
             required
           />
         </GridItem>

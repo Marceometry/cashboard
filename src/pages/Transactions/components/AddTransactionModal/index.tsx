@@ -47,7 +47,7 @@ export const AddTransactionModal = ({
     const newFormValues: AddTransactionFormInputs = {
       ...selectedTransaction,
       tags: selectedTransaction.tags || [],
-      amount: currency.monetaryValue(selectedTransaction.amount.toFixed(2)),
+      amount: currency.maskMonetaryValue(selectedTransaction.amount),
       date: formatDateToInput(new Date(selectedTransaction.date)),
     }
     formMethods.reset(newFormValues || addTransactionFormDefaultValues)

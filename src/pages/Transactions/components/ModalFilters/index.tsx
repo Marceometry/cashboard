@@ -116,9 +116,17 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
 
         <GridItem>
           <Flex gap='4' alignItems='flex-end'>
-            <Input flex='1' name='minAmount' mask={currency.monetaryValue} />
+            <Input
+              flex='1'
+              name='minAmount'
+              mask={currency.maskMonetaryValue}
+            />
             <Text>até</Text>
-            <Input flex='1' name='maxAmount' mask={currency.monetaryValue} />
+            <Input
+              flex='1'
+              name='maxAmount'
+              mask={currency.maskMonetaryValue}
+            />
           </Flex>
         </GridItem>
 
