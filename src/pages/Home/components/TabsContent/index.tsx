@@ -1,7 +1,7 @@
 import { Flex, useBreakpointValue } from '@chakra-ui/react'
-import { Stat } from '@/components'
 import { TransactionType } from '@/contexts'
-import { ChartData } from '../constants'
+import { Stat } from './Stat'
+import { ChartData } from '../../constants'
 
 type Props = {
   data: ChartData
@@ -26,22 +26,22 @@ export const TabsContent = ({ data }: Props) => {
         gap={isSmallScreen ? '4' : ''}
       >
         <Stat
-          type='increase'
+          type='income'
           label='Ganhos totais'
           value={totalIncome}
-          size={isSmallScreen ? 'md' : 'lg'}
+          isSmallScreen={isSmallScreen}
         />
         <Stat
-          type='decrease'
+          type='outcome'
           label='Gastos totais'
           value={totalOutcome}
-          size={isSmallScreen ? 'md' : 'lg'}
+          isSmallScreen={isSmallScreen}
         />
         <Stat
           type='balance'
           label='Total economizado'
           value={totalBalance}
-          size={isSmallScreen ? 'md' : 'lg'}
+          isSmallScreen={isSmallScreen}
         />
       </Flex>
     </Flex>

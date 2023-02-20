@@ -1,7 +1,14 @@
-import { format } from 'date-fns'
+import { addMonths, format, isPast, isToday, isValid } from 'date-fns'
 
 export const DATE_INPUT_REGEX =
   /^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/
+
+export const getDateMidnight = (date: Date | string = new Date()) => {
+  let response = new Date(date)
+  if (!isValid(response)) response = new Date()
+  response.setHours(0, 0, 0, 0)
+  return response
+}
 
 export const formatDateToInput = (date: Date | string): string => {
   try {
@@ -59,4 +66,12 @@ export const getFormattedDayAndMonth = (originalDate: Date | string) => {
   } catch (error) {
     return formatString
   }
+}
+
+export const getNextDateByMonthDay = (day: number) => {
+  const date = getDateMidnight()
+  date.setDate(day)
+  const isDatePast = isPast(date) && !isToday(date)
+
+  return isDatePast ? addMonths(date, 1) : date
 }

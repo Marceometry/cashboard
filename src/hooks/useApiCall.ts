@@ -26,6 +26,7 @@ export const useApiCall = () => {
           const text = generateToast(options.toastText, data)
           toast(text)
         }
+        return data
       } catch (error) {
         console.warn(error)
         const text = generateToast(options?.toastError, error)

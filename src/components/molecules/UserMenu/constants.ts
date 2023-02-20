@@ -1,8 +1,8 @@
-import { format } from 'date-fns'
 import { v4 as uuid } from 'uuid'
+import { getDateMidnight } from '@/utils'
 
 const getFormattedDate = () => {
-  return new Date(`${format(new Date(), 'yyyy-MM-dd')} 00:00:00`).toISOString()
+  return getDateMidnight().toISOString()
 }
 
 export const CODE_EXAMPLE = `[

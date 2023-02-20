@@ -8,8 +8,8 @@ export type TransactionModel = {
   description: string
   category: string
   date: string
-  type: TransactionType
   tags: string[]
+  type: TransactionType
 }
 
 export type AddTransactionModel = Omit<TransactionModel, 'id'>
@@ -20,7 +20,9 @@ export type TransactionsContextData = {
   mostRepeatedTransactions: TransactionModel[]
   categoryList: CategoryModel[]
   tagList: TagModel[]
-  addTransaction: (transaction: AddTransactionModel) => void
+  addTransaction: (
+    transaction: AddTransactionModel
+  ) => Promise<TransactionModel>
   updateTransaction: (transaction: TransactionModel) => void
   removeTransaction: (transaction: TransactionModel) => void
   updateTransactionList: (list: TransactionModel[]) => void

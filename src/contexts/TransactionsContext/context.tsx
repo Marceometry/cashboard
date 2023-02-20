@@ -55,6 +55,7 @@ export function TransactionsContextProvider({
     async (payload: AddTransactionModel) => {
       const transaction = formatTransaction({ ...payload, id: uuid() })
       await remoteAddTransaction(transaction)
+      return transaction
     },
     { toastText: 'Transação adicionada com sucesso!' }
   )

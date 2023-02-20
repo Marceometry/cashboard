@@ -56,6 +56,7 @@ export const Input = ({
         error={error}
         required={required}
         helperText={helperText}
+        isDisabled={props.isDisabled}
       >
         <InputGroup>
           <ChakraInput
