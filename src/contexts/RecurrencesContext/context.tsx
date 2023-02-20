@@ -12,6 +12,7 @@ import {
   AddRecurrentTransaction,
   RecurrencesContextData,
   RecurrentTransaction,
+  RemoveRecurrenceArgs,
   UpdateRecurrenceTransactionListArgs,
   UpdateRecurrentTransaction,
 } from './types'
@@ -55,13 +56,15 @@ export function RecurrencesContextProvider({
     { toastText: 'Recorrência adicionada com sucesso!' }
   )
 
-  const removeRecurrence = call(
-    async (id: string) => {
-      const recurrence = recurrenceList.find((item) => item.id === id)
-      if (!recurrence) throw new Error()
-      recurrence.transactions.forEach(
-        async (item) => await removeTransaction(item.id)
-      )
+  const removeRecurrence = call<RemoveRecurrenceArgs>(
+    async ({ id, deleteAllTransactions }) => {
+      if (deleteAllTransactions) {
+        const recurrence = recurrenceList.find((item) => item.id === id)
+        if (!recurrence) throw new Error()
+        recurrence.transactions.forEach(
+          async (item) => await removeTransaction(item.id)
+        )
+      }
       await remoteRemoveRecurrence(id)
     },
     { toastText: 'Recorrência excluída com sucesso!' }

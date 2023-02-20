@@ -8,7 +8,7 @@ import {
 } from '@/contexts'
 import { currency } from '@/utils'
 import { AddRecurrenceModal } from './components'
-import { deleteModalText, getButtons, getColumns } from './constants'
+import { getButtons, getColumns } from './constants'
 
 export const Recurrences = () => {
   const { openDialog } = useDialog()
@@ -43,7 +43,16 @@ export const Recurrences = () => {
     openDialog({
       title: `${row.description} | ${currency.valueToMoney(row.amount)}`,
       body: 'Deseja realmente excluir esta transação recorrente? Essa ação não pode ser desfeita.',
-      onConfirm: () => removeRecurrence(row.id),
+      checkbox: {
+        id: 'deleteAllTransactions',
+        label: 'Excluir todas as transações vinculadas à essa recorrência',
+      },
+      onConfirm: (data) => {
+        removeRecurrence({
+          id: row.id,
+          deleteAllTransactions: data.deleteAllTransactions,
+        })
+      },
     })
   }
 

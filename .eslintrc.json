@@ -16,6 +16,7 @@
     "sourceType": "module"
   },
   "plugins": ["react", "prettier", "import", "@typescript-eslint"],
+  "settings": { "react": { "version": "detect" } },
   "rules": {
     "prettier/prettier": ["warn", { "endOfLine": "auto" }],
     "react/jsx-filename-extension": ["warn", { "extensions": [".ts", ".tsx"] }],

@@ -23,11 +23,16 @@ export type RecurrencesContextData = {
   recurrenceList: RecurrentTransaction[]
   addRecurrence: (recurrence: AddRecurrentTransaction) => void
   updateRecurrence: (recurrence: UpdateRecurrentTransaction) => void
-  removeRecurrence: (id: string) => void
+  removeRecurrence: (args: RemoveRecurrenceArgs) => void
 }
 
 export type UpdateRecurrenceTransactionListArgs = {
   id: string
   transactions: RecurrenceTransactionItem[]
   isActive?: boolean
+}
+
+export type RemoveRecurrenceArgs = {
+  id: string
+  deleteAllTransactions: boolean
 }
