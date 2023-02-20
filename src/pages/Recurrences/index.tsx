@@ -12,10 +12,22 @@ import { deleteModalText, getButtons, getColumns } from './constants'
 
 export const Recurrences = () => {
   const { openDialog } = useDialog()
-  const { recurrenceList, removeRecurrence } = useRecurrences()
+  const { recurrenceList, updateRecurrence, removeRecurrence } =
+    useRecurrences()
   const { isLoading } = useTransactions()
   const [selectedRecurrence, setSelectedRecurrence] = useState('')
   const [isRecurrenceModalOpen, setIsRecurrenceModalOpen] = useState(false)
+
+  const toggleActivity = (id: string, isActive: boolean) => {
+    const date = new Date().toISOString()
+    const payload = { id, isActive }
+    const activityDate = isActive
+      ? { lastTimeActive: date }
+      : { lastTimeInactive: date }
+
+    Object.assign(payload, activityDate)
+    updateRecurrence(payload)
+  }
 
   const handleEditRecurrence = (id: string) => {
     setSelectedRecurrence(id)
@@ -30,13 +42,17 @@ export const Recurrences = () => {
   const handleOpenDeleteDialog = (row: RecurrentTransaction) => {
     openDialog({
       title: `${row.description} | ${currency.valueToMoney(row.amount)}`,
-      body: deleteModalText,
+      body: 'Deseja realmente excluir esta transação recorrente? Essa ação não pode ser desfeita.',
       onConfirm: () => removeRecurrence(row.id),
     })
   }
 
   const buttons = getButtons(() => setIsRecurrenceModalOpen(true))
-  const columns = getColumns(handleEditRecurrence, handleOpenDeleteDialog)
+  const columns = getColumns(
+    handleEditRecurrence,
+    handleOpenDeleteDialog,
+    toggleActivity
+  )
 
   return (
     <MainTemplate>

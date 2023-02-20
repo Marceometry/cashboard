@@ -1,5 +1,5 @@
 import { Center, Text } from '@chakra-ui/react'
-import { ColumnProps, IconButton } from '@/components'
+import { ColumnProps, IconButton, Switch } from '@/components'
 import { RecurrentTransaction } from '@/contexts'
 import { currency } from '@/utils'
 
@@ -11,7 +11,8 @@ export const getButtons = (handleRecurrenceModal: () => void) => ({
 
 export const getColumns = (
   handleEdit: (id: string) => void,
-  handleDelete: (row: RecurrentTransaction) => void
+  handleDelete: (row: RecurrentTransaction) => void,
+  toggleActivity: (id: string, isActive: boolean) => void
 ): ColumnProps<RecurrentTransaction>[] => [
   {
     label: 'Descrição',
@@ -41,7 +42,20 @@ export const getColumns = (
     label: 'Parcelas',
     field: 'installments',
     customRender: ({ installments, transactions }) =>
-      !installments ? '-' : `${transactions.length}/${installments}`,
+      !installments
+        ? String(transactions.length)
+        : `${transactions.length}/${installments}`,
+  },
+  {
+    label: 'Ativo',
+    field: 'isActive',
+    customRender: ({ id, isActive, installments, transactions }) => (
+      <Switch
+        isDisabled={installments === transactions.length}
+        isChecked={isActive}
+        onChange={() => toggleActivity(id, !isActive)}
+      />
+    ),
   },
   {
     label: '',
@@ -63,6 +77,3 @@ export const getColumns = (
     ),
   },
 ]
-
-export const deleteModalText =
-  'Deseja realmente excluir esta transação recorrente? Essa ação excluirá todas as transações pertencentes à essa recorrência.'
