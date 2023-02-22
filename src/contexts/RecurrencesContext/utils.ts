@@ -1,4 +1,9 @@
-import { addMonths, differenceInMonths, isFuture } from 'date-fns'
+import {
+  addMonths,
+  differenceInCalendarMonths,
+  isFuture,
+  isThisMonth,
+} from 'date-fns'
 import { AddTransactionModel, TransactionModel } from '@/contexts'
 import { FirebaseDataSnapshot } from '@/hooks'
 import { sortByDate } from '@/utils'
@@ -45,11 +50,11 @@ export const checkRecurrences = ({
     if (!isActive) return
 
     const startDate = new Date(item.startDate)
-    if (isFuture(startDate)) return
+    if (isFuture(startDate) && !isThisMonth(startDate)) return
 
     const { installments } = item
     const transactions = item.transactions
-    const monthsPassed = differenceInMonths(new Date(), startDate)
+    const monthsPassed = differenceInCalendarMonths(new Date(), startDate)
 
     if (transactions.length - 1 === monthsPassed) return
 
