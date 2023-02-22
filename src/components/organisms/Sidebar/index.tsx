@@ -61,7 +61,7 @@ export const Sidebar = () => {
       <List width='full'>
         {dashboardRoutes.map((route) => (
           <ListItem key={route.path}>
-            <Link to={route.path}>
+            <Link to={route.path} aria-label={route.label}>
               <Text
                 px='4'
                 py='2'

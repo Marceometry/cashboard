@@ -1,10 +1,21 @@
 import { addMonths, differenceInMonths, isFuture } from 'date-fns'
 import { AddTransactionModel, TransactionModel } from '@/contexts'
+import { FirebaseDataSnapshot } from '@/hooks'
 import { sortByDate } from '@/utils'
 import {
   RecurrentTransaction,
   UpdateRecurrenceTransactionListArgs,
 } from './types'
+
+export const firebaseDataSnapshotToRecurrenceList = (
+  data: FirebaseDataSnapshot<RecurrentTransaction>
+) => {
+  return Object.entries(data).map(([id, values]) => ({
+    ...values,
+    transactions: values.transactions || [],
+    id,
+  }))
+}
 
 export const getDescriptionWithInstallments = (
   description: string,
@@ -25,8 +36,8 @@ type CheckRecurrencesProps = {
 }
 
 export const checkRecurrences = ({
-  addTransaction,
   recurrenceList,
+  addTransaction,
   updateRecurrenceTransactionList,
 }: CheckRecurrencesProps) => {
   recurrenceList.forEach(async (item) => {

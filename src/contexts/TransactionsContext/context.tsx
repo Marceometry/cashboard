@@ -17,6 +17,7 @@ import {
 } from './types'
 import {
   filterMostRepeatedTransactions,
+  firebaseDataSnapshotToTransactionList,
   formatTransaction,
   generateCategories,
   generateMostRepeatedTransactions,
@@ -36,13 +37,8 @@ export function TransactionsContextProvider({
 }: TransactionsContextProviderProps) {
   const { call, isLoading, setIsLoading } = useApiCall()
   const { user } = useAuth()
-  const {
-    onAddTransaction,
-    onChangeTransaction,
-    onRemoveTransaction,
-    remoteAddTransaction,
-    remoteRemoveTransaction,
-  } = useFirebaseDatabase()
+  const { onTransactionsValue, remoteAddTransaction, remoteRemoveTransaction } =
+    useFirebaseDatabase()
 
   const [transactionList, setTransactionList] = useState<TransactionModel[]>([])
   const [mostRepeatedTransactions, setMostRepeatedTransactions] = useState<
@@ -118,30 +114,14 @@ export function TransactionsContextProvider({
   useEffect(() => {
     if (!user?.id) return clearState()
 
-    const unsubscribeAdd = onAddTransaction((data) => {
-      setTransactionList((oldState) => [...oldState, formatTransaction(data)])
+    const unsubscribeOnValue = onTransactionsValue((data) => {
+      const transactions = firebaseDataSnapshotToTransactionList(data)
+      setTransactionList(transactions)
       setIsLoading(false)
     })
-    const unsubscribeChange = onChangeTransaction((data) => {
-      setTransactionList((oldState) => {
-        return oldState.map((item) => {
-          if (item.id !== data.id) return item
-          return formatTransaction(data)
-        })
-      })
-      setIsLoading(false)
-    })
-    const unsubscribeRemove = onRemoveTransaction((data) => {
-      setTransactionList((oldState) => {
-        const newList = oldState.filter((item) => item.id !== data.id)
-        return newList
-      })
-      setIsLoading(false)
-    })
+
     return () => {
-      unsubscribeAdd()
-      unsubscribeChange()
-      unsubscribeRemove()
+      unsubscribeOnValue()
     }
   }, [user?.id])
 

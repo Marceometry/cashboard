@@ -1,8 +1,9 @@
 import { isValid } from 'date-fns'
-import { v4 as uuid } from 'uuid'
+import { v4 as uuid, validate } from 'uuid'
 import { CategoryModel, TagModel } from '@/contexts'
+import { FirebaseDataSnapshot } from '@/hooks'
 import { sortByDate } from '@/utils'
-import { TransactionModel } from './types'
+import { AddTransactionModel, TransactionModel } from './types'
 
 const error = () => {
   throw new Error()
@@ -26,6 +27,7 @@ export const formatTransaction = (
 
 export const isTransactionInvalid = (item: TransactionModel) => {
   try {
+    if (item.id && !validate(item.id)) error()
     if (!item.description) error()
     if (typeof item.category !== 'string') error()
     if (item.type !== 'income' && item.type !== 'outcome') error()
@@ -55,6 +57,17 @@ export const isTransactionListInvalid = (list: TransactionModel[]) => {
   } catch (error) {
     return true
   }
+}
+
+export const firebaseDataSnapshotToTransactionList = (
+  data: FirebaseDataSnapshot<AddTransactionModel>
+) => {
+  return Object.entries(data).map(([id, values]) =>
+    formatTransaction({
+      ...values,
+      id,
+    })
+  )
 }
 
 export const getYearList = (transactionList: TransactionModel[]) => {

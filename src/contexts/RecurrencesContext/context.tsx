@@ -16,7 +16,7 @@ import {
   UpdateRecurrenceTransactionListArgs,
   UpdateRecurrentTransaction,
 } from './types'
-import { checkRecurrences } from './utils'
+import { checkRecurrences, firebaseDataSnapshotToRecurrenceList } from './utils'
 
 type RecurrencesContextProviderProps = {
   children: ReactNode
@@ -30,9 +30,7 @@ export function RecurrencesContextProvider({
   const { user } = useAuth()
   const { call } = useApiCall()
   const {
-    onAddRecurrence,
-    onChangeRecurrence,
-    onRemoveRecurrence,
+    onRecurrencesValue,
     remoteAddRecurrence,
     remoteRemoveRecurrence,
     remoteAddTransaction,
@@ -119,30 +117,13 @@ export function RecurrencesContextProvider({
   useEffect(() => {
     if (!user?.id) return clearState()
 
-    const unsubscribeAdd = onAddRecurrence((data) => {
-      setRecurrenceList((oldState) => [
-        ...oldState,
-        { ...data, transactions: data.transactions || [] },
-      ])
+    const unsubscribeOnValue = onRecurrencesValue((data) => {
+      const recurrences = firebaseDataSnapshotToRecurrenceList(data)
+      setRecurrenceList(recurrences)
     })
-    const unsubscribeChange = onChangeRecurrence((data) => {
-      setRecurrenceList((oldState) => {
-        return oldState.map((item) => {
-          if (item.id !== data.id) return item
-          return { ...data, transactions: data.transactions || [] }
-        })
-      })
-    })
-    const unsubscribeRemove = onRemoveRecurrence((data) => {
-      setRecurrenceList((oldState) => {
-        const newList = oldState.filter((item) => item.id !== data.id)
-        return newList
-      })
-    })
+
     return () => {
-      unsubscribeAdd()
-      unsubscribeChange()
-      unsubscribeRemove()
+      unsubscribeOnValue()
     }
   }, [user?.id])
 
