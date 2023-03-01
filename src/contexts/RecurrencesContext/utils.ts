@@ -63,7 +63,7 @@ export const checkRecurrences = ({
       : subMonths(startDate, 1)
 
     for (let i = 1; transactions.length - 1 !== monthsPassed; i++) {
-      if (installments && transactions.length >= installments) {
+      if (installments && transactions.length === installments) {
         isActive = false
         break
       }
@@ -77,6 +77,10 @@ export const checkRecurrences = ({
 
       const { id } = await addTransaction({ ...item, description, date })
       transactions.push({ id, date })
+
+      if (installments && transactions.length === installments) {
+        isActive = false
+      }
     }
 
     updateRecurrenceTransactionList({ id: item.id, transactions, isActive })
