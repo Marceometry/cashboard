@@ -2,7 +2,7 @@ import {
   addMonths,
   differenceInCalendarMonths,
   isFuture,
-  isThisMonth,
+  subMonths,
 } from 'date-fns'
 import { AddTransactionModel, TransactionModel } from '@/contexts'
 import { FirebaseDataSnapshot } from '@/hooks'
@@ -60,9 +60,9 @@ export const checkRecurrences = ({
 
     const latestTransactionDate = transactions.length
       ? new Date(sortByDate(transactions)[0].date)
-      : startDate
+      : subMonths(startDate, 1)
 
-    for (let i = 0; transactions.length - 1 !== monthsPassed; i++) {
+    for (let i = 1; transactions.length - 1 !== monthsPassed; i++) {
       if (installments && transactions.length >= installments) {
         isActive = false
         break
