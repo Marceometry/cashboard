@@ -1,18 +1,29 @@
+import { AddIcon, DeleteIcon, EditIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
   IconButton as ChakraIconButton,
   IconButtonProps as ChakraIconButtonProps,
   Tooltip,
 } from '@chakra-ui/react'
-import { AddIcon, DeleteIcon, EditIcon, HamburgerIcon } from '@chakra-ui/icons'
-import { ChartBar, ChartLine, ChartPie, Funnel, Table, X } from 'phosphor-react'
+import {
+  ChartBar,
+  ChartLine,
+  ChartPie,
+  Copy,
+  Download,
+  Funnel,
+  Table,
+  X,
+} from 'phosphor-react'
 
 const icons = {
   add: AddIcon,
-  edit: EditIcon,
-  delete: DeleteIcon,
   close: X,
-  list: HamburgerIcon,
+  copy: Copy,
+  delete: DeleteIcon,
+  download: Download,
+  edit: EditIcon,
   filter: Funnel,
+  list: HamburgerIcon,
   table: Table,
   areaChart: ChartLine,
   barChart: ChartBar,
@@ -32,9 +43,10 @@ export const IconButton = (props: IconButtonProps) => {
 
   return (
     <Tooltip
-      label={props['aria-label']}
       isDisabled={!hasTooltip}
+      label={props['aria-label']}
       placement='top'
+      openDelay={1000}
       gutter={14}
       hasArrow
     >

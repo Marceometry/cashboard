@@ -1,92 +1,92 @@
-import { TransactionModel, TransactionType } from '@/contexts'
-import {
-  getFormattedDayAndMonth,
-  getFormattedMonthAndYear,
-  sortByDate,
-} from '@/utils'
-import { isThisMonth, isThisYear } from 'date-fns'
+import { getYear } from 'date-fns'
+import { TransactionModel } from '@/contexts'
+import { getFormattedMonthAndYear, sortByDate } from '@/utils'
 import { TabsContent } from './components'
 
-export type View = 'total' | 'month' | 'year'
+export type View = 'month' | 'year'
 
-export type DateFilter = 'month' | 'year'
+export type ChartData = Array<{
+  name: string
+  income: number
+  outcome: number
+  balance: number
+}>
 
-export const getTabs = (
-  incomeItems: TransactionModel[],
-  outcomeItems: TransactionModel[]
-) => {
-  const getContent = (filter?: DateFilter) => (
-    <TabsContent
-      incomeItems={incomeItems}
-      outcomeItems={outcomeItems}
-      filter={filter}
-    />
-  )
+export const getTabs = (data: ChartData) => {
+  const getContent = () => <TabsContent data={data} />
 
   return [
     {
       key: 1,
-      label: 'Total',
+      label: 'Por mês',
       content: getContent(),
     },
     {
       key: 2,
-      label: 'Este mês',
-      content: getContent('month'),
-    },
-    {
-      key: 3,
-      label: 'Este ano',
-      content: getContent('year'),
+      label: 'Por ano',
+      content: getContent(),
     },
   ]
 }
 
-type ChartDataResponse = Array<{
-  name: string
-  value: number
-}>
-
-export const getChartData = (
-  list: TransactionModel[],
-  chartType: TransactionType,
-  view: View
-) => {
+export const getChartData = (list: TransactionModel[], view: View) => {
   return sortByDate(list, true).reduce(
-    (acc: ChartDataResponse, item: TransactionModel) => {
+    (acc: ChartData, item: TransactionModel) => {
       const { amount, type } = item
       const date = new Date(item.date)
-      if (
-        (view !== 'total' && !isThisYear(date)) ||
-        (view === 'month' && !isThisMonth(date))
-      ) {
-        return [...acc]
-      }
 
       const name =
-        view === 'month'
-          ? getFormattedDayAndMonth(date)
-          : getFormattedMonthAndYear(date)
+        view === 'year' ? String(getYear(date)) : getFormattedMonthAndYear(date)
       const itemIndex = acc.findIndex((accItem) => accItem.name === name)
+      const isIncome = type === 'income'
 
       if (acc[itemIndex]) {
-        const value =
-          type === chartType
-            ? acc[itemIndex].value + amount
-            : acc[itemIndex].value
+        const balance = isIncome
+          ? acc[itemIndex]?.balance + amount
+          : acc[itemIndex]?.balance - amount
+        const income = isIncome
+          ? acc[itemIndex].income + amount
+          : acc[itemIndex].income
+        const outcome = !isIncome
+          ? acc[itemIndex].outcome + amount
+          : acc[itemIndex].outcome
 
-        acc[itemIndex] = { name, value }
+        acc[itemIndex] = { name, balance, income, outcome }
         return [...acc]
       }
 
-      return [...acc, { name, value: type === chartType ? amount : 0 }]
+      const currentBalance = acc[acc.length - 1]?.balance || 0
+      const balance = isIncome
+        ? currentBalance + amount
+        : currentBalance - amount
+
+      const income = isIncome ? amount : 0
+      const outcome = !isIncome ? amount : 0
+
+      return [...acc, { name, balance, income, outcome }]
     },
     []
   )
 }
 
-export const generateChartData = (list: TransactionModel[], view: View) => {
-  const incomeData = getChartData(list, 'income', view)
-  const outcomeData = getChartData(list, 'outcome', view)
-  return { incomeData, outcomeData }
+export const getChartSections = (view: View) => {
+  const balance = {
+    label: 'Total economizado',
+    color: '#3984e7',
+    dataKey: 'balance',
+  }
+  const income = {
+    label: 'Entrada',
+    color: '#48bb78',
+    dataKey: 'income',
+  }
+  const outcome = {
+    label: 'Saída',
+    color: '#f56565',
+    dataKey: 'outcome',
+  }
+
+  return view === 'month'
+    ? [balance, income, outcome]
+    : [income, outcome, balance]
 }

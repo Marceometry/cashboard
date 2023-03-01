@@ -1,6 +1,6 @@
 import {
-  Button as ChakraButton,
   ButtonProps,
+  Button as ChakraButton,
   ComponentWithAs,
 } from '@chakra-ui/react'
 

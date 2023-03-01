@@ -7,7 +7,7 @@ export const sortAlphabetically = (array: any[], sortBy: string) => {
 export const sortByDate = (
   array: any[],
   oldestFirst?: boolean,
-  dateField: string = 'date'
+  dateField = 'date'
 ) => {
   return array.sort((a, b) => {
     const date1 = new Date(a[dateField])

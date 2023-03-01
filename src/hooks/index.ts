@@ -1,4 +1,5 @@
 export * from './useApiCall'
+export * from './useCopy'
 export * from './useDebouncedValue'
 export * from './useFileHandle'
 export * from './useFirebase'

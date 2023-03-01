@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form'
 import {
-  Flex,
   Input as ChakraInput,
+  Flex,
   InputGroup,
   InputProps,
   InputRightElement,
@@ -16,6 +16,7 @@ type Props = InputProps & {
   helperText?: string
   rightIcon?: IconButtonProps
   flex?: string
+  datalist?: string[]
   mask?: (value: string) => any
 }
 
@@ -27,6 +28,7 @@ export const Input = ({
   helperText,
   rightIcon,
   mask,
+  datalist,
   flex,
   ...props
 }: Props) => {
@@ -36,9 +38,10 @@ export const Input = ({
   } = useFormContext()
   const error = errors[name]?.message as string | undefined
 
-  const inputRegister = register(name, {
-    required: required ? 'Este campo é obrigatório' : '',
-  })
+  const hasDatalist = !!datalist?.length
+  const datalistName = `${name}-datalist`
+
+  const inputRegister = register(name)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (mask) e.target.value = mask(e.target.value)
@@ -46,13 +49,14 @@ export const Input = ({
   }
 
   return (
-    <Flex alignItems='flex-end' gap='2' flex={flex}>
+    <Flex flex={flex}>
       <FormControl
         name={name}
         label={label}
         error={error}
         required={required}
         helperText={helperText}
+        isDisabled={props.isDisabled}
       >
         <InputGroup>
           <ChakraInput
@@ -61,11 +65,20 @@ export const Input = ({
             id={name}
             onChange={handleChange}
             placeholder={placeholder || mask?.('') || label}
+            list={hasDatalist ? datalistName : undefined}
           />
           {rightIcon && (
             <InputRightElement>
               <IconButton {...rightIcon} borderRadius={0} mb={error ? 6 : 0} />
             </InputRightElement>
+          )}
+
+          {!!datalist?.length && (
+            <datalist id={datalistName}>
+              {datalist.map((text) => (
+                <option value={text} key={text} />
+              ))}
+            </datalist>
           )}
         </InputGroup>
       </FormControl>

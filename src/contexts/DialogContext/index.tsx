@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react'
+import { createContext, ReactNode, useContext, useState } from 'react'
 import { Dialog, DialogProps as DialogComponentProps } from '@/components'
 
 type DialogProps = Omit<DialogComponentProps, 'isOpen' | 'onClose'>
@@ -6,7 +6,6 @@ type DialogProps = Omit<DialogComponentProps, 'isOpen' | 'onClose'>
 const defaultDialogProps: DialogProps = {
   title: '',
   body: '',
-  onConfirm: () => {},
 }
 
 export type DialogContextData = {

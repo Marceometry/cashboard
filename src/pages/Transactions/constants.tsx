@@ -1,41 +1,12 @@
-import { Center, Flex, Stat, StatArrow, Text } from '@chakra-ui/react'
+import { Center, Text } from '@chakra-ui/react'
 import { ColumnProps, IconButton, TableButtons } from '@/components'
-import { TransactionModel, TransactionType } from '@/contexts'
-import { masks, sortByDate } from '@/utils'
+import { TransactionModel } from '@/contexts'
+import { currency, sortByDate } from '@/utils'
 
-export type FilterModel = {
-  selectedMonth: number
-  selectedYear: number
-  selectedCategories: string[]
-  minAmount: string
-  maxAmount: string
-}
-
-export const defaultFilterValues: FilterModel = {
-  selectedMonth: 0,
-  selectedYear: 0,
-  selectedCategories: [],
-  maxAmount: '',
-  minAmount: '',
-}
-
-export const emptyFilterValues: FilterModel = {
-  selectedMonth: 0,
-  selectedYear: 0,
-  selectedCategories: [],
-  maxAmount: '',
-  minAmount: '',
-}
-
-type ButtonsProps = {
-  handleNewTransaction: () => void
+export const getButtons = (
+  handleNewTransaction: () => void,
   handleOpenModalFilter: () => void
-}
-
-export const getButtons = ({
-  handleNewTransaction,
-  handleOpenModalFilter,
-}: ButtonsProps): TableButtons => ({
+): TableButtons => ({
   textButtons: [
     {
       children: 'Nova Transação',
@@ -51,8 +22,10 @@ export const getButtons = ({
   ],
 })
 
-export const getCaption = (filters: FilterModel, data: TransactionModel[]) => {
-  const [income, outcome] = data.reduce(
+export const getIncomeAndOutcome = (
+  data: TransactionModel[]
+): [number, number] => {
+  return data.reduce(
     (acc, item) => {
       const index = item.type === 'income' ? 0 : 1
       const value = acc[index] + item.amount
@@ -61,96 +34,59 @@ export const getCaption = (filters: FilterModel, data: TransactionModel[]) => {
     },
     [0, 0]
   )
-
-  const Balance = () => (
-    <Stat>
-      <Flex alignItems='center' gap='1'>
-        <StatArrow type='increase' />
-        <Text fontSize='md'>{masks.valueToMoney(income)}</Text>
-      </Flex>
-      <Flex alignItems='center' gap='1'>
-        <StatArrow type='decrease' />
-        <Text fontSize='md'>{masks.valueToMoney(outcome)}</Text>
-      </Flex>
-    </Stat>
-  )
-
-  if (!filters) return <Balance />
-
-  const { selectedMonth, selectedYear } = filters
-  if (!selectedYear) return <Balance />
-
-  const month = selectedMonth
-    ? selectedMonth > 9
-      ? selectedMonth
-      : `0${selectedMonth}`
-    : null
-
-  return (
-    <Flex gap='4'>
-      {month ? `${month}/${selectedYear}` : selectedYear}
-      <Balance />
-    </Flex>
-  )
 }
 
-type ColumnsProps = {
-  handleDeleteTransaction: (row: TransactionModel) => void
+export const getColumns = (
+  handleDeleteTransaction: (row: TransactionModel) => void,
   handleEditTransaction: (id: string) => void
-}
-
-export const getColumns = ({
-  handleDeleteTransaction,
-  handleEditTransaction,
-}: ColumnsProps): ColumnProps<TransactionModel>[] => [
-  {
-    label: '',
-    field: 'type',
-    customRender: ({ type }) => (
-      <Center>
-        <StatArrow type={type === 'income' ? 'increase' : 'decrease'} />
-      </Center>
-    ),
-  },
-  {
-    label: 'Valor',
-    field: 'amount',
-    customRender: ({ amount }) => masks.valueToMoney(amount),
-  },
-  {
-    label: 'Descrição',
-    field: 'description',
-  },
-  {
-    label: 'Categoria',
-    field: 'category',
-  },
-  {
-    label: 'Data',
-    field: 'date',
-    customRender: ({ date }) => {
-      return new Date(date).toLocaleDateString()
+): ColumnProps<TransactionModel>[] => {
+  const columns: ColumnProps<TransactionModel>[] = [
+    {
+      label: 'Valor',
+      field: 'amount',
+      customRender: ({ amount, type }) => (
+        <Text color={type === 'income' ? 'green.400' : 'red.300'}>
+          {currency.valueToMoney(amount)}
+        </Text>
+      ),
     },
-  },
-  {
-    label: '',
-    field: '',
-    customRender: (row) => (
-      <Center gap='4'>
-        <IconButton
-          icon='edit'
-          aria-label='Editar transação'
-          onClick={() => handleEditTransaction(row.id)}
-        />
-        <IconButton
-          icon='delete'
-          aria-label='Excluir transação'
-          onClick={() => handleDeleteTransaction(row)}
-        />
-      </Center>
-    ),
-  },
-]
+    {
+      label: 'Descrição',
+      field: 'description',
+    },
+    {
+      label: 'Categoria',
+      field: 'category',
+    },
+    {
+      label: 'Data',
+      field: 'date',
+      customRender: ({ date }) => {
+        return new Date(date).toLocaleDateString()
+      },
+    },
+    {
+      label: '',
+      field: '',
+      customRender: (row) => (
+        <Center gap='4'>
+          <IconButton
+            icon='edit'
+            aria-label='Editar transação'
+            onClick={() => handleEditTransaction(row.id)}
+          />
+          <IconButton
+            icon='delete'
+            aria-label='Excluir transação'
+            onClick={() => handleDeleteTransaction(row)}
+          />
+        </Center>
+      ),
+    },
+  ]
+
+  return columns
+}
 
 type ChartDataResponse = Array<{
   name: string

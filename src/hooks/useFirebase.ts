@@ -1,28 +1,26 @@
 import {
-  getDatabase,
-  ref,
-  set,
-  remove,
-  onChildAdded,
-  onChildChanged,
-  onChildRemoved,
-  onValue,
-} from 'firebase/database'
-import {
   getAuth,
-  signInWithPopup,
   GoogleAuthProvider,
   onAuthStateChanged,
+  signInWithPopup,
   signOut,
 } from 'firebase/auth'
+import { getDatabase, onValue, ref, remove, set } from 'firebase/database'
+import {
+  AddTransactionModel,
+  RecurrentTransaction,
+  TransactionModel,
+  useAuth,
+} from '@/contexts'
 import { firebaseApp } from '@/services'
-import { TransactionModel, useAuth } from '@/contexts'
+
+export type FirebaseDataSnapshot<T> = { [key: string]: T }
 
 export const useFirebaseAuth = () => {
   const auth = getAuth()
-  const authProvider = new GoogleAuthProvider()
 
   const signInWithGoogle = () => {
+    const authProvider = new GoogleAuthProvider()
     return signInWithPopup(auth, authProvider)
   }
 
@@ -45,50 +43,61 @@ export const useFirebaseDatabase = () => {
   const database = getDatabase(firebaseApp)
   const { user } = useAuth()
   const userId = user?.id
-  const transactionsRef = ref(database, `users/${userId}/transactions`)
 
-  const initialLoad = (callback: () => void) => {
-    return onValue(transactionsRef, callback, { onlyOnce: true })
-  }
+  const transactionsPath = `users/${userId}/transactions`
+  const transactionsRef = ref(database, transactionsPath)
 
-  const remoteAddTransaction = (transaction: TransactionModel) => {
-    return set(
-      ref(database, `users/${userId}/transactions/${transaction.id}`),
-      {
-        ...transaction,
-        userId,
-      }
+  const recurrencesPath = `users/${userId}/recurrences`
+  const recurrencesRef = ref(database, recurrencesPath)
+
+  // Transactions //
+
+  const onTransactionsValue = (
+    callback: (data: FirebaseDataSnapshot<AddTransactionModel>) => void
+  ) => {
+    return onValue(transactionsRef, (data) =>
+      callback(data.exists() ? data.val() : {})
     )
   }
 
+  const remoteAddTransaction = (transaction: TransactionModel) => {
+    return set(ref(database, `${transactionsPath}/${transaction.id}`), {
+      ...transaction,
+      userId,
+    })
+  }
+
   const remoteRemoveTransaction = (id: string) => {
-    return remove(ref(database, `users/${userId}/transactions/${id}`))
+    return remove(ref(database, `${transactionsPath}/${id}`))
   }
 
-  const onAddTransaction = (callback: (data: any) => void) => {
-    return onChildAdded(transactionsRef, (data) => {
-      callback({ id: data.key, ...data.val() })
+  // Recurrences //
+
+  const onRecurrencesValue = (
+    callback: (data: FirebaseDataSnapshot<RecurrentTransaction>) => void
+  ) => {
+    return onValue(recurrencesRef, (data) =>
+      callback(data.exists() ? data.val() : {})
+    )
+  }
+
+  const remoteAddRecurrence = (recurrence: RecurrentTransaction) => {
+    return set(ref(database, `${recurrencesPath}/${recurrence.id}`), {
+      ...recurrence,
+      userId,
     })
   }
 
-  const onChangeTransaction = (callback: (data: any) => void) => {
-    return onChildChanged(transactionsRef, (data) => {
-      callback({ id: data.key, ...data.val() })
-    })
-  }
-
-  const onRemoveTransaction = (callback: (data: any) => void) => {
-    return onChildRemoved(transactionsRef, (data) => {
-      callback({ id: data.key, ...data.val() })
-    })
+  const remoteRemoveRecurrence = (id: string) => {
+    return remove(ref(database, `${recurrencesPath}/${id}`))
   }
 
   return {
+    onTransactionsValue,
     remoteAddTransaction,
     remoteRemoveTransaction,
-    onAddTransaction,
-    onChangeTransaction,
-    onRemoveTransaction,
-    initialLoad,
+    onRecurrencesValue,
+    remoteAddRecurrence,
+    remoteRemoveRecurrence,
   }
 }

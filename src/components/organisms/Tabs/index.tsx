@@ -1,11 +1,11 @@
 import {
   Tabs as ChakraTabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
-  TabsProps,
   Flex,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  TabsProps,
 } from '@chakra-ui/react'
 
 type Tab = {

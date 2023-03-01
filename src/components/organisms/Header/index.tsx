@@ -33,7 +33,7 @@ export const Header = ({ isSidebarAppearing }: Props) => {
           <MobileSidebar isOpen={isSidebarOpen} onClose={handleCloseSidebar} />
         </>
       )}
-      <Flex align='center' justify='space-between' w='full'>
+      <Flex align='flex-start' justify='space-between' w='full'>
         <Heading size='lg'>{currentPage}</Heading>
         <UserMenu />
       </Flex>

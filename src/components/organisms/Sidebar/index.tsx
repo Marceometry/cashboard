@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { ChevronLeftIcon, HamburgerIcon } from '@chakra-ui/icons'
 import {
   Divider,
   Flex,
@@ -7,24 +9,14 @@ import {
   List,
   ListItem,
   Text,
-  useColorModeValue,
-  useMediaQuery,
 } from '@chakra-ui/react'
-import { Link, useLocation } from 'react-router-dom'
-import { dashboardRoutes } from '@/router'
-import { ChevronLeftIcon, HamburgerIcon } from '@chakra-ui/icons'
 import { useLocalStorage } from '@/hooks'
+import { dashboardRoutes } from '@/router'
 
 export const Sidebar = () => {
   const location = useLocation()
   const storage = useLocalStorage()
   const [isOpen, setIsOpen] = useState(storage.get('sidebar-default-open'))
-
-  const bg = useColorModeValue('gray.300', 'gray.600')
-  const activeBg = useColorModeValue('gray.400', 'gray.700')
-  const linkHover = useColorModeValue('gray.400', 'gray.700')
-
-  const [isLargerThan1080] = useMediaQuery('(min-width: 1080px)')
 
   const toggle = () => {
     setIsOpen(!isOpen)
@@ -33,24 +25,24 @@ export const Sidebar = () => {
 
   return (
     <Flex
+      px='2'
       as='aside'
       align='center'
       direction='column'
       maxW='container.lg'
-      shadow='lg'
       width={isOpen ? '237px' : '68px'}
       transitionProperty='width'
       transitionDuration='500ms'
       overflow='hidden'
-      bg={bg}
     >
-      <Heading py='4' size='lg' px={isLargerThan1080 && isOpen ? '5' : '5'}>
+      <Heading py='5' size='lg'>
         {isOpen ? (
           <Flex gap='2'>
             <IconButton
-              icon={<ChevronLeftIcon />}
+              icon={<ChevronLeftIcon fontSize={24} />}
               onClick={toggle}
               aria-label='Fechar Sidebar'
+              variant='ghost'
             />
             Cashboard
           </Flex>
@@ -59,6 +51,7 @@ export const Sidebar = () => {
             icon={<HamburgerIcon />}
             onClick={toggle}
             aria-label='Expandir Sidebar'
+            variant='ghost'
           />
         )}
       </Heading>
@@ -68,19 +61,17 @@ export const Sidebar = () => {
       <List width='full'>
         {dashboardRoutes.map((route) => (
           <ListItem key={route.path}>
-            <Link to={route.path}>
+            <Link to={route.path} aria-label={route.label}>
               <Text
-                px='6'
+                px='4'
                 py='2'
                 gap='3'
                 display='flex'
                 alignItems='center'
                 fontSize='1.25rem'
-                transition='background 0.1s'
-                _hover={{ background: linkHover }}
-                backgroundColor={
-                  location.pathname === route.path ? activeBg : ''
-                }
+                transition='color 0.2s'
+                _hover={{ color: '#48bb78' }}
+                color={location.pathname === route.path ? '#48bb78' : ''}
               >
                 {route.icon}
                 {isOpen ? route.label : ''}

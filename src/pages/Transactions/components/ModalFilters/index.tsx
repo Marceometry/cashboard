@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import {
+  Center,
   Checkbox,
   Flex,
   Grid,
@@ -7,31 +9,43 @@ import {
   Text,
   useBreakpointValue,
 } from '@chakra-ui/react'
-import { useForm } from 'react-hook-form'
-import { Accordion, CheckboxGroup, Input, Modal, Select } from '@/components'
-import { masks, sortAlphabetically } from '@/utils'
-import { MONTH_LIST, YEAR_LIST } from '@/constants'
-import { useCategories } from '@/contexts'
+import {
+  Accordion,
+  CheckboxGroup,
+  FormModal,
+  Input,
+  Radio,
+  Select,
+} from '@/components'
+import { MONTH_LIST } from '@/constants'
+import { useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
-import { defaultFilterValues, FilterModel } from '../constants'
+import { currency, sortAlphabetically } from '@/utils'
+import {
+  filterTransactionsFormDefaultValues,
+  FilterTransactionsFormInputs,
+  filterTransactionsFormResolver,
+} from '../../validation'
 
 type Props = {
   isOpen: boolean
   onClose: () => void
-  handleFilter: (data: FilterModel) => void
+  handleFilter: (data: FilterTransactionsFormInputs) => void
 }
 
 export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
+  const { categoryList: contextCategoryList, getAvailableYearList } =
+    useTransactions()
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
-  const storage = useLocalStorage()
-  const { categoryList: contextCategoryList } = useCategories()
   const categoryList = useMemo(
     () => sortAlphabetically(contextCategoryList, 'name'),
     [contextCategoryList]
   )
-  const formMethods = useForm({
-    defaultValues:
-      storage.get('transactions-table-filters') || defaultFilterValues,
+  const storage = useLocalStorage()
+  const storagedFilterValues = storage.get('transactions-table-filters')
+  const formMethods = useForm<FilterTransactionsFormInputs>({
+    resolver: filterTransactionsFormResolver,
+    defaultValues: storagedFilterValues || filterTransactionsFormDefaultValues,
   })
   const selectedCategories = formMethods.watch('selectedCategories')
   const [isIndeterminate, setIsIndeterminate] = useState(true)
@@ -45,6 +59,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
   }, [formMethods, categoryList, selectedCategories])
 
   const handleClearFilters = () => {
+    formMethods.setValue('type', 'all')
     formMethods.setValue('selectedMonth', null)
     formMethods.setValue('selectedYear', null)
     formMethods.setValue('maxAmount', '')
@@ -55,7 +70,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
     )
   }
 
-  const handleSubmit = (data: FilterModel) => {
+  const handleSubmit = (data: FilterTransactionsFormInputs) => {
     handleFilter({
       ...data,
       selectedCategories: allChecked ? [] : data.selectedCategories,
@@ -71,7 +86,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
   }, [categoryList])
 
   return (
-    <Modal
+    <FormModal
       isOpen={isOpen}
       onClose={onClose}
       onConfirm={handleSubmit}
@@ -94,16 +109,24 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
             <Select
               name='selectedYear'
               placeholder='Selecione o ano'
-              options={YEAR_LIST.map((item) => ({ label: item, value: item }))}
+              options={getAvailableYearList()}
             />
           </Flex>
         </GridItem>
 
         <GridItem>
           <Flex gap='4' alignItems='flex-end'>
-            <Input flex='1' name='minAmount' mask={masks.monetaryValue} />
+            <Input
+              flex='1'
+              name='minAmount'
+              mask={currency.maskMonetaryValue}
+            />
             <Text>até</Text>
-            <Input flex='1' name='maxAmount' mask={masks.monetaryValue} />
+            <Input
+              flex='1'
+              name='maxAmount'
+              mask={currency.maskMonetaryValue}
+            />
           </Flex>
         </GridItem>
 
@@ -143,6 +166,18 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
           ]}
         />
       </Grid>
-    </Modal>
+
+      <Center mt='4'>
+        <Radio
+          name='type'
+          columns={3}
+          options={[
+            { label: 'Todas', value: 'all' },
+            { label: 'Entrada', value: 'income' },
+            { label: 'Saída', value: 'outcome' },
+          ]}
+        />
+      </Center>
+    </FormModal>
   )
 }

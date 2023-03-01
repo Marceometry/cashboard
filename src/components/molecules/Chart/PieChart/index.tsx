@@ -1,12 +1,12 @@
 import { useBreakpointValue } from '@chakra-ui/react'
 import {
-  ResponsiveContainer,
-  PieChart as RechartsPieChart,
-  Pie,
   Cell,
+  Pie,
+  PieChart as RechartsPieChart,
+  ResponsiveContainer,
 } from 'recharts'
-import { CHART_COLORS } from '@/constants'
 import { EmptyData } from '@/components'
+import { CHART_COLORS } from '@/constants'
 import { CustomizedLabel } from './CustomizedLabel'
 
 type Props = {

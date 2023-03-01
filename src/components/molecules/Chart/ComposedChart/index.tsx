@@ -1,17 +1,19 @@
 import { useColorModeValue } from '@chakra-ui/react'
 import {
-  ComposedChart as RechartsComposedChart,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
   Area,
   Bar,
+  CartesianGrid,
+  Legend,
+  ComposedChart as RechartsComposedChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from 'recharts'
 import { EmptyData } from '@/components'
-import { masks } from '@/utils'
+import { currency } from '@/utils'
+
+export type LabelType = 'month' | 'year' | 'day'
 
 type Section = {
   dataKey?: string
@@ -24,14 +26,35 @@ type Data = any & {
 }
 
 type Props = {
-  type: 'bar' | 'area'
-  isMonth?: boolean
+  type?: 'bar' | 'area'
+  labelType?: LabelType
   sections: Section[]
   data: Data[]
 }
 
-export const ComposedChart = ({ data, sections, type, isMonth }: Props) => {
+export const ComposedChart = ({
+  data,
+  sections,
+  labelType,
+  type = 'area',
+}: Props) => {
   const tooltipBg = useColorModeValue('#f7fafc', '#2d3748')
+
+  const getLabel = () => {
+    let label = ''
+    switch (labelType) {
+      case 'month':
+        label = 'Mês '
+        break
+      case 'year':
+        label = 'Ano '
+        break
+      case 'day':
+        label = 'Dia '
+        break
+    }
+    return label
+  }
 
   return (
     <ResponsiveContainer width='100%' height='100%'>
@@ -52,10 +75,8 @@ export const ComposedChart = ({ data, sections, type, isMonth }: Props) => {
           <YAxis />
           <Tooltip
             contentStyle={{ backgroundColor: tooltipBg }}
-            formatter={(data: number) => masks.valueToMoney(data)}
-            labelFormatter={(name: string) =>
-              `${isMonth ? 'Mês' : 'Dia'} ${name}`
-            }
+            formatter={(data: number) => currency.valueToMoney(data)}
+            labelFormatter={(name: string) => `${getLabel()}${name}`}
           />
           <Legend />
           {sections.map((section) =>

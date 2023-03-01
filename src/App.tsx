@@ -1,8 +1,8 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import {
   AuthContextProvider,
-  CategoriesContextProvider,
   DialogContextProvider,
+  RecurrencesContextProvider,
   TransactionsContextProvider,
 } from '@/contexts'
 import { Router } from '@/router'
@@ -12,13 +12,13 @@ export const App = () => {
   return (
     <ChakraProvider theme={theme}>
       <AuthContextProvider>
-        <TransactionsContextProvider>
-          <CategoriesContextProvider>
+        <RecurrencesContextProvider>
+          <TransactionsContextProvider>
             <DialogContextProvider>
               <Router />
             </DialogContextProvider>
-          </CategoriesContextProvider>
-        </TransactionsContextProvider>
+          </TransactionsContextProvider>
+        </RecurrencesContextProvider>
       </AuthContextProvider>
     </ChakraProvider>
   )

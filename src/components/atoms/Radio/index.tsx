@@ -1,5 +1,5 @@
-import { Radio as ChakraRadio, useRadioGroup, Grid } from '@chakra-ui/react'
 import { useController, useFormContext } from 'react-hook-form'
+import { Radio as ChakraRadio, Grid, useRadioGroup } from '@chakra-ui/react'
 
 type Option = {
   label: string

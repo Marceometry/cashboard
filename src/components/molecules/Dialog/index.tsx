@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { useForm } from 'react-hook-form'
 import {
   AlertDialog,
   AlertDialogBody,
@@ -7,8 +8,14 @@ import {
   AlertDialogHeader,
   AlertDialogOverlay,
   AlertDialogProps,
+  Checkbox,
 } from '@chakra-ui/react'
 import { Button } from '@/components'
+
+type CheckboxProps = {
+  id: string
+  label: string
+}
 
 export type DialogProps = Omit<
   AlertDialogProps,
@@ -16,7 +23,8 @@ export type DialogProps = Omit<
 > & {
   title: string
   body: string
-  onConfirm: () => void
+  onConfirm?: (data?: any) => void
+  checkbox?: CheckboxProps
 }
 
 export const Dialog = ({
@@ -25,12 +33,15 @@ export const Dialog = ({
   onConfirm,
   title,
   body,
+  checkbox,
 }: DialogProps) => {
-  const cancelRef = useRef(null)
+  const { handleSubmit, register, reset } = useForm()
+  const cancelRef = useRef<HTMLButtonElement | null>(null)
 
-  const handleConfirm = () => {
-    onConfirm()
+  const onSubmit = (data: any) => {
+    onConfirm?.(data)
     onClose()
+    reset()
   }
 
   return (
@@ -42,20 +53,30 @@ export const Dialog = ({
     >
       <AlertDialogOverlay>
         <AlertDialogContent>
-          <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-            {title}
-          </AlertDialogHeader>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              {title}
+            </AlertDialogHeader>
 
-          <AlertDialogBody>{body}</AlertDialogBody>
+            <AlertDialogBody>
+              {body}
 
-          <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
-              Cancelar
-            </Button>
-            <Button colorScheme='orange' onClick={handleConfirm} ml={3}>
-              Confirmar
-            </Button>
-          </AlertDialogFooter>
+              {checkbox && (
+                <Checkbox size='sm' mt='4' {...register(checkbox.id)}>
+                  {checkbox.label}
+                </Checkbox>
+              )}
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button onClick={onClose}>Cancelar</Button>
+              {onConfirm && (
+                <Button colorScheme='orange' type='submit' ml={3}>
+                  Confirmar
+                </Button>
+              )}
+            </AlertDialogFooter>
+          </form>
         </AlertDialogContent>
       </AlertDialogOverlay>
     </AlertDialog>

@@ -1,11 +1,11 @@
 import {
   createContext,
-  useContext,
-  useState,
   ReactNode,
+  useContext,
   useEffect,
+  useState,
 } from 'react'
-import { useApiCall, useFirebaseAuth } from '@/hooks'
+import { useApiCall, useFirebaseAuth, useToast } from '@/hooks'
 import { AuthContextData, GoogleUser, User } from './types'
 
 export type AuthContextProviderProps = {
@@ -15,27 +15,24 @@ export type AuthContextProviderProps = {
 export const AuthContext = createContext({} as AuthContextData)
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
+  const toast = useToast()
   const { call, isLoading, setIsLoading } = useApiCall()
   const { signInWithGoogle, firebaseSignOut, onAuthChange } = useFirebaseAuth()
   const [user, setUser] = useState<User | null>(null)
 
   const signIn = call(
     async () => {
+      const closeToast = toast('Faça login com sua conta Google', 'info')
       const { user } = await signInWithGoogle()
+      closeToast()
       return user.displayName
     },
     { toastText: (name) => `Bem vindo(a), ${name}!` }
   )
 
-  const signOut = call(
-    async () => {
-      await firebaseSignOut()
-      setTimeout(() => {
-        window.location.reload()
-      }, 500)
-    },
-    { toastText: 'Você foi desconectado com sucesso!' }
-  )
+  const signOut = call(async () => await firebaseSignOut(), {
+    toastText: 'Você foi desconectado com sucesso!',
+  })
 
   const handleAuthChange = (currentUser: GoogleUser) => {
     const userInfo = currentUser

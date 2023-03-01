@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Box, Flex } from '@chakra-ui/react'
-import { useDebouncedValue } from '@/hooks'
 import { ComposedChart, EmptyData, Loading, PieChart } from '@/components'
 import { TableBody, TableHeader } from './components'
 import { ChartType, TableProps } from './types'
@@ -14,12 +13,11 @@ export const Table = ({
   noSearch,
   charts,
   onViewChange,
+  onSearch,
   isLoading,
   ...props
 }: TableProps) => {
-  const [filteredData, setFilteredData] = useState<any[]>([])
   const [searchText, setSearchText] = useState('')
-  const debouncedSearchText = useDebouncedValue(searchText)
   const [currentView, setCurrentView] = useState<'table' | ChartType>('table')
   const currentChart = charts?.find((chart) => chart.type === currentView)
 
@@ -31,11 +29,15 @@ export const Table = ({
     return filterByText(data, columns, text)
   }
 
+  const filteredData = useMemo(() => {
+    if (noSearch) return data
+    const searchResult = handleSearch(searchText)
+    return searchResult
+  }, [data, searchText])
+
   useEffect(() => {
-    if (noSearch) return setFilteredData(data)
-    const searchResult = handleSearch(debouncedSearchText)
-    setFilteredData(searchResult)
-  }, [data, debouncedSearchText])
+    onSearch?.(searchText, filteredData)
+  }, [searchText, filteredData])
 
   useEffect(() => {
     onViewChange?.(currentView)
@@ -46,8 +48,7 @@ export const Table = ({
       <TableHeader
         caption={caption}
         noSearch={noSearch}
-        searchText={searchText}
-        setSearchText={setSearchText}
+        onInputSearch={setSearchText}
         buttons={buttons}
         toggleChart={toggleChart}
         currentView={currentView}
@@ -68,10 +69,10 @@ export const Table = ({
             <PieChart data={currentChart?.data || []} />
           ) : (
             <ComposedChart
-              type={currentChart?.type!}
+              type={currentChart?.type}
               data={currentChart?.data || []}
               sections={currentChart?.sections || []}
-              isMonth={currentChart?.isMonth}
+              labelType={currentChart?.labelType}
             />
           )}
         </Box>

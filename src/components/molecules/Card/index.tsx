@@ -1,6 +1,11 @@
-import { Box, ChakraComponent, Flex, useColorModeValue } from '@chakra-ui/react'
+import { ReactNode } from 'react'
+import { Box, ChakraProps, Flex, useColorModeValue } from '@chakra-ui/react'
 
-export const Card: ChakraComponent<'div', {}> = ({ children, ...props }) => {
+interface CardProps extends ChakraProps {
+  children: ReactNode
+}
+
+export const Card = ({ children, ...props }: CardProps) => {
   const bg = useColorModeValue('gray.50', 'gray.700')
 
   return (

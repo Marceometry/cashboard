@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 import { PieLabel, Sector } from 'recharts'
-import { masks } from '@/utils'
+import { currency } from '@/utils'
 import { RADIAN } from './constants'
 
 export const CustomizedLabel: PieLabel<any> = ({
@@ -13,7 +14,7 @@ export const CustomizedLabel: PieLabel<any> = ({
   fill,
   payload,
   percent,
-  index,
+  // index,
 }) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5
   const x = cx + radius * Math.cos(-midAngle * RADIAN)
@@ -71,7 +72,7 @@ export const CustomizedLabel: PieLabel<any> = ({
           textAnchor={textAnchor}
           fill='#999'
         >
-          {masks.valueToMoney(payload.value)}
+          {currency.valueToMoney(payload.value)}
         </text>
       </g>
       <text

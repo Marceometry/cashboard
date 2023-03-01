@@ -1,30 +1,31 @@
 import { useState } from 'react'
-import { Card, MainTemplate, Table } from '@/components'
+import { MainTemplate, Table } from '@/components'
 import {
   CategoriesFilterModel,
   TransactionType,
   useCategories,
+  useTransactions,
 } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
-import { ModalFilters } from './components'
-import { defaultFilterValues } from './types'
+import { filterCategoriesFormDefaultValues, ModalFilters } from './components'
 import {
   generateData,
-  getColumns,
+  getButtons,
   getCaption,
   getCharts,
-  getButtons,
+  getColumns,
 } from './constants'
 
 export const Categories = () => {
   const storage = useLocalStorage()
+  const { isLoading } = useTransactions()
   const { generateFilteredCategories, generateCategoriesHistory } =
     useCategories()
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
   const [isFilterMonthDisabled, setIsFilterMonthDisabled] = useState(false)
   const [currentType, setCurrentType] = useState<TransactionType>('outcome')
   const [filters, setFilters] = useState<CategoriesFilterModel>(
-    storage.get('categories-page-filters') || defaultFilterValues
+    storage.get('categories-page-filters') || filterCategoriesFormDefaultValues
   )
 
   const areaChartData = generateCategoriesHistory(filters, currentType)
@@ -47,25 +48,24 @@ export const Categories = () => {
 
   return (
     <MainTemplate>
-      <Card position='relative'>
-        <Table
-          sortBy={currentType}
-          buttons={buttons}
-          columns={columns}
-          caption={caption}
-          charts={charts}
-          data={data}
-          onViewChange={handleViewChange}
-          noSearch
-        />
+      <Table
+        sortBy={currentType}
+        isLoading={isLoading}
+        buttons={buttons}
+        columns={columns}
+        caption={caption}
+        charts={charts}
+        data={data}
+        onViewChange={handleViewChange}
+        noSearch
+      />
 
-        <ModalFilters
-          handleFilter={handleFilter}
-          isOpen={isModalFiltersOpen}
-          onClose={() => setIsModalFiltersOpen(false)}
-          isMonthDisabled={isFilterMonthDisabled}
-        />
-      </Card>
+      <ModalFilters
+        handleFilter={handleFilter}
+        isOpen={isModalFiltersOpen}
+        onClose={() => setIsModalFiltersOpen(false)}
+        isMonthDisabled={isFilterMonthDisabled}
+      />
     </MainTemplate>
   )
 }

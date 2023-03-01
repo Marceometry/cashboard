@@ -1,4 +1,4 @@
-import { Heading, Flex } from '@chakra-ui/react'
+import { Flex, Heading } from '@chakra-ui/react'
 import { Button, IconButton, SearchInput } from '@/components'
 import { ChartProps, ChartType, TableButtons } from '../types'
 
@@ -6,8 +6,7 @@ type HeaderProps = {
   caption?: React.ReactNode
   noSearch?: boolean
   buttons?: TableButtons
-  searchText: string
-  setSearchText: (value: string) => void
+  onInputSearch: (value: string) => void
   toggleChart: (chartType: ChartType) => void
   currentView: 'table' | ChartType
   charts?: ChartProps[]
@@ -17,8 +16,7 @@ export const TableHeader = ({
   caption,
   noSearch,
   buttons,
-  searchText,
-  setSearchText,
+  onInputSearch,
   toggleChart,
   currentView,
   charts,
@@ -35,8 +33,8 @@ export const TableHeader = ({
       {caption && <Heading fontSize='3xl'>{caption}</Heading>}
 
       <Flex gap='4' flexDirection={{ base: 'column', sm: 'row' }}>
-        {(!noSearch || currentView === 'table') && (
-          <SearchInput searchText={searchText} setSearchText={setSearchText} />
+        {!noSearch && currentView === 'table' && (
+          <SearchInput debouncedOnChange={onInputSearch} />
         )}
 
         <Flex gap='4' justify='center'>

@@ -1,14 +1,14 @@
-import { filterByMonth, filterByYear, masks } from '@/utils'
-import { FilterModel } from './constants'
+import { currency, filterByMonth, filterByYear } from '@/utils'
+import { FilterTransactionsFormInputs } from './validation'
 
 export const filterByMinAmount = (amount: string, itemAmount: number) => {
-  const numberAmount = masks.unMaskMonetaryValue(amount)
+  const numberAmount = currency.unMaskMonetaryValue(amount)
   if (numberAmount === 0) return true
   return itemAmount > numberAmount
 }
 
 export const filterByMaxAmount = (amount: string, itemAmount: number) => {
-  const numberAmount = masks.unMaskMonetaryValue(amount)
+  const numberAmount = currency.unMaskMonetaryValue(amount)
   if (numberAmount === 0) return true
   return itemAmount < numberAmount
 }
@@ -16,18 +16,26 @@ export const filterByCategory = (categories: string[], category: string) => {
   return categories.some((item) => item === category)
 }
 
-export const filterData = (data: any[], filters: FilterModel) => {
+export const filterData = (
+  data: any[],
+  filters: FilterTransactionsFormInputs
+) => {
   const {
     selectedMonth,
     selectedYear,
     selectedCategories,
     minAmount,
     maxAmount,
+    type,
   } = filters
 
   return data.filter((item) => {
     let included = true
 
+    if (type && type !== 'all') {
+      included = type === item.type
+      if (!included) return
+    }
     if (minAmount) {
       included = filterByMinAmount(minAmount, item.amount)
       if (!included) return
