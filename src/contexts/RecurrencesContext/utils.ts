@@ -50,7 +50,7 @@ export const checkRecurrences = ({
     if (!isActive) return
 
     const startDate = new Date(item.startDate)
-    if (isFuture(startDate) && !isThisMonth(startDate)) return
+    if (isFuture(startDate)) return
 
     const { installments } = item
     const transactions = item.transactions
