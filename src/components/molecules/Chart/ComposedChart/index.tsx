@@ -56,13 +56,20 @@ export const ComposedChart = ({
     return label
   }
 
+  const dataKeys = sections.map((item) => item.dataKey || 'value')
+
+  const formattedData = data.map((item) => ({
+    ...item,
+    ...dataKeys.reduce((acc, key) => ({ ...acc, [key]: item[key] / 100 }), {}),
+  }))
+
   return (
     <ResponsiveContainer width='100%' height='100%'>
       {data.length ? (
         <RechartsComposedChart
           width={500}
           height={300}
-          data={data}
+          data={formattedData}
           margin={{
             top: 5,
             right: 30,
@@ -75,7 +82,7 @@ export const ComposedChart = ({
           <YAxis />
           <Tooltip
             contentStyle={{ backgroundColor: tooltipBg }}
-            formatter={(data: number) => currency.valueToMoney(data)}
+            formatter={(data: number) => currency.valueToMoney(data * 100)}
             labelFormatter={(name: string) => `${getLabel()}${name}`}
           />
           <Legend />
