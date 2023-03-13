@@ -1,4 +1,5 @@
 export * from './Button'
+export * from './Checkbox'
 export * from './CheckboxGroup'
 export * from './CodeBlock'
 export * from './EmptyData'

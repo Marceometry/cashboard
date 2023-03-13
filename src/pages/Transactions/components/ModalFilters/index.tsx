@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import {
   Center,
-  Checkbox,
+  Checkbox as ChakraCheckbox,
   Flex,
   Grid,
   GridItem,
@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react'
 import {
   Accordion,
+  Checkbox,
   CheckboxGroup,
   FormModal,
   Input,
@@ -34,19 +35,22 @@ type Props = {
 }
 
 export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
+  const isSmallScreen = useBreakpointValue({ base: true, sm: false })
+
   const { categoryList: contextCategoryList, getAvailableYearList } =
     useTransactions()
-  const isSmallScreen = useBreakpointValue({ base: true, sm: false })
-  const categoryList = useMemo(
-    () => sortAlphabetically(contextCategoryList, 'name'),
-    [contextCategoryList]
-  )
+
   const storage = useLocalStorage()
   const storagedFilterValues = storage.get('transactions-table-filters')
   const formMethods = useForm<FilterTransactionsFormInputs>({
     resolver: filterTransactionsFormResolver,
     defaultValues: storagedFilterValues || filterTransactionsFormDefaultValues,
   })
+
+  const categoryList = useMemo(
+    () => sortAlphabetically(contextCategoryList, 'name'),
+    [contextCategoryList]
+  )
   const selectedCategories = formMethods.watch('selectedCategories')
   const [isIndeterminate, setIsIndeterminate] = useState(true)
   const [allChecked, setAllChecked] = useState(true)
@@ -62,6 +66,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
     formMethods.setValue('type', 'all')
     formMethods.setValue('selectedMonth', null)
     formMethods.setValue('selectedYear', null)
+    formMethods.setValue('showFutureTransactions', true)
     formMethods.setValue('maxAmount', '')
     formMethods.setValue('minAmount', '')
     formMethods.setValue(
@@ -71,6 +76,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
   }
 
   const handleSubmit = (data: FilterTransactionsFormInputs) => {
+    console.log(data)
     handleFilter({
       ...data,
       selectedCategories: allChecked ? [] : data.selectedCategories,
@@ -135,7 +141,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
             {
               key: 1,
               button: (
-                <Checkbox
+                <ChakraCheckbox
                   w='fit-content'
                   isChecked={allChecked}
                   isIndeterminate={isIndeterminate}
@@ -149,7 +155,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
                   }
                 >
                   Todas as categorias
-                </Checkbox>
+                </ChakraCheckbox>
               ),
               panel: (
                 <CheckboxGroup
@@ -166,6 +172,16 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
           ]}
         />
       </Grid>
+
+      <Center pt='3'>
+        <Checkbox
+          label='Mostrar transações futuras'
+          name='showFutureTransactions'
+          defaultChecked={
+            storagedFilterValues?.showFutureTransactions !== false
+          }
+        />
+      </Center>
 
       <Center mt='4'>
         <Radio

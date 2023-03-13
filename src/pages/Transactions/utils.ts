@@ -1,3 +1,4 @@
+import { isFuture } from 'date-fns'
 import { currency, filterByMonth, filterByYear } from '@/utils'
 import { FilterTransactionsFormInputs } from './validation'
 
@@ -12,6 +13,7 @@ export const filterByMaxAmount = (amount: string, itemAmount: number) => {
   if (numberAmount === 0) return true
   return itemAmount < numberAmount
 }
+
 export const filterByCategory = (categories: string[], category: string) => {
   return categories.some((item) => item === category)
 }
@@ -24,6 +26,7 @@ export const filterData = (
     selectedMonth,
     selectedYear,
     selectedCategories,
+    showFutureTransactions,
     minAmount,
     maxAmount,
     type,
@@ -42,6 +45,10 @@ export const filterData = (
     }
     if (maxAmount) {
       included = filterByMaxAmount(maxAmount, item.amount)
+      if (!included) return
+    }
+    if (!showFutureTransactions) {
+      included = !isFuture(new Date(item.date))
       if (!included) return
     }
     if (selectedMonth) {
