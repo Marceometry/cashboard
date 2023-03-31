@@ -1,9 +1,17 @@
-import { CalendarCheck, ChartPie, House, Swap, Tag } from 'phosphor-react'
+import {
+  CalendarCheck,
+  ChartPie,
+  ClipboardText,
+  House,
+  Swap,
+  Tag,
+} from 'phosphor-react'
 import {
   Categories,
   Home,
   Login,
   Recurrences,
+  Summary,
   Tags,
   Transactions,
 } from '@/pages'
@@ -18,10 +26,16 @@ type Route = {
 
 export const dashboardRoutes: Route[] = [
   {
-    label: 'Resumo',
+    label: 'Início',
     path: '/',
     element: <Home />,
     icon: <House />,
+  },
+  {
+    label: 'Resumo',
+    path: '/summary',
+    element: <Summary />,
+    icon: <ClipboardText />,
   },
   {
     label: 'Transações',
