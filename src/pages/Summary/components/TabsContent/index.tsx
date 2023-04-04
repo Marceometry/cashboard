@@ -1,7 +1,7 @@
 import { Flex, useBreakpointValue } from '@chakra-ui/react'
 import { TransactionType } from '@/contexts'
-import { Stat } from './Stat'
 import { ChartData } from '../../constants'
+import { Stat } from './Stat'
 
 type Props = {
   data: ChartData

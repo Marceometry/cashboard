@@ -38,8 +38,8 @@
           "external",
           "builtin",
           "internal",
-          "sibling",
           "parent",
+          "sibling",
           "index"
         ],
         "pathGroups": [

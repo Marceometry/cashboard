@@ -5,6 +5,7 @@ type Option = {
   label: string
   value: string
   defaultChecked?: boolean
+  disabled?: boolean
 }
 
 type Props = {
@@ -33,6 +34,7 @@ export const CheckboxGroup = ({
           w='fit-content'
           key={option.value}
           defaultChecked={option.defaultChecked ?? defaultCheckAll}
+          disabled={option.disabled}
           {...getCheckboxProps({ value: option.value })}
         >
           {option.label}

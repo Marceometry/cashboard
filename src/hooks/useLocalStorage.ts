@@ -2,6 +2,8 @@ type LocaStorageItem =
   | 'transactions-table-filters'
   | 'categories-page-filters'
   | 'sidebar-default-open'
+  | 'categories-average-outcome-filter'
+  | 'categories-average-month-count-filter'
 
 export const useLocalStorage = () => {
   const get = (item: LocaStorageItem, defaultValue?: any) => {

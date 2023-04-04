@@ -76,7 +76,6 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
   }
 
   const handleSubmit = (data: FilterTransactionsFormInputs) => {
-    console.log(data)
     handleFilter({
       ...data,
       selectedCategories: allChecked ? [] : data.selectedCategories,
