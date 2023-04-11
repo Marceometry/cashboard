@@ -2,6 +2,7 @@ import {
   addMonths,
   differenceInCalendarMonths,
   isFuture,
+  isThisMonth,
   subMonths,
 } from 'date-fns'
 import { AddTransactionModel, TransactionModel } from '@/contexts'
@@ -50,7 +51,7 @@ export const checkRecurrences = ({
     if (!isActive) return
 
     const startDate = new Date(item.startDate)
-    if (isFuture(startDate)) return
+    if (isFuture(startDate) && !isThisMonth(startDate)) return
 
     const { installments } = item
     const transactions = item.transactions
