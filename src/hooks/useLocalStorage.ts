@@ -1,5 +1,6 @@
 type LocaStorageItem =
   | 'transactions-table-filters'
+  | 'transactions-table-filters-specific-date'
   | 'categories-page-filters'
   | 'sidebar-default-open'
   | 'categories-average-outcome-filter'

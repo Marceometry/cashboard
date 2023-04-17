@@ -5,6 +5,8 @@ import { zodValidator } from '@/utils'
 // Filter Transactions form //
 
 export const filterTransactionsFormSchema = z.object({
+  startDate: zodValidator.date.nullable(),
+  endDate: zodValidator.date.nullable(),
   selectedMonth: z.string().nullable(),
   selectedYear: z.string().nullable(),
   selectedCategories: zodValidator.array,
@@ -24,6 +26,8 @@ export type FilterTransactionsFormInputs = z.infer<
 
 export const filterTransactionsFormDefaultValues: FilterTransactionsFormInputs =
   {
+    startDate: null,
+    endDate: null,
     selectedMonth: null,
     selectedYear: null,
     selectedCategories: [],

@@ -4,8 +4,10 @@ import {
   Center,
   Checkbox as ChakraCheckbox,
   Flex,
+  FormLabel,
   Grid,
   GridItem,
+  Switch,
   Text,
   useBreakpointValue,
 } from '@chakra-ui/react'
@@ -54,6 +56,12 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
   const selectedCategories = formMethods.watch('selectedCategories')
   const [isIndeterminate, setIsIndeterminate] = useState(true)
   const [allChecked, setAllChecked] = useState(true)
+  const [specificDate, setSpecificDate] = useState(false)
+
+  const checkSpecificDate = (value: boolean) => {
+    setSpecificDate(value)
+    storage.set('transactions-table-filters-specific-date', value)
+  }
 
   useEffect(() => {
     const checkedAll = selectedCategories.length === categoryList.length
@@ -64,6 +72,8 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
 
   const handleClearFilters = () => {
     formMethods.setValue('type', 'all')
+    formMethods.setValue('startDate', null)
+    formMethods.setValue('endDate', null)
     formMethods.setValue('selectedMonth', null)
     formMethods.setValue('selectedYear', null)
     formMethods.setValue('showFutureTransactions', true)
@@ -78,6 +88,10 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
   const handleSubmit = (data: FilterTransactionsFormInputs) => {
     handleFilter({
       ...data,
+      startDate: specificDate ? data.startDate : null,
+      endDate: specificDate ? data.endDate : null,
+      selectedMonth: !specificDate ? data.selectedMonth : null,
+      selectedYear: !specificDate ? data.selectedYear : null,
       selectedCategories: allChecked ? [] : data.selectedCategories,
     })
     onClose()
@@ -104,19 +118,44 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
     >
       <Grid gap='4'>
         <GridItem>
-          <Flex gap='4' alignItems='flex-end'>
-            <Select
-              name='selectedMonth'
-              placeholder='Selecione o mês'
-              options={MONTH_LIST}
+          <Flex>
+            <Switch
+              mb='4'
+              mr='2'
+              id='specificDate'
+              isChecked={specificDate}
+              onChange={(e) => checkSpecificDate(e.target.checked)}
             />
-            <Text>de</Text>
-            <Select
-              name='selectedYear'
-              placeholder='Selecione o ano'
-              options={getAvailableYearList()}
-            />
+            <FormLabel
+              htmlFor='specificDate'
+              userSelect='none'
+              cursor='pointer'
+            >
+              Selecionar intervalo de data específico
+            </FormLabel>
           </Flex>
+
+          {specificDate ? (
+            <Flex gap='4' alignItems='flex-end'>
+              <Input flex='1' type='date' name='startDate' required={false} />
+              <Text>até</Text>
+              <Input flex='1' type='date' name='endDate' required={false} />
+            </Flex>
+          ) : (
+            <Flex gap='4' alignItems='flex-end'>
+              <Select
+                name='selectedMonth'
+                placeholder='Selecione o mês'
+                options={MONTH_LIST}
+              />
+              <Text>de</Text>
+              <Select
+                name='selectedYear'
+                placeholder='Selecione o ano'
+                options={getAvailableYearList()}
+              />
+            </Flex>
+          )}
         </GridItem>
 
         <GridItem>

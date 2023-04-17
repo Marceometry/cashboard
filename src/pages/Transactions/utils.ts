@@ -1,4 +1,4 @@
-import { isFuture } from 'date-fns'
+import { addDays, isAfter, isBefore, isFuture, subDays } from 'date-fns'
 import { currency, filterByMonth, filterByYear } from '@/utils'
 import { FilterTransactionsFormInputs } from './validation'
 
@@ -23,6 +23,8 @@ export const filterData = (
   filters: FilterTransactionsFormInputs
 ) => {
   const {
+    startDate,
+    endDate,
     selectedMonth,
     selectedYear,
     selectedCategories,
@@ -49,6 +51,16 @@ export const filterData = (
     }
     if (!showFutureTransactions) {
       included = !isFuture(new Date(item.date))
+      if (!included) return
+    }
+    if (startDate) {
+      const date = subDays(new Date(`${startDate} 00:00:00`), 1)
+      included = isAfter(new Date(item.date), date)
+      if (!included) return
+    }
+    if (endDate) {
+      const date = addDays(new Date(`${endDate} 00:00:00`), 1)
+      included = isBefore(new Date(item.date), date)
       if (!included) return
     }
     if (selectedMonth) {
