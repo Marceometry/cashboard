@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Center, Flex, Heading } from '@chakra-ui/react'
-import { IconButton, Loading, MainTemplate } from '@/components'
-import { useRecurrences, useTransactions } from '@/contexts'
+import { Link } from 'react-router-dom'
+import { Center, Flex, Heading, Text } from '@chakra-ui/react'
+import { EmptyData, IconButton, Loading, MainTemplate } from '@/components'
+import { useAuth, useRecurrences, useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
 import { InputNumber, ModalCategoriesFilter, Stat } from './components'
 import { generateCategories, getMonthSummary } from './utils'
@@ -20,6 +21,7 @@ export const Home = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     storagedFilterCategories || []
   )
+  const { user } = useAuth()
   const { recurrenceList } = useRecurrences()
   const { transactionList, isLoading } = useTransactions()
 
@@ -49,6 +51,24 @@ export const Home = () => {
       >
         {isLoading ? (
           <Loading />
+        ) : !transactionList.length ? (
+          <Center flexDirection='column' gap='12'>
+            <Heading size='xl'>Bem vindo, {user?.name}!</Heading>
+            <EmptyData message='Por enquanto, ainda não há dados para exibir.' />
+            <Text fontSize='1.5rem'>
+              Vá até a aba{' '}
+              <Link to='/transactions'>
+                <Text
+                  display='inline-block'
+                  color='green.400'
+                  _hover={{ textDecoration: 'underline' }}
+                >
+                  Transações
+                </Text>
+              </Link>{' '}
+              para cadastrar sua primeira transação.
+            </Text>
+          </Center>
         ) : (
           <>
             <Center flexDirection='column' w='full'>
@@ -110,17 +130,17 @@ export const Home = () => {
                   )
                 })}
               </Flex>
-            </Center>
 
-            <ModalCategoriesFilter
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              currentSelectedCategories={selectedCategories}
-              handleFilter={(data) => {
-                setSelectedCategories(data)
-                storage.set('categories-average-outcome-filter', data)
-              }}
-            />
+              <ModalCategoriesFilter
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                currentSelectedCategories={selectedCategories}
+                handleFilter={(data) => {
+                  setSelectedCategories(data)
+                  storage.set('categories-average-outcome-filter', data)
+                }}
+              />
+            </Center>
           </>
         )}
       </Flex>
