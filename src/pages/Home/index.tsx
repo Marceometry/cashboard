@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Center, Flex, Heading } from '@chakra-ui/react'
-import { IconButton, MainTemplate } from '@/components'
+import { IconButton, Loading, MainTemplate } from '@/components'
 import { useRecurrences, useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
 import { InputNumber, ModalCategoriesFilter, Stat } from './components'
@@ -21,7 +21,7 @@ export const Home = () => {
     storagedFilterCategories || []
   )
   const { recurrenceList } = useRecurrences()
-  const { transactionList } = useTransactions()
+  const { transactionList, isLoading } = useTransactions()
 
   const [monthlyIncomes, monthlyOutcomes, installmentsOutcomes] =
     getMonthSummary(recurrenceList)
@@ -47,69 +47,82 @@ export const Home = () => {
         w='full'
         h='full'
       >
-        <Center flexDirection='column' w='full'>
-          <Center mb='8'>
-            <Heading size='lg'>Resumo mensal</Heading>
-          </Center>
-          <Flex w='full' gap='8' flexWrap='wrap'>
-            <Stat type='income' label='Ganhos mensais' value={monthlyIncomes} />
-            <Stat
-              type='outcome'
-              label='Gastos mensais fixos'
-              value={monthlyOutcomes}
-            />
-            <Stat
-              type='outcome'
-              label='Parcelas ativas'
-              value={installmentsOutcomes}
-            />
-          </Flex>
-        </Center>
-
-        <Center flexDirection='column' w='full'>
-          <Center my='8' gap='2'>
-            <Heading size='lg' textAlign='center'>
-              Gasto médio por categoria (últimos{' '}
-              <InputNumber
-                value={monthCount}
-                onChange={(value) => {
-                  setMonthCount(Number(value))
-                  storage.set('categories-average-month-count-filter', value)
-                }}
-              />{' '}
-              meses)
-            </Heading>
-            <IconButton
-              icon='filter'
-              aria-label='Categorias para mostrar'
-              onClick={() => setIsModalOpen(true)}
-            />
-          </Center>
-          <Flex w='full' gap='8' flexWrap='wrap'>
-            {selectedCategories.map((item) => {
-              const category = categories.find((c) => c.name === item)
-              if (!category) return null
-              return (
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            <Center flexDirection='column' w='full'>
+              <Center mb='8'>
+                <Heading size='lg'>Resumo mensal</Heading>
+              </Center>
+              <Flex w='full' gap='8' flexWrap='wrap'>
                 <Stat
-                  key={item}
-                  type='outcome'
-                  label={category.name}
-                  value={category.average}
+                  type='income'
+                  label='Ganhos mensais'
+                  value={monthlyIncomes}
                 />
-              )
-            })}
-          </Flex>
-        </Center>
+                <Stat
+                  type='outcome'
+                  label='Gastos mensais fixos'
+                  value={monthlyOutcomes}
+                />
+                <Stat
+                  type='outcome'
+                  label='Parcelas ativas'
+                  value={installmentsOutcomes}
+                />
+              </Flex>
+            </Center>
 
-        <ModalCategoriesFilter
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          currentSelectedCategories={selectedCategories}
-          handleFilter={(data) => {
-            setSelectedCategories(data)
-            storage.set('categories-average-outcome-filter', data)
-          }}
-        />
+            <Center flexDirection='column' w='full'>
+              <Center my='8' gap='2'>
+                <Heading size='lg' textAlign='center'>
+                  Gasto médio por categoria (últimos{' '}
+                  <InputNumber
+                    value={monthCount}
+                    onChange={(value) => {
+                      setMonthCount(Number(value))
+                      storage.set(
+                        'categories-average-month-count-filter',
+                        value
+                      )
+                    }}
+                  />{' '}
+                  meses)
+                </Heading>
+                <IconButton
+                  icon='filter'
+                  aria-label='Categorias para mostrar'
+                  onClick={() => setIsModalOpen(true)}
+                />
+              </Center>
+              <Flex w='full' gap='8' flexWrap='wrap'>
+                {selectedCategories.map((item) => {
+                  const category = categories.find((c) => c.name === item)
+                  if (!category) return null
+                  return (
+                    <Stat
+                      key={item}
+                      type='outcome'
+                      label={category.name}
+                      value={category.average}
+                    />
+                  )
+                })}
+              </Flex>
+            </Center>
+
+            <ModalCategoriesFilter
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              currentSelectedCategories={selectedCategories}
+              handleFilter={(data) => {
+                setSelectedCategories(data)
+                storage.set('categories-average-outcome-filter', data)
+              }}
+            />
+          </>
+        )}
       </Flex>
     </MainTemplate>
   )
