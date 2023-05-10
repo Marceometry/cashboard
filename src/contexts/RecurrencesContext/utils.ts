@@ -57,6 +57,7 @@ export const checkRecurrences = ({
     const transactions = item.transactions
     const monthsPassed = differenceInCalendarMonths(new Date(), startDate)
 
+    console.log(monthsPassed, item)
     if (transactions.length - 1 === monthsPassed) return
 
     const latestTransactionDate = transactions.length
@@ -79,6 +80,7 @@ export const checkRecurrences = ({
       const { id } = await addTransaction({ ...item, description, date })
       transactions.push({ id, date })
 
+      console.log({ id, date })
       if (installments && transactions.length === installments) {
         isActive = false
       }
