@@ -71,28 +71,30 @@ export const Home = () => {
           </Center>
         ) : (
           <>
-            <Center flexDirection='column' w='full'>
-              <Center mb='8'>
-                <Heading size='lg'>Resumo mensal</Heading>
+            {!!recurrenceList.length && (
+              <Center flexDirection='column' w='full'>
+                <Center mb='8'>
+                  <Heading size='lg'>Resumo mensal</Heading>
+                </Center>
+                <Flex w='full' gap='8' flexWrap='wrap'>
+                  <Stat
+                    type='income'
+                    label='Ganhos mensais'
+                    value={monthlyIncomes}
+                  />
+                  <Stat
+                    type='outcome'
+                    label='Gastos mensais fixos'
+                    value={monthlyOutcomes}
+                  />
+                  <Stat
+                    type='outcome'
+                    label='Parcelas ativas'
+                    value={installmentsOutcomes}
+                  />
+                </Flex>
               </Center>
-              <Flex w='full' gap='8' flexWrap='wrap'>
-                <Stat
-                  type='income'
-                  label='Ganhos mensais'
-                  value={monthlyIncomes}
-                />
-                <Stat
-                  type='outcome'
-                  label='Gastos mensais fixos'
-                  value={monthlyOutcomes}
-                />
-                <Stat
-                  type='outcome'
-                  label='Parcelas ativas'
-                  value={installmentsOutcomes}
-                />
-              </Flex>
-            </Center>
+            )}
 
             <Center flexDirection='column' w='full'>
               <Center my='8' gap='2'>

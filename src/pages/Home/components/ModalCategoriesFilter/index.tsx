@@ -37,7 +37,6 @@ export const ModalCategoriesFilter = ({
   const selectedCategories = formMethods.watch('selectedCategories')
 
   const handleSubmit = (data: CategoriesAverageOutcomeFormInputs) => {
-    console.log(data)
     handleFilter(data.selectedCategories)
     onClose()
   }
