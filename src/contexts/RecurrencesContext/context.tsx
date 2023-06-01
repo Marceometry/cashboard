@@ -106,7 +106,7 @@ export function RecurrencesContextProvider({
   }
 
   useEffect(() => {
-    if (!user?.id) return
+    if (!user?.id || !recurrenceList.length) return
     checkRecurrences({
       recurrenceList,
       addTransaction,

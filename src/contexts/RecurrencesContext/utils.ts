@@ -41,14 +41,30 @@ type CheckRecurrencesProps = {
   ) => Promise<void>
 }
 
-export const checkRecurrences = ({
+export const checkRecurrences = async ({
   recurrenceList,
   addTransaction,
   updateRecurrenceTransactionList,
 }: CheckRecurrencesProps) => {
-  recurrenceList.forEach(async (item) => {
+  const recurrencesToUpdate: UpdateRecurrenceTransactionListArgs[] = []
+
+  // return recurrenceList.forEach((item) => {
+  //   const transactions = item.transactions.filter(
+  //     (t) => !isThisMonth(new Date(t.date))
+  //   )
+  //   updateRecurrenceTransactionList({
+  //     id: item.id,
+  //     transactions,
+  //     isActive: item.isActive,
+  //   })
+  // })
+
+  const check = async (
+    item: RecurrentTransaction,
+    resolve: (value?: unknown) => void
+  ) => {
     let isActive = item.isActive
-    if (!isActive) return
+    if (!isActive) return resolve()
 
     const startDate = new Date(item.startDate)
     if (isFuture(startDate) && !isThisMonth(startDate)) return
@@ -57,7 +73,6 @@ export const checkRecurrences = ({
     const transactions = item.transactions
     const monthsPassed = differenceInCalendarMonths(new Date(), startDate)
 
-    console.log(monthsPassed, item)
     if (transactions.length - 1 === monthsPassed) return
 
     const latestTransactionDate = transactions.length
@@ -80,12 +95,19 @@ export const checkRecurrences = ({
       const { id } = await addTransaction({ ...item, description, date })
       transactions.push({ id, date })
 
-      console.log({ id, date })
       if (installments && transactions.length === installments) {
         isActive = false
       }
     }
 
-    updateRecurrenceTransactionList({ id: item.id, transactions, isActive })
-  })
+    recurrencesToUpdate.push({ id: item.id, transactions, isActive })
+    resolve()
+  }
+
+  const promises = recurrenceList.map(
+    (item) => new Promise((resolve) => check(item, resolve))
+  )
+  await Promise.all(promises)
+
+  recurrencesToUpdate.forEach((item) => updateRecurrenceTransactionList(item))
 }
