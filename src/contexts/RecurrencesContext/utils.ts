@@ -67,13 +67,13 @@ export const checkRecurrences = async ({
     if (!isActive) return resolve()
 
     const startDate = new Date(item.startDate)
-    if (isFuture(startDate) && !isThisMonth(startDate)) return
+    if (isFuture(startDate) && !isThisMonth(startDate)) return resolve()
 
     const { installments } = item
     const transactions = item.transactions
     const monthsPassed = differenceInCalendarMonths(new Date(), startDate)
 
-    if (transactions.length - 1 === monthsPassed) return
+    if (transactions.length - 1 === monthsPassed) return resolve()
 
     const latestTransactionDate = transactions.length
       ? new Date(sortByDate(transactions)[0].date)
