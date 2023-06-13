@@ -64,6 +64,7 @@ export const Transactions = () => {
     setIncomeAndOutcome(getIncomeAndOutcome(result))
   }
 
+  const sortFunction = (data: any[]) => sortByDate(data, false, dateParam)
   const caption = (
     <TableCaption filters={tableFilters} values={incomeAndOutcome} />
   )
@@ -85,7 +86,7 @@ export const Transactions = () => {
         buttons={buttons}
         caption={caption}
         onSearch={handleSearch}
-        sortFunction={sortByDate}
+        sortFunction={sortFunction}
         isLoading={isLoading}
         charts={[
           {

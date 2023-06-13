@@ -2,6 +2,7 @@ import { useFormContext } from 'react-hook-form'
 import {
   Input as ChakraInput,
   Flex,
+  FlexProps,
   InputGroup,
   InputProps,
   InputRightElement,
@@ -11,6 +12,7 @@ import { FormControl, IconButton, IconButtonProps } from '@/components'
 type Props = InputProps & {
   name: string
   label?: string
+  helperElement?: React.ReactNode
   placeholder?: string
   required?: boolean
   helperText?: string
@@ -18,11 +20,13 @@ type Props = InputProps & {
   flex?: string
   datalist?: string[]
   mask?: (value: string) => any
+  containerProps?: FlexProps
 }
 
 export const Input = ({
   name,
   label,
+  helperElement,
   placeholder,
   required,
   helperText,
@@ -30,6 +34,7 @@ export const Input = ({
   mask,
   datalist,
   flex,
+  containerProps,
   ...props
 }: Props) => {
   const {
@@ -49,10 +54,11 @@ export const Input = ({
   }
 
   return (
-    <Flex flex={flex}>
+    <Flex flex={flex} {...containerProps}>
       <FormControl
         name={name}
         label={label}
+        helperElement={helperElement}
         error={error}
         required={required}
         helperText={helperText}

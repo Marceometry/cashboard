@@ -1,4 +1,5 @@
 import { Option } from '@/components'
+import { Optional } from '@/utils'
 
 export type TransactionType = 'income' | 'outcome'
 
@@ -13,9 +14,10 @@ export type TransactionModel = {
   type: TransactionType
 }
 
-export type AddTransactionModel = Omit<TransactionModel, 'id'> & {
-  datePayed?: string
-}
+export type AddTransactionModel = Omit<
+  Optional<TransactionModel, 'datePayed'>,
+  'id'
+>
 
 export type TransactionsContextData = {
   isLoading: boolean
@@ -26,7 +28,9 @@ export type TransactionsContextData = {
   addTransaction: (
     transaction: AddTransactionModel
   ) => Promise<TransactionModel>
-  updateTransaction: (transaction: TransactionModel) => void
+  updateTransaction: (
+    transaction: Optional<TransactionModel, 'datePayed'>
+  ) => void
   removeTransaction: (transaction: TransactionModel) => void
   updateTransactionList: (list: TransactionModel[]) => void
   uploadTransactionList: (list: string) => void

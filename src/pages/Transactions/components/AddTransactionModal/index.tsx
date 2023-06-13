@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useBreakpointValue } from '@chakra-ui/react'
+import { isSameDay } from 'date-fns'
 import { FormModal, Radio } from '@/components'
 import { useTransactions } from '@/contexts'
 import { currency, formatDateToInput, formatInputToISOString } from '@/utils'
@@ -30,7 +31,6 @@ export const AddTransactionModal = ({
     transactionList,
     addTransaction,
     updateTransaction,
-    dateParam,
   } = useTransactions()
 
   const formMethods = useForm({
@@ -39,17 +39,26 @@ export const AddTransactionModal = ({
   })
   const categoriesFormMethods = useForm<CategoryFormInputs>()
 
+  const [differentPaymentDate, setDifferentPaymentDate] = useState(false)
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false)
   const [keepModalOpen, setKeepModalOpen] = useState(false)
 
   const loadTransactionById = (id: string) => {
     const selectedTransaction = transactionList.find((item) => item.id === id)
     if (!selectedTransaction) return
+
+    const isDifferent = !isSameDay(
+      new Date(selectedTransaction.datePayed),
+      new Date(selectedTransaction.date)
+    )
+    setDifferentPaymentDate(isDifferent)
+
     const newFormValues: AddTransactionFormInputs = {
       ...selectedTransaction,
       tags: selectedTransaction.tags || [],
       amount: currency.maskMonetaryValue(selectedTransaction.amount),
-      date: formatDateToInput(new Date(selectedTransaction[dateParam])),
+      date: formatDateToInput(new Date(selectedTransaction.date)),
+      datePayed: formatDateToInput(new Date(selectedTransaction.datePayed)),
     }
     formMethods.reset(newFormValues || addTransactionFormDefaultValues)
   }
@@ -71,9 +80,12 @@ export const AddTransactionModal = ({
   const handleSubmit = (data: AddTransactionFormInputs) => {
     const payload = {
       ...data,
-      date: formatInputToISOString(data.date),
-      datePayed: formatInputToISOString(data.datePayed || data.date),
       amount: currency.unMaskMonetaryValue(data.amount),
+      date: formatInputToISOString(data.date),
+      datePayed:
+        differentPaymentDate && data.datePayed
+          ? formatInputToISOString(data.datePayed)
+          : undefined,
     }
     if (selectedId) {
       updateTransaction({
@@ -122,6 +134,8 @@ export const AddTransactionModal = ({
         <Form
           isEditingTransaction={!!selectedId}
           handleOpenCategoriesModal={() => setIsCategoriesModalOpen(true)}
+          differentPaymentDate={differentPaymentDate}
+          setDifferentPaymentDate={setDifferentPaymentDate}
         />
       </FormModal>
 

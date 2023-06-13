@@ -8,6 +8,7 @@ import {
 import { v4 as uuid } from 'uuid'
 import { useAuth } from '@/contexts'
 import { useApiCall, useFirebaseDatabase } from '@/hooks'
+import { Optional } from '@/utils'
 import {
   AddTransactionModel,
   CategoryModel,
@@ -59,7 +60,7 @@ export function TransactionsContextProvider({
   )
 
   const updateTransaction = call(
-    async (payload: TransactionModel) => {
+    async (payload: Optional<TransactionModel, 'datePayed'>) => {
       const transaction = formatTransaction(payload)
       await remoteAddTransaction(transaction)
     },

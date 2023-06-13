@@ -1,6 +1,12 @@
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { Center, Grid, GridItem, useBreakpointValue } from '@chakra-ui/react'
+import {
+  Center,
+  Checkbox,
+  Grid,
+  GridItem,
+  useBreakpointValue,
+} from '@chakra-ui/react'
 import { Input, MultiSelect, Radio } from '@/components'
 import { useTransactions } from '@/contexts'
 import { currency } from '@/utils'
@@ -9,11 +15,15 @@ import { AddTransactionFormInputs } from './validation'
 type Props = {
   isEditingTransaction: boolean
   handleOpenCategoriesModal: () => void
+  differentPaymentDate: boolean
+  setDifferentPaymentDate: (value: boolean) => void
 }
 
 export const Form = ({
   isEditingTransaction,
   handleOpenCategoriesModal,
+  differentPaymentDate,
+  setDifferentPaymentDate,
 }: Props) => {
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const { categoryList, tagList, getFilteredMostRepeatedTransactions } =
@@ -64,7 +74,34 @@ export const Form = ({
         </GridItem>
 
         <GridItem>
-          <Input label='Data' name='date' type='date' required />
+          <Input
+            type='date'
+            name='date'
+            label='Data'
+            required
+            helperElement={
+              <Checkbox
+                mt='1'
+                size='sm'
+                w='fit-content'
+                flexDir='row-reverse'
+                spacing={0}
+                gap={2}
+                onChange={(e) => setDifferentPaymentDate(e.target.checked)}
+                isChecked={differentPaymentDate}
+              >
+                Pagamento em outra data
+              </Checkbox>
+            }
+          />
+          {differentPaymentDate && (
+            <Input
+              type='date'
+              name='datePayed'
+              label='Data do Pagamento'
+              containerProps={{ mt: '2' }}
+            />
+          )}
         </GridItem>
         <GridItem>
           <Input
