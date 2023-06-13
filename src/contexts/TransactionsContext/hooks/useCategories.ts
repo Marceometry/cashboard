@@ -13,7 +13,7 @@ import {
 import { generateCategories } from '../utils'
 
 export const useCategories = () => {
-  const { transactionList, categoryList } = useTransactions()
+  const { transactionList, categoryList, dateParam } = useTransactions()
 
   const generateFilteredCategories = (
     filters: CategoriesFilterModel,
@@ -23,8 +23,8 @@ export const useCategories = () => {
 
     const transactions = sortByDate(transactionList, true).filter(
       (item: TransactionModel) => {
-        if (month && !filterByMonth(item.date, month)) return false
-        if (year && !filterByYear(item.date, year)) return false
+        if (month && !filterByMonth(item[dateParam], month)) return false
+        if (year && !filterByYear(item[dateParam], year)) return false
         if (
           selectedCategories.length &&
           !selectedCategories.includes(item.category)
@@ -54,8 +54,8 @@ export const useCategories = () => {
         if (item.type !== type) return acc
         if (minAmount && item.amount < minAmount) return acc
         if (maxAmount && item.amount > maxAmount) return acc
-        if (month && !filterByMonth(item.date, month)) return acc
-        if (year && !filterByYear(item.date, year)) return acc
+        if (month && !filterByMonth(item[dateParam], month)) return acc
+        if (year && !filterByYear(item[dateParam], year)) return acc
         if (
           selectedCategories.length &&
           !selectedCategories.includes(item.category)
@@ -64,7 +64,7 @@ export const useCategories = () => {
         }
 
         const { amount, category } = item
-        const date = new Date(item.date)
+        const date = new Date(item[dateParam])
 
         const name = getFormattedMonthAndYear(date)
         const itemIndex = acc.findIndex((accItem) => accItem.name === name)

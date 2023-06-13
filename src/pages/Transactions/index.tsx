@@ -21,7 +21,8 @@ export const Transactions = () => {
   const storage = useLocalStorage()
   const storagedFilterValues = storage.get('transactions-table-filters')
   const { openDialog } = useDialog()
-  const { transactionList, removeTransaction, isLoading } = useTransactions()
+  const { transactionList, removeTransaction, isLoading, dateParam } =
+    useTransactions()
 
   const [isModalTransactionOpen, setIsModalTransactionOpen] = useState(false)
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
@@ -70,7 +71,11 @@ export const Transactions = () => {
     () => handleOpenTransactionModal(),
     () => setIsModalFiltersOpen(true)
   )
-  const columns = getColumns(handleOpenDeleteDialog, handleOpenTransactionModal)
+  const columns = getColumns(
+    handleOpenDeleteDialog,
+    handleOpenTransactionModal,
+    dateParam
+  )
 
   return (
     <MainTemplate>
@@ -87,7 +92,7 @@ export const Transactions = () => {
             type: 'bar',
             labelType: 'day',
             sections: chartBars,
-            data: generateChartData(tableData),
+            data: generateChartData(tableData, dateParam),
           },
         ]}
       />

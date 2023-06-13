@@ -92,7 +92,12 @@ export const checkRecurrences = async ({
         installments
       )
 
-      const { id } = await addTransaction({ ...item, description, date })
+      const { id } = await addTransaction({
+        ...item,
+        description,
+        date,
+        datePayed: date,
+      })
       transactions.push({ id, date })
 
       if (installments && transactions.length === installments) {

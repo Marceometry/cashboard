@@ -3,14 +3,14 @@ import { v4 as uuid, validate } from 'uuid'
 import { CategoryModel, TagModel } from '@/contexts'
 import { FirebaseDataSnapshot } from '@/hooks'
 import { sortByDate } from '@/utils'
-import { AddTransactionModel, TransactionModel } from './types'
+import { AddTransactionModel, DateParam, TransactionModel } from './types'
 
 const error = () => {
   throw new Error()
 }
 
 export const formatTransaction = (
-  payload: TransactionModel
+  payload: TransactionModel & { datePayed?: string }
 ): TransactionModel => {
   if (isTransactionInvalid(payload)) throw new Error()
 
@@ -22,6 +22,7 @@ export const formatTransaction = (
     category: payload.category || 'Outros',
     tags: payload.tags || [],
     date: new Date(payload.date).toISOString(),
+    datePayed: new Date(payload.datePayed || payload.date).toISOString(),
   }
 }
 
@@ -32,6 +33,7 @@ export const isTransactionInvalid = (item: TransactionModel) => {
     if (typeof item.category !== 'string') error()
     if (item.type !== 'income' && item.type !== 'outcome') error()
     if (!isValid(new Date(item.date))) error()
+    if (!isValid(new Date(item.datePayed || item.date))) error()
     if (isNaN(item.amount)) error()
 
     return false
@@ -63,16 +65,16 @@ export const firebaseDataSnapshotToTransactionList = (
   data: FirebaseDataSnapshot<AddTransactionModel>
 ) => {
   return Object.entries(data).map(([id, values]) =>
-    formatTransaction({
-      ...values,
-      id,
-    })
+    formatTransaction({ ...values, id })
   )
 }
 
-export const getYearList = (transactionList: TransactionModel[]) => {
+export const getYearList = (
+  transactionList: TransactionModel[],
+  dateParam: DateParam
+) => {
   const yearList = transactionList.reduce((array, item) => {
-    const year = new Date(item.date).getFullYear()
+    const year = new Date(item[dateParam]).getFullYear()
     if (array.includes(year)) return array
     return [...array, year]
   }, [] as number[])

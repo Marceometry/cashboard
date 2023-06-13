@@ -30,6 +30,7 @@ export const AddTransactionModal = ({
     transactionList,
     addTransaction,
     updateTransaction,
+    dateParam,
   } = useTransactions()
 
   const formMethods = useForm({
@@ -48,7 +49,7 @@ export const AddTransactionModal = ({
       ...selectedTransaction,
       tags: selectedTransaction.tags || [],
       amount: currency.maskMonetaryValue(selectedTransaction.amount),
-      date: formatDateToInput(new Date(selectedTransaction.date)),
+      date: formatDateToInput(new Date(selectedTransaction[dateParam])),
     }
     formMethods.reset(newFormValues || addTransactionFormDefaultValues)
   }
@@ -71,6 +72,7 @@ export const AddTransactionModal = ({
     const payload = {
       ...data,
       date: formatInputToISOString(data.date),
+      datePayed: formatInputToISOString(data.datePayed || data.date),
       amount: currency.unMaskMonetaryValue(data.amount),
     }
     if (selectedId) {

@@ -4,10 +4,10 @@ import { useTransactions } from '@/contexts'
 import { getChartData, getChartSections, getTabs, View } from './constants'
 
 export const Summary = () => {
-  const { transactionList, isLoading } = useTransactions()
+  const { transactionList, isLoading, dateParam } = useTransactions()
   const [currentView, setCurrentView] = useState<View>('month')
 
-  const chartData = getChartData(transactionList, currentView)
+  const chartData = getChartData(transactionList, currentView, dateParam)
   const chartSections = getChartSections(currentView)
 
   const tabs = getTabs(chartData)

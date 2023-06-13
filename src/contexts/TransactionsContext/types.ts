@@ -8,11 +8,14 @@ export type TransactionModel = {
   description: string
   category: string
   date: string
+  datePayed: string
   tags: string[]
   type: TransactionType
 }
 
-export type AddTransactionModel = Omit<TransactionModel, 'id'>
+export type AddTransactionModel = Omit<TransactionModel, 'id'> & {
+  datePayed?: string
+}
 
 export type TransactionsContextData = {
   isLoading: boolean
@@ -29,6 +32,7 @@ export type TransactionsContextData = {
   uploadTransactionList: (list: string) => void
   getAvailableYearList: () => Option[]
   getFilteredMostRepeatedTransactions: (text: string) => TransactionModel[]
+  dateParam: DateParam
 }
 
 export type TagModel = {
@@ -53,3 +57,5 @@ export type CategoriesFilterModel = {
   minAmount: number
   selectedCategories: string[]
 }
+
+export type DateParam = 'datePayed' | 'date'

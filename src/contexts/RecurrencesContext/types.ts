@@ -5,7 +5,10 @@ export type RecurrenceTransactionItem = {
   date: string
 }
 
-export type RecurrentTransaction = Omit<TransactionModel, 'date'> & {
+export type RecurrentTransaction = Omit<
+  TransactionModel,
+  'date' | 'datePayed'
+> & {
   installments: number | null
   startDate: string
   transactions: RecurrenceTransactionItem[]

@@ -1,5 +1,5 @@
 import { getYear } from 'date-fns'
-import { TransactionModel } from '@/contexts'
+import { DateParam, TransactionModel } from '@/contexts'
 import { getFormattedMonthAndYear, sortByDate } from '@/utils'
 import { TabsContent } from './components'
 
@@ -29,11 +29,15 @@ export const getTabs = (data: ChartData) => {
   ]
 }
 
-export const getChartData = (list: TransactionModel[], view: View) => {
+export const getChartData = (
+  list: TransactionModel[],
+  view: View,
+  dateParam: DateParam
+) => {
   return sortByDate(list, true).reduce(
     (acc: ChartData, item: TransactionModel) => {
       const { amount, type } = item
-      const date = new Date(item.date)
+      const date = new Date(item[dateParam])
 
       const name =
         view === 'year' ? String(getYear(date)) : getFormattedMonthAndYear(date)

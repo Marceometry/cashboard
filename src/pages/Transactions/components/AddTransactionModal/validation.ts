@@ -10,6 +10,7 @@ export const addTransactionFormSchema = z.object({
   amount: zodValidator.required,
   tags: zodValidator.array,
   date: zodValidator.date,
+  datePayed: zodValidator.date.nullable(),
   type: z.enum(['income', 'outcome']),
 })
 
@@ -24,6 +25,7 @@ export const addTransactionFormDefaultValues: AddTransactionFormInputs = {
   type: 'outcome',
   tags: [],
   date: formatDateToInput(new Date()),
+  datePayed: formatDateToInput(new Date()),
 }
 
 // Category modal form //

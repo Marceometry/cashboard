@@ -5,7 +5,7 @@ import { getColumns, getTransactionsColumns } from './constants'
 
 export const Tags = () => {
   const { deleteTag, transactionsByTag, removeTagFromTransaction } = useTags()
-  const { tagList, isLoading } = useTransactions()
+  const { tagList, isLoading, dateParam } = useTransactions()
   const [selectedTag, setSelectedTag] = useState('')
   const [isTransactionsModalOpen, setIsTransactionsModalOpen] = useState(false)
 
@@ -22,7 +22,8 @@ export const Tags = () => {
 
   const columns = getColumns(handleOpenTransactionsModal, deleteTag)
   const transactionsColumns = getTransactionsColumns(
-    handleRemoveTagFromTransaction
+    handleRemoveTagFromTransaction,
+    dateParam
   )
 
   return (

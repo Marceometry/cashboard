@@ -23,11 +23,11 @@ export const Home = () => {
   )
   const { user } = useAuth()
   const { recurrenceList } = useRecurrences()
-  const { transactionList, isLoading } = useTransactions()
+  const { transactionList, isLoading, dateParam } = useTransactions()
 
   const [monthlyIncomes, monthlyOutcomes, installmentsOutcomes] =
     getMonthSummary(recurrenceList)
-  const categories = generateCategories(transactionList, monthCount)
+  const categories = generateCategories(transactionList, monthCount, dateParam)
 
   useEffect(() => {
     if (

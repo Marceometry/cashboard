@@ -1,6 +1,6 @@
 import { Text } from '@chakra-ui/react'
 import { Button, ColumnProps, IconButton } from '@/components'
-import { TagModel, TransactionModel } from '@/contexts'
+import { DateParam, TagModel, TransactionModel } from '@/contexts'
 import { currency } from '@/utils'
 
 export const getColumns = (
@@ -55,7 +55,8 @@ export const getColumns = (
 ]
 
 export const getTransactionsColumns = (
-  removeTagFromTransaction: (id: string) => void
+  removeTagFromTransaction: (id: string) => void,
+  dateParam: DateParam
 ): ColumnProps<TransactionModel>[] => [
   {
     label: 'Valor',
@@ -72,9 +73,9 @@ export const getTransactionsColumns = (
   },
   {
     label: 'Data',
-    field: 'date',
-    customRender: ({ date }) => {
-      return new Date(date).toLocaleDateString()
+    field: dateParam,
+    customRender: (props) => {
+      return new Date(props[dateParam]).toLocaleDateString()
     },
   },
   {

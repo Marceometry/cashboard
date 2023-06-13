@@ -1,6 +1,6 @@
 import { Center, Text } from '@chakra-ui/react'
 import { ColumnProps, IconButton, TableButtons } from '@/components'
-import { TransactionModel } from '@/contexts'
+import { DateParam, TransactionModel } from '@/contexts'
 import { currency, sortByDate } from '@/utils'
 
 export const getButtons = (
@@ -38,7 +38,8 @@ export const getIncomeAndOutcome = (
 
 export const getColumns = (
   handleDeleteTransaction: (row: TransactionModel) => void,
-  handleEditTransaction: (id: string) => void
+  handleEditTransaction: (id: string) => void,
+  dateParam: DateParam
 ): ColumnProps<TransactionModel>[] => {
   const columns: ColumnProps<TransactionModel>[] = [
     {
@@ -60,9 +61,9 @@ export const getColumns = (
     },
     {
       label: 'Data',
-      field: 'date',
-      customRender: ({ date }) => {
-        return new Date(date).toLocaleDateString()
+      field: dateParam,
+      customRender: (props) => {
+        return new Date(props[dateParam]).toLocaleDateString()
       },
     },
     {
@@ -94,12 +95,15 @@ type ChartDataResponse = Array<{
   outcome: number
 }>
 
-export const generateChartData = (list: TransactionModel[]) => {
+export const generateChartData = (
+  list: TransactionModel[],
+  dateParam: DateParam
+) => {
   return sortByDate(list, true).reduce(
     (acc: ChartDataResponse, item: TransactionModel) => {
       const { amount, type } = item
       const isIncome = type === 'income'
-      const date = new Date(item.date)
+      const date = new Date(item[dateParam])
       const name = `${date.getDate()}/${date.getMonth() + 1}`
       const itemIndex = acc.findIndex((accItem) => accItem.name === name)
 

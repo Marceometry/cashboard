@@ -1,5 +1,5 @@
 import { differenceInCalendarMonths } from 'date-fns'
-import { RecurrentTransaction, TransactionModel } from '@/contexts'
+import { DateParam, RecurrentTransaction, TransactionModel } from '@/contexts'
 
 export const getMonthSummary = (
   recurrences: RecurrentTransaction[]
@@ -38,11 +38,12 @@ const monthsAgo = (quantity: number, date: string) => {
 
 export const generateCategories = (
   transactions: TransactionModel[],
-  monthCount: number
+  monthCount: number,
+  dateParam: DateParam
 ) => {
   const categories: Categories = transactions.reduce((acc: any[], item) => {
     const { category, amount, type } = item
-    if (type !== 'outcome' || !monthsAgo(monthCount, item.date)) {
+    if (type !== 'outcome' || !monthsAgo(monthCount, item[dateParam])) {
       return acc
     }
 

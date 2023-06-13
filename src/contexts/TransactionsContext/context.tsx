@@ -11,6 +11,7 @@ import { useApiCall, useFirebaseDatabase } from '@/hooks'
 import {
   AddTransactionModel,
   CategoryModel,
+  DateParam,
   TagModel,
   TransactionModel,
   TransactionsContextData,
@@ -35,11 +36,12 @@ export const TransactionsContext = createContext({} as TransactionsContextData)
 export function TransactionsContextProvider({
   children,
 }: TransactionsContextProviderProps) {
-  const { call, isLoading, setIsLoading } = useApiCall()
   const { user } = useAuth()
+  const { call, isLoading, setIsLoading } = useApiCall()
   const { onTransactionsValue, remoteAddTransaction, remoteRemoveTransaction } =
     useFirebaseDatabase()
 
+  const [dateParam, setDateParam] = useState<DateParam>('date')
   const [transactionList, setTransactionList] = useState<TransactionModel[]>([])
   const [mostRepeatedTransactions, setMostRepeatedTransactions] = useState<
     TransactionModel[]
@@ -97,7 +99,7 @@ export function TransactionsContextProvider({
     setTagList([])
   }
 
-  const getAvailableYearList = () => getYearList(transactionList)
+  const getAvailableYearList = () => getYearList(transactionList, dateParam)
 
   const getFilteredMostRepeatedTransactions = (text: string) =>
     filterMostRepeatedTransactions(text, mostRepeatedTransactions)
@@ -140,6 +142,7 @@ export function TransactionsContextProvider({
         uploadTransactionList,
         getAvailableYearList,
         getFilteredMostRepeatedTransactions,
+        dateParam,
       }}
     >
       {children}
