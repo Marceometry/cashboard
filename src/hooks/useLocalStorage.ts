@@ -5,6 +5,7 @@ type LocaStorageItem =
   | 'sidebar-default-open'
   | 'categories-average-outcome-filter'
   | 'categories-average-month-count-filter'
+  | 'date-param'
 
 export const useLocalStorage = () => {
   const get = (item: LocaStorageItem, defaultValue?: any) => {

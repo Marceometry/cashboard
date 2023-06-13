@@ -1,4 +1,5 @@
 import { addDays, isAfter, isBefore, isFuture, subDays } from 'date-fns'
+import { DateParam } from '@/contexts'
 import { currency, filterByMonth, filterByYear } from '@/utils'
 import { FilterTransactionsFormInputs } from './validation'
 
@@ -20,7 +21,8 @@ export const filterByCategory = (categories: string[], category: string) => {
 
 export const filterData = (
   data: any[],
-  filters: FilterTransactionsFormInputs
+  filters: FilterTransactionsFormInputs,
+  dateParam: DateParam
 ) => {
   const {
     startDate,
@@ -50,25 +52,25 @@ export const filterData = (
       if (!included) return
     }
     if (!showFutureTransactions) {
-      included = !isFuture(new Date(item.date))
+      included = !isFuture(new Date(item[dateParam]))
       if (!included) return
     }
     if (startDate) {
       const date = subDays(new Date(`${startDate} 00:00:00`), 1)
-      included = isAfter(new Date(item.date), date)
+      included = isAfter(new Date(item[dateParam]), date)
       if (!included) return
     }
     if (endDate) {
       const date = addDays(new Date(`${endDate} 00:00:00`), 1)
-      included = isBefore(new Date(item.date), date)
+      included = isBefore(new Date(item[dateParam]), date)
       if (!included) return
     }
     if (selectedMonth) {
-      included = filterByMonth(item.date, Number(selectedMonth))
+      included = filterByMonth(item[dateParam], Number(selectedMonth))
       if (!included) return
     }
     if (selectedYear) {
-      included = filterByYear(item.date, Number(selectedYear))
+      included = filterByYear(item[dateParam], Number(selectedYear))
       if (!included) return
     }
     if (selectedCategories.length) {

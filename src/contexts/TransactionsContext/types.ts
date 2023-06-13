@@ -37,6 +37,7 @@ export type TransactionsContextData = {
   getAvailableYearList: () => Option[]
   getFilteredMostRepeatedTransactions: (text: string) => TransactionModel[]
   dateParam: DateParam
+  setDateParam: (param: DateParam) => void
 }
 
 export type TagModel = {

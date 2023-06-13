@@ -7,7 +7,7 @@ import {
 } from 'react'
 import { v4 as uuid } from 'uuid'
 import { useAuth } from '@/contexts'
-import { useApiCall, useFirebaseDatabase } from '@/hooks'
+import { useApiCall, useFirebaseDatabase, useLocalStorage } from '@/hooks'
 import { Optional } from '@/utils'
 import {
   AddTransactionModel,
@@ -41,8 +41,11 @@ export function TransactionsContextProvider({
   const { call, isLoading, setIsLoading } = useApiCall()
   const { onTransactionsValue, remoteAddTransaction, remoteRemoveTransaction } =
     useFirebaseDatabase()
+  const storage = useLocalStorage()
 
-  const [dateParam, setDateParam] = useState<DateParam>('date')
+  const [dateParam, setDateParam] = useState<DateParam>(
+    storage.get('date-param') || 'date'
+  )
   const [transactionList, setTransactionList] = useState<TransactionModel[]>([])
   const [mostRepeatedTransactions, setMostRepeatedTransactions] = useState<
     TransactionModel[]
@@ -106,6 +109,10 @@ export function TransactionsContextProvider({
     filterMostRepeatedTransactions(text, mostRepeatedTransactions)
 
   useEffect(() => {
+    storage.set('date-param', dateParam)
+  }, [dateParam])
+
+  useEffect(() => {
     const categories = generateCategories(transactionList)
     setCategoryList(categories)
     const tags = generateTags(transactionList)
@@ -144,6 +151,7 @@ export function TransactionsContextProvider({
         getAvailableYearList,
         getFilteredMostRepeatedTransactions,
         dateParam,
+        setDateParam,
       }}
     >
       {children}

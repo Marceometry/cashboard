@@ -2,7 +2,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { Box, Flex } from '@chakra-ui/react'
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { IconButton } from '@/components'
-import { useCopy, useFileHandle } from '@/hooks'
+import { useCopy, useFileDownload } from '@/hooks'
 
 type Props = {
   codeString?: string
@@ -13,7 +13,7 @@ export const CodeBlock = ({
   codeString = '',
   formattedCodeString = '{}',
 }: Props) => {
-  const { downloadFile } = useFileHandle()
+  const downloadFile = useFileDownload()
   const copy = useCopy()
 
   const handleCopy = () => copy(formattedCodeString)

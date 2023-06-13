@@ -5,5 +5,5 @@ import {
 } from '@chakra-ui/react'
 
 export const Button: ComponentWithAs<'button', ButtonProps> = (props) => {
-  return <ChakraButton whiteSpace='break-spaces' {...props} />
+  return <ChakraButton whiteSpace='break-spaces' lineHeight='100%' {...props} />
 }

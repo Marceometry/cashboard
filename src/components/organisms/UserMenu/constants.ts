@@ -10,6 +10,7 @@ export const CODE_EXAMPLE = `[
     "id": "${uuid()}", // string | null
     "type": "outcome", // 'income' | 'outcome'
     "date": "${getFormattedDate()}",
+    "datePayed": "${getFormattedDate()}",
     "category": "Categoria Exemplo",
     "description": "Exemplo",
     "amount": 15
@@ -22,6 +23,7 @@ export const FORMATTED_CODE_EXAMPLE = `[
     "id": null,
     "type": "outcome",
     "date": "${getFormattedDate()}",
+    "datePayed": "${getFormattedDate()}",
     "category": "Categoria Exemplo",
     "description": "Exemplo",
     "amount": 15

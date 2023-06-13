@@ -37,10 +37,10 @@ export const Transactions = () => {
     0, 0,
   ])
 
-  const tableData = useMemo(() => {
-    const filteredData = filterData(transactionList, tableFilters)
-    return filteredData
-  }, [transactionList, tableFilters])
+  const tableData = useMemo(
+    () => filterData(transactionList, tableFilters, dateParam),
+    [transactionList, tableFilters, dateParam]
+  )
 
   const handleSetFilters = (filters: FilterTransactionsFormInputs) => {
     setTableFilters(filters)

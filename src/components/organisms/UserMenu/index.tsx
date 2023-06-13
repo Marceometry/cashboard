@@ -1,39 +1,30 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
 import {
   Avatar,
   Button as ChakraButton,
-  Code,
-  Flex,
   Menu,
   MenuButton,
   MenuDivider,
   MenuItem,
   MenuList,
-  Text,
   useBreakpointValue,
   useColorMode,
 } from '@chakra-ui/react'
-import { Download, FileArrowDown, SignOut } from 'phosphor-react'
-import { Button, CodeBlock, Modal, ThemeIcon } from '@/components'
+import { Download, FileArrowDown, Gear, SignOut } from 'phosphor-react'
+import { FileImportModal, SettingsModal, ThemeIcon } from '@/components'
 import { useAuth, useTransactions } from '@/contexts'
-import { useFileHandle } from '@/hooks'
+import { useFileDownload } from '@/hooks'
 import { sortByDate } from '@/utils'
-import { CODE_EXAMPLE, FORMATTED_CODE_EXAMPLE } from './constants'
 
 export const UserMenu = () => {
   const showName = useBreakpointValue({ base: false, sm: true })
   const { toggleColorMode } = useColorMode()
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
   const [isImportFileModalOpen, setIsImportFileModalOpen] = useState(false)
-  const { importFile, fileContent, downloadFile } = useFileHandle()
-  const { transactionList, uploadTransactionList } = useTransactions()
+  const downloadFile = useFileDownload()
+  const { transactionList } = useTransactions()
   const { user, signOut } = useAuth()
-
-  useEffect(() => {
-    if (!fileContent) return
-    closeImportFileModal()
-    uploadTransactionList(fileContent)
-  }, [fileContent])
 
   if (!user) return null
 
@@ -68,12 +59,21 @@ export const UserMenu = () => {
               <MenuItem icon={<ThemeIcon />} onClick={toggleColorMode}>
                 Alterar Tema
               </MenuItem>
+              <MenuItem
+                icon={<Gear />}
+                onClick={() => setIsSettingsModalOpen(true)}
+              >
+                Configurações
+              </MenuItem>
+
+              <MenuDivider />
               <MenuItem icon={<Download />} onClick={localBackup}>
                 Backup Local
               </MenuItem>
               <MenuItem icon={<FileArrowDown />} onClick={openImportFileModal}>
                 Importar arquivo
               </MenuItem>
+
               <MenuDivider />
               <MenuItem icon={<SignOut />} onClick={signOut}>
                 Sair
@@ -82,30 +82,16 @@ export const UserMenu = () => {
           </>
         )}
       </Menu>
-      <Modal
-        title='Importar Arquivo'
+
+      <FileImportModal
         isOpen={isImportFileModalOpen}
         onClose={closeImportFileModal}
-        modalFooter={
-          <Flex gap='4' w='full'>
-            <Button w='full' onClick={importFile}>
-              Importar
-            </Button>
-            <Button w='full' onClick={closeImportFileModal} variant='outline'>
-              Cancelar
-            </Button>
-          </Flex>
-        }
-      >
-        <Text mb='6'>
-          Para adicionar várias transações a partir de um arquivo local, você
-          deve importar um arquivo <Code>.json</Code> com o seguinte formato:
-        </Text>
-        <CodeBlock
-          codeString={CODE_EXAMPLE}
-          formattedCodeString={FORMATTED_CODE_EXAMPLE}
-        />
-      </Modal>
+      />
+
+      <SettingsModal
+        isOpen={isSettingsModalOpen}
+        setIsOpen={() => setIsSettingsModalOpen(false)}
+      />
     </>
   )
 }
