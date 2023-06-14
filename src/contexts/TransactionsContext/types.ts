@@ -1,23 +1,12 @@
 import { Option } from '@/components'
 import { Optional } from '@/utils'
-
-export type TransactionType = 'income' | 'outcome'
-
-export type TransactionModel = {
-  id: string
-  amount: number
-  description: string
-  category: string
-  date: string
-  datePayed: string
-  tags: string[]
-  type: TransactionType
-}
-
-export type AddTransactionModel = Omit<
-  Optional<TransactionModel, 'datePayed'>,
-  'id'
->
+import {
+  AddTransactionModel,
+  CategoryModel,
+  DateParam,
+  TagModel,
+  TransactionModel,
+} from '@/types'
 
 export type TransactionsContextData = {
   isLoading: boolean
@@ -39,28 +28,3 @@ export type TransactionsContextData = {
   dateParam: DateParam
   setDateParam: (param: DateParam) => void
 }
-
-export type TagModel = {
-  name: string
-  income: number
-  outcome: number
-  balance: number
-  colorScheme?: string
-}
-
-export type CategoryModel = {
-  name: string
-  income: number
-  outcome: number
-  balance: number
-}
-
-export type CategoriesFilterModel = {
-  month: number
-  year: number
-  maxAmount: number
-  minAmount: number
-  selectedCategories: string[]
-}
-
-export type DateParam = 'datePayed' | 'date'

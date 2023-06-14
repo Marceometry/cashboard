@@ -1,26 +1,10 @@
-import { TransactionModel } from '@/contexts'
-
-export type RecurrenceTransactionItem = {
-  id: string
-  date: string
-}
-
-export type RecurrentTransaction = Omit<
-  TransactionModel,
-  'date' | 'datePayed'
-> & {
-  installments: number | null
-  startDate: string
-  transactions: RecurrenceTransactionItem[]
-  isActive?: boolean
-}
-
-export type AddRecurrentTransaction = Omit<
+import {
+  AddRecurrentTransaction,
+  RecurrenceTransactionItem,
   RecurrentTransaction,
-  'id' | 'transactions'
->
-
-export type UpdateRecurrentTransaction = Partial<RecurrentTransaction>
+  RemoveRecurrenceArgs,
+  UpdateRecurrentTransaction,
+} from '@/types'
 
 export type RecurrencesContextData = {
   recurrenceList: RecurrentTransaction[]
@@ -33,9 +17,4 @@ export type UpdateRecurrenceTransactionListArgs = {
   id: string
   transactions: RecurrenceTransactionItem[]
   isActive?: boolean
-}
-
-export type RemoveRecurrenceArgs = {
-  id: string
-  deleteAllTransactions: boolean
 }
