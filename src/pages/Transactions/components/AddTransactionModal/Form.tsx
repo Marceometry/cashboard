@@ -29,14 +29,13 @@ export const Form = ({
   const { categoryList, tagList, getFilteredMostRepeatedTransactions } =
     useTransactions()
   const { watch, setValue } = useFormContext<AddTransactionFormInputs>()
-
-  const description = !isEditingTransaction ? watch('description') : ''
   const descriptionDatalist = !isEditingTransaction
-    ? getFilteredMostRepeatedTransactions(description)
+    ? getFilteredMostRepeatedTransactions(watch('description'))
     : []
 
   useEffect(() => {
     if (isEditingTransaction) return
+    const description = watch('description')
 
     const item = descriptionDatalist.find(
       (item) => item.description === description
@@ -46,7 +45,7 @@ export const Form = ({
     setValue('category', item.category)
     setValue('amount', currency.maskMonetaryValue(item.amount))
     setValue('type', item.type)
-  }, [description, descriptionDatalist, isEditingTransaction])
+  }, [watch('description')])
 
   return (
     <>

@@ -66,6 +66,7 @@ export function TransactionsContextProvider({
     async (payload: Optional<TransactionModel, 'datePayed'>) => {
       const transaction = formatTransaction(payload)
       await remoteAddTransaction(transaction)
+      return transaction
     },
     { toastText: 'Transação atualizada com sucesso!' }
   )

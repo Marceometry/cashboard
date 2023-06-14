@@ -30,7 +30,7 @@ export type TransactionsContextData = {
   ) => Promise<TransactionModel>
   updateTransaction: (
     transaction: Optional<TransactionModel, 'datePayed'>
-  ) => void
+  ) => Promise<TransactionModel>
   removeTransaction: (transaction: TransactionModel) => void
   updateTransactionList: (list: TransactionModel[]) => void
   uploadTransactionList: (list: string) => void

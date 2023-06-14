@@ -65,6 +65,7 @@ export const AddTransactionModal = ({
 
   useEffect(() => {
     formMethods.reset(addTransactionFormDefaultValues)
+    setDifferentPaymentDate(false)
   }, [isOpen])
 
   useEffect(() => {
@@ -101,8 +102,9 @@ export const AddTransactionModal = ({
       formMethods.setFocus('description')
       formMethods.reset()
       formMethods.setValue('date', data.date)
-      formMethods.setValue('type', data.type)
+      formMethods.setValue('datePayed', data.datePayed)
       formMethods.setValue('category', data.category)
+      formMethods.setValue('type', data.type)
     } else {
       onClose()
     }
