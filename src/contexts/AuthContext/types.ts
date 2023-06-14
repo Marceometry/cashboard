@@ -15,6 +15,9 @@ export type User = {
 export type AuthContextData = {
   user: User | null
   isLoading: boolean
+  isDeletingAccount: boolean
   signIn: () => Promise<void>
   signOut: () => Promise<void>
+  deleteAccount: () => void
+  updateUser: (name: string) => void
 }

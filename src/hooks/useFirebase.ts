@@ -1,9 +1,12 @@
 import {
+  deleteUser,
   getAuth,
   GoogleAuthProvider,
   onAuthStateChanged,
+  reauthenticateWithPopup,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from 'firebase/auth'
 import { getDatabase, onValue, ref, remove, set } from 'firebase/database'
 import {
@@ -24,6 +27,16 @@ export const useFirebaseAuth = () => {
     return signInWithPopup(auth, authProvider)
   }
 
+  const reauthenticate = async () => {
+    if (!auth.currentUser) return
+    const authProvider = new GoogleAuthProvider()
+    const response = await reauthenticateWithPopup(
+      auth.currentUser,
+      authProvider
+    )
+    return response.user
+  }
+
   const firebaseSignOut = () => {
     return signOut(auth)
   }
@@ -32,10 +45,35 @@ export const useFirebaseAuth = () => {
     return onAuthStateChanged(auth, callback)
   }
 
+  const updateCurrentUser = async (name: string) => {
+    if (!auth.currentUser) return
+    const data = { displayName: name }
+    await updateProfile(auth.currentUser, data)
+  }
+
+  const deleteCurrentAccount = async () => {
+    const user = auth.currentUser
+    if (!user) return
+    try {
+      await deleteUser(user)
+      return user
+    } catch (error: any) {
+      const isAuthError = error?.message?.includes('auth/requires-recent-login')
+      if (!auth.currentUser || !isAuthError) return
+
+      const user = await reauthenticate()
+      if (!user) return null
+      await deleteUser(user)
+      return user
+    }
+  }
+
   return {
     signInWithGoogle,
     firebaseSignOut,
     onAuthChange,
+    updateCurrentUser,
+    deleteCurrentAccount,
   }
 }
 

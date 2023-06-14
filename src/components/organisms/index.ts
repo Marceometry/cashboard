@@ -1,3 +1,4 @@
+export * from './DeleteAccountModal'
 export * from './FileImportModal'
 export * from './Header'
 export * from './MobileSidebar'

@@ -90,7 +90,8 @@ export const UserMenu = () => {
 
       <SettingsModal
         isOpen={isSettingsModalOpen}
-        setIsOpen={() => setIsSettingsModalOpen(false)}
+        onClose={() => setIsSettingsModalOpen(false)}
+        openSettingsModal={() => setIsSettingsModalOpen(true)}
       />
     </>
   )

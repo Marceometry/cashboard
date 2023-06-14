@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Center, Flex, Heading, Text } from '@chakra-ui/react'
+import { Badge, Center, Flex, Heading, Text } from '@chakra-ui/react'
 import { EmptyData, IconButton, Loading, MainTemplate } from '@/components'
 import { useAuth, useRecurrences, useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
@@ -58,13 +58,15 @@ export const Home = () => {
             <Text fontSize='1.5rem'>
               Vá até a aba{' '}
               <Link to='/transactions'>
-                <Text
+                <Badge
                   display='inline-block'
                   color='green.400'
+                  py='1'
+                  px='2'
                   _hover={{ textDecoration: 'underline' }}
                 >
                   Transações
-                </Text>
+                </Badge>
               </Link>{' '}
               para cadastrar sua primeira transação.
             </Text>

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Avatar,
   Box,
@@ -7,51 +8,79 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react'
-import { Modal } from '@/components'
+import { Button, DeleteAccountModal, Editable, Modal } from '@/components'
 import { useAuth, useTransactions } from '@/contexts'
 
 type Props = {
   isOpen: boolean
-  setIsOpen: () => void
+  onClose: () => void
+  openSettingsModal: () => void
 }
 
-export const SettingsModal = ({ isOpen, setIsOpen }: Props) => {
+export const SettingsModal = ({
+  isOpen,
+  onClose,
+  openSettingsModal,
+}: Props) => {
+  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
+    useState(false)
   const { dateParam, setDateParam } = useTransactions()
-  const { user } = useAuth()
+  const { user, updateUser } = useAuth()
+
+  const handleOpenDeleteAccountModal = () => {
+    setIsDeleteAccountModalOpen(true)
+    onClose()
+  }
 
   return (
-    <Modal isOpen={isOpen} onClose={setIsOpen} title='Configurações'>
-      {!!user && (
-        <Flex
-          justifyContent='space-between'
-          alignItems='flex-end'
-          flexWrap='wrap'
-          mb='6'
-        >
-          <Flex alignItems='center' gap='4'>
-            <Avatar size='lg' name={user.name} src={user.photoUrl} />
+    <>
+      <Modal isOpen={isOpen} onClose={onClose} title='Configurações'>
+        {!!user && (
+          <Flex flexDir='column' justifyContent='space-between' gap='4' mb='6'>
+            <Flex alignItems='center' gap='4'>
+              <Avatar size='xl' name={user.name} src={user.photoUrl} />
 
-            <Flex flex='1' flexDir='column' justifyContent='space-between'>
-              <Text fontWeight='bold' fontSize='2xl'>
-                {user.name}
-              </Text>
+              <Flex flex='1' flexDir='column' justifyContent='space-between'>
+                <Editable defaultValue={user.name} onSubmit={updateUser} />
 
-              <Text fontSize='sm'>Conectado com sua conta Google</Text>
+                <Text fontSize='sm' mt='1' mb='2'>
+                  Conectado com sua conta Google
+                </Text>
+
+                <Box>
+                  <Button
+                    size='xs'
+                    variant='outline'
+                    colorScheme='red'
+                    onClick={handleOpenDeleteAccountModal}
+                  >
+                    Excluir minha conta
+                  </Button>
+                </Box>
+              </Flex>
             </Flex>
           </Flex>
-        </Flex>
-      )}
+        )}
 
-      <Box>
-        <Text mb='2'>Classificar e ordenar transações por:</Text>
+        <Box>
+          <Text mb='2'>Classificar e ordenar transações por:</Text>
 
-        <RadioGroup value={dateParam} onChange={setDateParam}>
-          <Stack direction='row'>
-            <Radio value='date'>Data da compra</Radio>
-            <Radio value='datePayed'>Data do pagamento</Radio>
-          </Stack>
-        </RadioGroup>
-      </Box>
-    </Modal>
+          <RadioGroup value={dateParam} onChange={setDateParam}>
+            <Stack direction='row'>
+              <Radio value='date'>Data da compra</Radio>
+              <Radio value='datePayed'>Data do pagamento</Radio>
+            </Stack>
+          </RadioGroup>
+        </Box>
+      </Modal>
+
+      <DeleteAccountModal
+        isOpen={isDeleteAccountModalOpen}
+        onClose={() => {
+          setIsDeleteAccountModalOpen(false)
+          openSettingsModal()
+        }}
+      />
+    </>
   )
 }

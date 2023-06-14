@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { useApiCall, useFirebaseAuth, useToast } from '@/hooks'
+import { useApiCall, useFirebaseAuth } from '@/hooks'
 import { AuthContextData, GoogleUser, User } from './types'
 
 export type AuthContextProviderProps = {
@@ -15,24 +15,58 @@ export type AuthContextProviderProps = {
 export const AuthContext = createContext({} as AuthContextData)
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
-  const toast = useToast()
-  const { call, isLoading, setIsLoading } = useApiCall()
-  const { signInWithGoogle, firebaseSignOut, onAuthChange } = useFirebaseAuth()
+  const authApi = useApiCall()
+  const updateUserApi = useApiCall(false)
+  const deleteAccountApi = useApiCall(false)
+  const {
+    updateCurrentUser,
+    signInWithGoogle,
+    firebaseSignOut,
+    onAuthChange,
+    deleteCurrentAccount,
+  } = useFirebaseAuth()
   const [user, setUser] = useState<User | null>(null)
 
-  const signIn = call(
+  const signIn = authApi.call(
     async () => {
-      const closeToast = toast('Faça login com sua conta Google', 'info')
       const { user } = await signInWithGoogle()
-      closeToast()
       return user.displayName
     },
-    { toastText: (name) => `Bem vindo(a), ${name}!` }
+    {
+      startInfoToast: 'Faça login com sua conta Google',
+      toastText: (name) => `Bem vindo(a), ${name}!`,
+    }
   )
 
-  const signOut = call(async () => await firebaseSignOut(), {
+  const signOut = authApi.call(async () => await firebaseSignOut(), {
     toastText: 'Você foi desconectado com sucesso!',
   })
+
+  const updateUser = updateUserApi.call(
+    async (name: string) => {
+      if (!user) return
+      await updateCurrentUser(name)
+      setUser({ ...user, name })
+      return name
+    },
+    {
+      toastText: (name) => `Seu nome foi alterado para ${name}!`,
+      toastError: 'Algo deu errado ao alterar seu nome',
+    }
+  )
+
+  const deleteAccount = deleteAccountApi.call(
+    async () => {
+      const user = await deleteCurrentAccount()
+      if (!user?.uid) throw new Error()
+    },
+    {
+      toastText: 'Sua conta foi excluída com sucesso',
+      toastError: 'Algo deu errado ao excluir sua conta',
+      toastSuccessAsInfo: true,
+      toastDuration: 5000,
+    }
+  )
 
   const handleAuthChange = (currentUser: GoogleUser) => {
     const userInfo = currentUser
@@ -44,7 +78,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         }
       : null
     setUser(userInfo)
-    setIsLoading(false)
+    authApi.setIsLoading(false)
   }
 
   useEffect(() => {
@@ -55,7 +89,17 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ signIn, signOut, user, isLoading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading: authApi.isLoading,
+        isDeletingAccount: deleteAccountApi.isLoading,
+        signIn,
+        signOut,
+        updateUser,
+        deleteAccount,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
