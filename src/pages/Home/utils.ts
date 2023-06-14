@@ -1,4 +1,4 @@
-import { differenceInCalendarMonths } from 'date-fns'
+import { differenceInCalendarMonths, isThisMonth } from 'date-fns'
 import { DateParam, RecurrentTransaction, TransactionModel } from '@/contexts'
 
 export const getMonthSummary = (
@@ -33,7 +33,7 @@ type Categories = Array<{
 
 const monthsAgo = (quantity: number, date: string) => {
   const difference = differenceInCalendarMonths(new Date(), new Date(date))
-  return difference <= quantity && difference > 0
+  return difference <= quantity
 }
 
 export const generateCategories = (
@@ -43,9 +43,8 @@ export const generateCategories = (
 ) => {
   const categories: Categories = transactions.reduce((acc: any[], item) => {
     const { category, amount, type } = item
-    if (type !== 'outcome' || !monthsAgo(monthCount, item[dateParam])) {
-      return acc
-    }
+    const isWithinDate = !monthsAgo(monthCount, item[dateParam])
+    if (type !== 'outcome' || isWithinDate) return acc
 
     const currentCategory = acc.find((c) => c.name === category)
     if (!currentCategory) {

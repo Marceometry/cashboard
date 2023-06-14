@@ -79,21 +79,27 @@ export const Home = () => {
                   <Heading size='lg'>Resumo mensal</Heading>
                 </Center>
                 <Flex w='full' gap='8' flexWrap='wrap'>
-                  <Stat
-                    type='income'
-                    label='Ganhos mensais'
-                    value={monthlyIncomes}
-                  />
-                  <Stat
-                    type='outcome'
-                    label='Gastos mensais fixos'
-                    value={monthlyOutcomes}
-                  />
-                  <Stat
-                    type='outcome'
-                    label='Parcelas ativas'
-                    value={installmentsOutcomes}
-                  />
+                  {!!monthlyIncomes && (
+                    <Stat
+                      type='income'
+                      label='Ganhos mensais'
+                      value={monthlyIncomes}
+                    />
+                  )}
+                  {!!monthlyOutcomes && (
+                    <Stat
+                      type='outcome'
+                      label='Gastos mensais fixos'
+                      value={monthlyOutcomes}
+                    />
+                  )}
+                  {!!installmentsOutcomes && (
+                    <Stat
+                      type='outcome'
+                      label='Parcelas ativas'
+                      value={installmentsOutcomes}
+                    />
+                  )}
                 </Flex>
               </Center>
             )}
