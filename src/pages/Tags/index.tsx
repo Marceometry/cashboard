@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { MainTemplate, Modal, Table } from '@/components'
-import { TransactionModel, useTags, useTransactions } from '@/contexts'
+import { useTags, useTransactions } from '@/contexts'
+import { TransactionModel } from '@/types'
 import { getColumns, getTransactionsColumns } from './constants'
 
 export const Tags = () => {

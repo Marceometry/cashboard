@@ -1,12 +1,8 @@
 import { useState } from 'react'
 import { MainTemplate, Table } from '@/components'
-import {
-  CategoriesFilterModel,
-  TransactionType,
-  useCategories,
-  useTransactions,
-} from '@/contexts'
+import { useCategories, useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
+import { CategoriesFilterModel, TransactionType } from '@/types'
 import { filterCategoriesFormDefaultValues, ModalFilters } from './components'
 import {
   generateData,

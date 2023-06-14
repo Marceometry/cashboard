@@ -1,6 +1,6 @@
 import { Center, Text } from '@chakra-ui/react'
 import { ColumnProps, IconButton, Switch } from '@/components'
-import { RecurrentTransaction } from '@/contexts'
+import { PaymentTypes, RecurrentTransaction } from '@/types'
 import { currency } from '@/utils'
 
 export const getButtons = (handleRecurrenceModal: () => void) => ({
@@ -30,6 +30,11 @@ export const getColumns = (
   {
     label: 'Categoria',
     field: 'category',
+  },
+  {
+    label: 'Pagamento',
+    field: 'paymentType',
+    customRender: ({ paymentType }) => PaymentTypes[paymentType],
   },
   {
     label: 'Data de início',

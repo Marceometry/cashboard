@@ -1,16 +1,15 @@
+import { generateCategories, useTransactions } from '@/contexts'
+import {
+  CategoriesFilterModel,
+  TransactionModel,
+  TransactionType,
+} from '@/types'
 import {
   filterByMonth,
   filterByYear,
   getFormattedMonthAndYear,
   sortByDate,
 } from '@/utils'
-import { useTransactions } from '../context'
-import {
-  CategoriesFilterModel,
-  TransactionModel,
-  TransactionType,
-} from '../types'
-import { generateCategories } from '../utils'
 
 export const useCategories = () => {
   const { transactionList, categoryList, dateParam } = useTransactions()

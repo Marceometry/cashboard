@@ -9,12 +9,12 @@ import {
   updateProfile,
 } from 'firebase/auth'
 import { getDatabase, onValue, ref, remove, set } from 'firebase/database'
+import { useAuth } from '@/contexts'
 import {
   AddTransactionModel,
   RecurrentTransaction,
   TransactionModel,
-  useAuth,
-} from '@/contexts'
+} from '@/types'
 import { firebaseApp } from '@/services'
 
 export type FirebaseDataSnapshot<T> = { [key: string]: T }

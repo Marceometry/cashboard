@@ -8,15 +8,15 @@ import {
 import { v4 as uuid } from 'uuid'
 import { useAuth } from '@/contexts'
 import { useApiCall, useFirebaseDatabase, useLocalStorage } from '@/hooks'
-import { Optional } from '@/utils'
 import {
   AddTransactionModel,
   CategoryModel,
   DateParam,
   TagModel,
   TransactionModel,
-  TransactionsContextData,
-} from './types'
+} from '@/types'
+import { Optional } from '@/utils'
+import { TransactionsContextData } from './types'
 import {
   filterMostRepeatedTransactions,
   firebaseDataSnapshotToTransactionList,

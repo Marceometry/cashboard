@@ -16,8 +16,9 @@ import {
   Select,
 } from '@/components'
 import { MONTH_LIST } from '@/constants'
-import { CategoriesFilterModel, useTransactions } from '@/contexts'
+import { useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
+import { CategoriesFilterModel } from '@/types'
 import { currency, sortAlphabetically } from '@/utils'
 import {
   filterCategoriesFormDefaultValues,

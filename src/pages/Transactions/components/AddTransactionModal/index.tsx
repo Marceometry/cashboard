@@ -105,6 +105,7 @@ export const AddTransactionModal = ({
       formMethods.setValue('datePayed', data.datePayed)
       formMethods.setValue('category', data.category)
       formMethods.setValue('type', data.type)
+      formMethods.setValue('paymentType', data.paymentType)
     } else {
       onClose()
     }

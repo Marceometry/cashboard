@@ -1,11 +1,7 @@
 import { useState } from 'react'
 import { MainTemplate, Table } from '@/components'
-import {
-  RecurrentTransaction,
-  useDialog,
-  useRecurrences,
-  useTransactions,
-} from '@/contexts'
+import { useDialog, useRecurrences, useTransactions } from '@/contexts'
+import { RecurrentTransaction } from '@/types'
 import { currency } from '@/utils'
 import { AddRecurrenceModal } from './components'
 import { getButtons, getColumns } from './constants'

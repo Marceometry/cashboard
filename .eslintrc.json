@@ -49,6 +49,7 @@
           { "group": "internal", "pattern": "@/contexts" },
           { "group": "internal", "pattern": "@/hooks" },
           { "group": "internal", "pattern": "@/pages" },
+          { "group": "internal", "pattern": "@/types" },
           { "group": "internal", "pattern": "@/utils" }
         ],
         "pathGroupsExcludedImportTypes": ["internal"],

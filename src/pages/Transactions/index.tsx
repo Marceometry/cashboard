@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react'
 import { MainTemplate, Table } from '@/components'
-import { TransactionModel, useDialog, useTransactions } from '@/contexts'
+import { useDialog, useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
+import { TransactionModel } from '@/types'
 import { currency, sortByDate } from '@/utils'
 import { AddTransactionModal, ModalFilters, TableCaption } from './components'
 import {

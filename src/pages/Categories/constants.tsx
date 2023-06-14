@@ -1,6 +1,6 @@
 import { ChartProps, ColumnProps, TableButtons } from '@/components'
 import { CHART_COLORS } from '@/constants'
-import { CategoryModel, TransactionType } from '@/contexts'
+import { CategoryModel, TransactionType } from '@/types'
 import { currency } from '@/utils'
 import { Caption, CaptionProps } from './components'
 import { ChartType, DataModel, Response } from './types'

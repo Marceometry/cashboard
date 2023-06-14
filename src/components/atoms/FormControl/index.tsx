@@ -25,12 +25,17 @@ export const FormControl = ({
   required,
   helperText,
   error,
+  isDisabled,
 }: Props) => {
   return (
     <ChakraFormControl isInvalid={!!error}>
       {label && (
         <Flex justifyContent='space-between'>
-          <FormLabel htmlFor={name}>
+          <FormLabel
+            htmlFor={name}
+            opacity={isDisabled ? 0.4 : 1}
+            cursor={isDisabled ? 'not-allowed' : 'default'}
+          >
             {label}
             {required ? '*' : ''}
           </FormLabel>

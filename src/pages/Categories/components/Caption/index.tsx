@@ -1,5 +1,5 @@
 import { Radio, RadioGroup, Stack, Stat, StatArrow } from '@chakra-ui/react'
-import { TransactionType } from '@/contexts'
+import { TransactionType } from '@/types'
 
 export type CaptionProps = {
   currentType: TransactionType

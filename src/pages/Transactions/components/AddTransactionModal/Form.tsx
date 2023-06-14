@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { Input, MultiSelect, Radio } from '@/components'
 import { useTransactions } from '@/contexts'
+import { paymentTypes } from '@/types'
 import { currency } from '@/utils'
 import { AddTransactionFormInputs } from './validation'
 
@@ -45,6 +46,7 @@ export const Form = ({
     setValue('category', item.category)
     setValue('amount', currency.maskMonetaryValue(item.amount))
     setValue('type', item.type)
+    setValue('paymentType', item.paymentType)
   }, [watch('description')])
 
   return (
@@ -93,19 +95,20 @@ export const Form = ({
               </Checkbox>
             }
           />
-          {differentPaymentDate && (
-            <Input
-              type='date'
-              name='datePayed'
-              label='Data do Pagamento'
-              containerProps={{ mt: '2' }}
-            />
-          )}
+
+          <Input
+            type='date'
+            name='datePayed'
+            label='Data do Pagamento'
+            containerProps={{ mt: '2' }}
+            isDisabled={!differentPaymentDate}
+          />
         </GridItem>
         <GridItem>
           <Input
             label='Categoria'
             name='category'
+            mb='4'
             rightIcon={
               categoryList.length
                 ? {
@@ -115,6 +118,19 @@ export const Form = ({
                   }
                 : undefined
             }
+          />
+
+          <Radio
+            columns={3}
+            rowGap={3}
+            columnGap={2}
+            name='paymentType'
+            label='Método de pagamento'
+            required
+            options={paymentTypes.map(([value, label]) => ({
+              value,
+              label,
+            }))}
           />
         </GridItem>
       </Grid>

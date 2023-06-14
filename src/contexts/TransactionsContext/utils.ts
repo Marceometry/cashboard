@@ -1,9 +1,15 @@
 import { isValid } from 'date-fns'
 import { v4 as uuid, validate } from 'uuid'
-import { CategoryModel, TagModel } from '@/contexts'
 import { FirebaseDataSnapshot } from '@/hooks'
+import {
+  AddTransactionModel,
+  CategoryModel,
+  DateParam,
+  PaymentTypes,
+  TagModel,
+  TransactionModel,
+} from '@/types'
 import { Optional, sortByDate } from '@/utils'
-import { AddTransactionModel, DateParam, TransactionModel } from './types'
 
 const error = () => {
   throw new Error()
@@ -17,6 +23,7 @@ export const formatTransaction = (
   return {
     id: payload.id,
     type: payload.type,
+    paymentType: payload.paymentType,
     description: payload.description,
     amount: payload.amount,
     category: payload.category || 'Outros',
@@ -34,6 +41,7 @@ export const isTransactionInvalid = (
     if (!item.description) error()
     if (typeof item.category !== 'string') error()
     if (item.type !== 'income' && item.type !== 'outcome') error()
+    if (!PaymentTypes[item.paymentType]) error()
     if (!isValid(new Date(item.date))) error()
     if (!isValid(new Date(item.datePayed || item.date))) error()
     if (isNaN(item.amount)) error()

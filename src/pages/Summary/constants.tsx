@@ -1,5 +1,5 @@
 import { getYear } from 'date-fns'
-import { DateParam, TransactionModel } from '@/contexts'
+import { DateParam, TransactionModel } from '@/types'
 import { getFormattedMonthAndYear, sortByDate } from '@/utils'
 import { TabsContent } from './components'
 

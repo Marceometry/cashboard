@@ -5,13 +5,14 @@ import {
   isThisMonth,
   subMonths,
 } from 'date-fns'
-import { AddTransactionModel, TransactionModel } from '@/contexts'
 import { FirebaseDataSnapshot } from '@/hooks'
-import { sortByDate } from '@/utils'
 import {
+  AddTransactionModel,
   RecurrentTransaction,
-  UpdateRecurrenceTransactionListArgs,
-} from './types'
+  TransactionModel,
+} from '@/types'
+import { sortByDate } from '@/utils'
+import { UpdateRecurrenceTransactionListArgs } from './types'
 
 export const firebaseDataSnapshotToRecurrenceList = (
   data: FirebaseDataSnapshot<RecurrentTransaction>

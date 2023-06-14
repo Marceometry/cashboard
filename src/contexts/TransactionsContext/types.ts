@@ -1,5 +1,4 @@
 import { Option } from '@/components'
-import { Optional } from '@/utils'
 import {
   AddTransactionModel,
   CategoryModel,
@@ -7,6 +6,7 @@ import {
   TagModel,
   TransactionModel,
 } from '@/types'
+import { Optional } from '@/utils'
 
 export type TransactionsContextData = {
   isLoading: boolean

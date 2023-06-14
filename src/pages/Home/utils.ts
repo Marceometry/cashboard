@@ -1,5 +1,5 @@
-import { differenceInCalendarMonths, isThisMonth } from 'date-fns'
-import { DateParam, RecurrentTransaction, TransactionModel } from '@/contexts'
+import { differenceInCalendarMonths } from 'date-fns'
+import { DateParam, RecurrentTransaction, TransactionModel } from '@/types'
 
 export const getMonthSummary = (
   recurrences: RecurrentTransaction[]

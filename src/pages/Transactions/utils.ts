@@ -1,5 +1,5 @@
 import { addDays, isAfter, isBefore, isFuture, subDays } from 'date-fns'
-import { DateParam } from '@/contexts'
+import { DateParam } from '@/types'
 import { currency, filterByMonth, filterByYear } from '@/utils'
 import { FilterTransactionsFormInputs } from './validation'
 

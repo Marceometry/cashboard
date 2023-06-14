@@ -2,11 +2,8 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useBreakpointValue } from '@chakra-ui/react'
 import { FormModal, Radio } from '@/components'
-import {
-  AddRecurrentTransaction,
-  useRecurrences,
-  useTransactions,
-} from '@/contexts'
+import { useRecurrences, useTransactions } from '@/contexts'
+import { AddRecurrentTransaction } from '@/types'
 import { currency, formatDateToInput, formatInputToISOString } from '@/utils'
 import { Form } from './Form'
 import {

@@ -1,5 +1,6 @@
-import { TransactionModel, useTransactions } from '@/contexts'
+import { useTransactions } from '@/contexts'
 import { useApiCall } from '@/hooks'
+import { TransactionModel } from '@/types'
 import { sortByDate } from '@/utils'
 
 export const useTags = () => {

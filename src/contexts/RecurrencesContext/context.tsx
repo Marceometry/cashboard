@@ -6,15 +6,18 @@ import {
   useState,
 } from 'react'
 import { v4 as uuid } from 'uuid'
-import { AddTransactionModel, formatTransaction, useAuth } from '@/contexts'
+import { formatTransaction, useAuth } from '@/contexts'
 import { useApiCall, useFirebaseDatabase } from '@/hooks'
 import {
   AddRecurrentTransaction,
-  RecurrencesContextData,
+  AddTransactionModel,
   RecurrentTransaction,
   RemoveRecurrenceArgs,
-  UpdateRecurrenceTransactionListArgs,
   UpdateRecurrentTransaction,
+} from '@/types'
+import {
+  RecurrencesContextData,
+  UpdateRecurrenceTransactionListArgs,
 } from './types'
 import { checkRecurrences, firebaseDataSnapshotToRecurrenceList } from './utils'
 

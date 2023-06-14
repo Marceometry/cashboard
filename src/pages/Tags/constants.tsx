@@ -1,6 +1,6 @@
 import { Text } from '@chakra-ui/react'
 import { Button, ColumnProps, IconButton } from '@/components'
-import { DateParam, TagModel, TransactionModel } from '@/contexts'
+import { DateParam, TagModel, TransactionModel } from '@/types'
 import { currency } from '@/utils'
 
 export const getColumns = (
