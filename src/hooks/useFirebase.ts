@@ -64,6 +64,11 @@ export const useFirebaseAuth = () => {
       const user = await reauthenticate()
       if (!user) return null
       await deleteUser(user)
+
+      const database = getDatabase(firebaseApp)
+      const userPath = `users/${user.uid}`
+      await set(ref(database, userPath), {})
+
       return user
     }
   }
