@@ -37,14 +37,15 @@ export const TransactionsContext = createContext({} as TransactionsContextData)
 export function TransactionsContextProvider({
   children,
 }: TransactionsContextProviderProps) {
+  const storage = useLocalStorage()
   const { user } = useAuth()
   const { call, isLoading, setIsLoading } = useApiCall()
   const { onTransactionsValue, remoteAddTransaction, remoteRemoveTransaction } =
     useFirebaseDatabase()
-  const storage = useLocalStorage()
 
+  const [isLoadingCache, setIsLoadingCache] = useState(true)
   const [dateParam, setDateParam] = useState<DateParam>(
-    storage.get('date-param') || 'date'
+    storage.get('date-param', 'date')
   )
   const [transactionList, setTransactionList] = useState<TransactionModel[]>([])
   const [mostRepeatedTransactions, setMostRepeatedTransactions] = useState<
@@ -125,9 +126,15 @@ export function TransactionsContextProvider({
   useEffect(() => {
     if (!user?.id) return clearState()
 
+    const transactions = storage.get('transaction-list')
+    setTransactionList(transactions || [])
+    setIsLoadingCache(!transactions?.length)
+
     const unsubscribeOnValue = onTransactionsValue((data) => {
       const transactions = firebaseDataSnapshotToTransactionList(data)
+      storage.set('transaction-list', transactions)
       setTransactionList(transactions)
+      setIsLoadingCache(false)
       setIsLoading(false)
     })
 
@@ -140,6 +147,7 @@ export function TransactionsContextProvider({
     <TransactionsContext.Provider
       value={{
         isLoading,
+        isLoadingCache,
         transactionList,
         mostRepeatedTransactions,
         categoryList,

@@ -6,7 +6,7 @@ import { getColumns, getTransactionsColumns } from './constants'
 
 export const Tags = () => {
   const { deleteTag, transactionsByTag, removeTagFromTransaction } = useTags()
-  const { tagList, isLoading, dateParam } = useTransactions()
+  const { tagList, dateParam, isLoadingCache } = useTransactions()
   const [selectedTag, setSelectedTag] = useState('')
   const [isTransactionsModalOpen, setIsTransactionsModalOpen] = useState(false)
 
@@ -29,7 +29,12 @@ export const Tags = () => {
 
   return (
     <MainTemplate>
-      <Table columns={columns} data={tagList} isLoading={isLoading} noSearch />
+      <Table
+        data={tagList}
+        columns={columns}
+        isLoading={isLoadingCache}
+        noSearch
+      />
 
       <Modal
         isOpen={isTransactionsModalOpen}

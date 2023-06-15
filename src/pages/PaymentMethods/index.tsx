@@ -17,15 +17,17 @@ import {
 
 export const PaymentMethods = () => {
   const storage = useLocalStorage()
-  const { isLoading } = useTransactions()
+  const { isLoadingCache } = useTransactions()
   const { generateFilteredPaymentMethods, generatePaymentMethodsHistory } =
     usePaymentMethods()
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
   const [isFilterMonthDisabled, setIsFilterMonthDisabled] = useState(false)
   const [currentType, setCurrentType] = useState<TransactionType>('outcome')
   const [filters, setFilters] = useState<PaymentMethodsFilterModel>(
-    storage.get('payment-methods-page-filters') ||
+    storage.get(
+      'payment-methods-page-filters',
       filterPaymentMethodsFormDefaultValues
+    )
   )
 
   const areaChartData = generatePaymentMethodsHistory(filters, currentType)
@@ -53,7 +55,7 @@ export const PaymentMethods = () => {
     <MainTemplate>
       <Table
         sortBy={currentType}
-        isLoading={isLoading}
+        isLoading={isLoadingCache}
         buttons={buttons}
         columns={columns}
         caption={caption}

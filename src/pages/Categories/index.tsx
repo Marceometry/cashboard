@@ -14,14 +14,14 @@ import {
 
 export const Categories = () => {
   const storage = useLocalStorage()
-  const { isLoading } = useTransactions()
+  const { isLoadingCache } = useTransactions()
   const { generateFilteredCategories, generateCategoriesHistory } =
     useCategories()
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
   const [isFilterMonthDisabled, setIsFilterMonthDisabled] = useState(false)
   const [currentType, setCurrentType] = useState<TransactionType>('outcome')
   const [filters, setFilters] = useState<CategoriesFilterModel>(
-    storage.get('categories-page-filters') || filterCategoriesFormDefaultValues
+    storage.get('categories-page-filters', filterCategoriesFormDefaultValues)
   )
 
   const areaChartData = generateCategoriesHistory(filters, currentType)
@@ -46,7 +46,7 @@ export const Categories = () => {
     <MainTemplate>
       <Table
         sortBy={currentType}
-        isLoading={isLoading}
+        isLoading={isLoadingCache}
         buttons={buttons}
         columns={columns}
         caption={caption}

@@ -4,7 +4,7 @@ import { useTransactions } from '@/contexts'
 import { getChartData, getChartSections, getTabs, View } from './constants'
 
 export const Summary = () => {
-  const { transactionList, isLoading, dateParam } = useTransactions()
+  const { transactionList, dateParam, isLoadingCache } = useTransactions()
   const [currentView, setCurrentView] = useState<View>('month')
 
   const chartData = getChartData(transactionList, currentView, dateParam)
@@ -28,7 +28,7 @@ export const Summary = () => {
     <MainTemplate>
       <Tabs tabs={tabs} onChange={handleTabsChange} flex='none' />
 
-      {isLoading ? (
+      {isLoadingCache ? (
         <Loading />
       ) : (
         <ComposedChart

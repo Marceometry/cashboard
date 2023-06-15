@@ -22,7 +22,7 @@ export const Transactions = () => {
   const storage = useLocalStorage()
   const storagedFilterValues = storage.get('transactions-table-filters')
   const { openDialog } = useDialog()
-  const { transactionList, removeTransaction, isLoading, dateParam } =
+  const { transactionList, removeTransaction, dateParam, isLoadingCache } =
     useTransactions()
 
   const [isModalTransactionOpen, setIsModalTransactionOpen] = useState(false)
@@ -88,7 +88,7 @@ export const Transactions = () => {
         caption={caption}
         onSearch={handleSearch}
         sortFunction={sortFunction}
-        isLoading={isLoading}
+        isLoading={isLoadingCache}
         charts={[
           {
             type: 'bar',

@@ -7,7 +7,7 @@ import {
 } from 'react'
 import { v4 as uuid } from 'uuid'
 import { formatTransaction, useAuth } from '@/contexts'
-import { useApiCall, useFirebaseDatabase } from '@/hooks'
+import { useApiCall, useFirebaseDatabase, useLocalStorage } from '@/hooks'
 import {
   AddRecurrentTransaction,
   AddTransactionModel,
@@ -30,6 +30,7 @@ export const RecurrencesContext = createContext({} as RecurrencesContextData)
 export function RecurrencesContextProvider({
   children,
 }: RecurrencesContextProviderProps) {
+  const storage = useLocalStorage()
   const { user } = useAuth()
   const { call } = useApiCall()
   const {
@@ -39,6 +40,7 @@ export function RecurrencesContextProvider({
     remoteAddTransaction,
     remoteRemoveTransaction,
   } = useFirebaseDatabase()
+  const [isLoadingCache, setIsLoadingCache] = useState(true)
   const [recurrenceList, setRecurrenceList] = useState<RecurrentTransaction[]>(
     []
   )
@@ -120,9 +122,15 @@ export function RecurrencesContextProvider({
   useEffect(() => {
     if (!user?.id) return clearState()
 
+    const recurrences = storage.get('recurrence-list')
+    setRecurrenceList(recurrences || [])
+    setIsLoadingCache(!recurrences?.length)
+
     const unsubscribeOnValue = onRecurrencesValue((data) => {
       const recurrences = firebaseDataSnapshotToRecurrenceList(data)
+      storage.set('recurrence-list', recurrences)
       setRecurrenceList(recurrences)
+      setIsLoadingCache(false)
     })
 
     return () => {
@@ -137,6 +145,7 @@ export function RecurrencesContextProvider({
         addRecurrence,
         updateRecurrence,
         removeRecurrence,
+        isLoadingCache,
       }}
     >
       {children}

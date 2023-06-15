@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { MainTemplate, Table } from '@/components'
-import { useDialog, useRecurrences, useTransactions } from '@/contexts'
+import { useDialog, useRecurrences } from '@/contexts'
 import { RecurrentTransaction } from '@/types'
 import { currency } from '@/utils'
 import { AddRecurrenceModal } from './components'
@@ -8,9 +8,8 @@ import { getButtons, getColumns } from './constants'
 
 export const Recurrences = () => {
   const { openDialog } = useDialog()
-  const { recurrenceList, updateRecurrence, removeRecurrence } =
+  const { recurrenceList, updateRecurrence, removeRecurrence, isLoadingCache } =
     useRecurrences()
-  const { isLoading } = useTransactions()
   const [selectedRecurrence, setSelectedRecurrence] = useState('')
   const [isRecurrenceModalOpen, setIsRecurrenceModalOpen] = useState(false)
 
@@ -65,7 +64,7 @@ export const Recurrences = () => {
         columns={columns}
         data={recurrenceList}
         buttons={buttons}
-        isLoading={isLoading}
+        isLoading={isLoadingCache}
       />
 
       <AddRecurrenceModal

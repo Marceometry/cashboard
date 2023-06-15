@@ -23,7 +23,7 @@ export const Home = () => {
   )
   const { user } = useAuth()
   const { recurrenceList } = useRecurrences()
-  const { transactionList, isLoading, dateParam } = useTransactions()
+  const { transactionList, dateParam, isLoadingCache } = useTransactions()
 
   const [monthlyIncomes, monthlyOutcomes, installmentsOutcomes] =
     getMonthSummary(recurrenceList)
@@ -49,7 +49,7 @@ export const Home = () => {
         w='full'
         h='full'
       >
-        {isLoading ? (
+        {isLoadingCache ? (
           <Loading />
         ) : !transactionList.length ? (
           <Center flexDirection='column' gap='12'>

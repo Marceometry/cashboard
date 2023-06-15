@@ -7,6 +7,7 @@ import {
 } from '@/types'
 
 export type RecurrencesContextData = {
+  isLoadingCache: boolean
   recurrenceList: RecurrentTransaction[]
   addRecurrence: (recurrence: AddRecurrentTransaction) => void
   updateRecurrence: (recurrence: UpdateRecurrentTransaction) => void

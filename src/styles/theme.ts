@@ -25,6 +25,12 @@ const styles = {
       borderRadius: '8px',
       backgroundColor: mode('rgb(159 170 191)', 'rgb(64, 75, 94)')(props),
     },
+    '&::-webkit-scrollbar-corner': {
+      backgroundColor: 'transparent',
+    },
+    html: {
+      colorScheme: mode('light', 'dark')(props),
+    },
     body: {
       fontFamily: 'sans-serif',
       color: mode('gray.800', 'gray.200')(props),

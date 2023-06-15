@@ -25,13 +25,8 @@ export const AddTransactionModal = ({
   selectedId,
 }: AddTransactionModalProps) => {
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
-  const {
-    isLoading,
-    categoryList,
-    transactionList,
-    addTransaction,
-    updateTransaction,
-  } = useTransactions()
+  const { categoryList, transactionList, addTransaction, updateTransaction } =
+    useTransactions()
 
   const formMethods = useForm({
     defaultValues: addTransactionFormDefaultValues,
@@ -128,7 +123,6 @@ export const AddTransactionModal = ({
           !selectedId
             ? {
                 children: 'Adicionar novo',
-                isLoading: isLoading && keepModalOpen,
                 onClick: () => setKeepModalOpen(true),
               }
             : undefined

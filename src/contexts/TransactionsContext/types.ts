@@ -10,6 +10,7 @@ import { Optional } from '@/utils'
 
 export type TransactionsContextData = {
   isLoading: boolean
+  isLoadingCache: boolean
   transactionList: TransactionModel[]
   mostRepeatedTransactions: TransactionModel[]
   categoryList: CategoryModel[]
