@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { Input, MultiSelect, Radio } from '@/components'
 import { useTransactions } from '@/contexts'
-import { paymentTypes } from '@/types'
+import { paymentMethods } from '@/types'
 import { currency } from '@/utils'
 import { AddTransactionFormInputs } from './validation'
 
@@ -46,7 +46,7 @@ export const Form = ({
     setValue('category', item.category)
     setValue('amount', currency.maskMonetaryValue(item.amount))
     setValue('type', item.type)
-    setValue('paymentType', item.paymentType)
+    setValue('paymentMethod', item.paymentMethod)
   }, [watch('description')])
 
   return (
@@ -124,10 +124,10 @@ export const Form = ({
             columns={3}
             rowGap={3}
             columnGap={2}
-            name='paymentType'
+            name='paymentMethod'
             label='Método de pagamento'
             required
-            options={paymentTypes.map(([value, label]) => ({
+            options={paymentMethods.map(([value, label]) => ({
               value,
               label,
             }))}

@@ -1,16 +1,5 @@
+import { PaymentMethod } from '@/types'
 import { Optional } from '@/utils'
-
-export enum PaymentTypes {
-  pix = 'Pix',
-  cash = 'Dinheiro',
-  credit = 'Crédito',
-  debit = 'Débito',
-  other = 'Outro',
-}
-
-export const paymentTypes = Object.entries(PaymentTypes)
-
-export type PaymentType = keyof typeof PaymentTypes
 
 export type DateParam = 'datePayed' | 'date'
 
@@ -25,7 +14,7 @@ export type TransactionModel = {
   datePayed: string
   tags: string[]
   type: TransactionType
-  paymentType: PaymentType
+  paymentMethod: PaymentMethod
 }
 
 export type AddTransactionModel = Omit<

@@ -9,7 +9,7 @@ export const CODE_EXAMPLE = `[
   {
     "id": "${uuid()}", // string | null
     "type": "outcome", // 'income' | 'outcome'
-    "paymentType": "pix", // 'pix' | 'cash' | 'credit' | 'debit'
+    "paymentMethod": "pix", // 'pix' | 'cash' | 'credit' | 'debit'
     "date": "${getFormattedDate()}",
     "datePayed": "${getFormattedDate()}",
     "category": "Categoria Exemplo",
@@ -23,7 +23,7 @@ export const FORMATTED_CODE_EXAMPLE = `[
   {
     "id": null,
     "type": "outcome",
-    "paymentType": "pix",
+    "paymentMethod": "pix",
     "date": "${getFormattedDate()}",
     "datePayed": "${getFormattedDate()}",
     "category": "Categoria Exemplo",

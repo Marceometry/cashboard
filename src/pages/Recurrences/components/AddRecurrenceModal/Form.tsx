@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form'
 import { Center, Grid, GridItem, useBreakpointValue } from '@chakra-ui/react'
 import { Input, MultiSelect, Radio } from '@/components'
 import { useTransactions } from '@/contexts'
-import { paymentTypes } from '@/types'
+import { paymentMethods } from '@/types'
 import { currency } from '@/utils'
 import { AddRecurrenceFormInputs } from './validation'
 
@@ -37,7 +37,7 @@ export const Form = ({
     setValue('category', item.category)
     setValue('amount', currency.maskMonetaryValue(item.amount))
     setValue('type', item.type)
-    setValue('paymentType', item.paymentType)
+    setValue('paymentMethod', item.paymentMethod)
   }, [description, descriptionDatalist, isEditingTransaction])
 
   return (
@@ -105,10 +105,10 @@ export const Form = ({
       <Radio
         columns={isSmallScreen ? 2 : 5}
         gap={3}
-        name='paymentType'
+        name='paymentMethod'
         label='Método de pagamento'
         required
-        options={paymentTypes.map(([value, label]) => ({
+        options={paymentMethods.map(([value, label]) => ({
           value,
           label,
         }))}

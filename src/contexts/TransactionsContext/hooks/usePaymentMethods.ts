@@ -1,9 +1,9 @@
 import { useTransactions } from '@/contexts'
 import {
   PaymentMethodModel,
+  PaymentMethods,
+  paymentMethods,
   PaymentMethodsFilterModel,
-  paymentTypes,
-  PaymentTypes,
   TransactionModel,
   TransactionType,
 } from '@/types'
@@ -18,22 +18,22 @@ const generatePaymentMethods = (
   transactions: TransactionModel[]
 ): PaymentMethodModel[] => {
   const paymentMethods = transactions.reduce((acc, transaction) => {
-    const { paymentType, amount, type } = transaction
+    const { paymentMethod, amount, type } = transaction
     const isIncome = type === 'income'
-    const currentPaymentType = acc.find(
-      (c) => c.name === PaymentTypes[paymentType]
+    const currentPaymentMethod = acc.find(
+      (c) => c.name === PaymentMethods[paymentMethod]
     )
-    if (!currentPaymentType) {
-      const newPaymentType = {
-        name: PaymentTypes[paymentType],
+    if (!currentPaymentMethod) {
+      const newPaymentMethod = {
+        name: PaymentMethods[paymentMethod],
         income: isIncome ? amount : 0,
         outcome: !isIncome ? amount : 0,
         balance: isIncome ? amount : -amount,
       }
-      return [...acc, newPaymentType]
+      return [...acc, newPaymentMethod]
     }
-    const newPaymentTypeList = acc.map((c) => {
-      if (c.name !== PaymentTypes[paymentType]) return c
+    const newPaymentMethodList = acc.map((c) => {
+      if (c.name !== PaymentMethods[paymentMethod]) return c
       return {
         ...c,
         income: isIncome ? c.income + amount : c.income,
@@ -41,7 +41,7 @@ const generatePaymentMethods = (
         balance: isIncome ? c.balance + amount : c.balance - amount,
       }
     })
-    return newPaymentTypeList
+    return newPaymentMethodList
   }, [] as PaymentMethodModel[])
   return paymentMethods
 }
@@ -77,7 +77,7 @@ export const usePaymentMethods = () => {
     const { month, year, minAmount, maxAmount } = filters
     const orderedList: TransactionModel[] = sortByDate(transactionList, true)
 
-    const paymentTypesHistory = orderedList.reduce(
+    const paymentMethodsHistory = orderedList.reduce(
       (acc: any[], item: TransactionModel) => {
         if (item.type !== type) return acc
         if (minAmount && item.amount < minAmount) return acc
@@ -85,36 +85,36 @@ export const usePaymentMethods = () => {
         if (month && !filterByMonth(item[dateParam], month)) return acc
         if (year && !filterByYear(item[dateParam], year)) return acc
 
-        const { amount, paymentType } = item
+        const { amount, paymentMethod } = item
         const date = new Date(item[dateParam])
 
         const name = getFormattedMonthAndYear(date)
         const itemIndex = acc.findIndex((accItem) => accItem.name === name)
 
         if (acc[itemIndex]) {
-          const value = acc[itemIndex][PaymentTypes[paymentType]]
-            ? acc[itemIndex][PaymentTypes[paymentType]] + amount
+          const value = acc[itemIndex][PaymentMethods[paymentMethod]]
+            ? acc[itemIndex][PaymentMethods[paymentMethod]] + amount
             : amount
 
           acc[itemIndex] = {
             ...acc[itemIndex],
             name,
-            [PaymentTypes[paymentType]]: value,
+            [PaymentMethods[paymentMethod]]: value,
           }
           return [...acc]
         }
 
-        return [...acc, { name, [PaymentTypes[paymentType]]: amount ?? 0 }]
+        return [...acc, { name, [PaymentMethods[paymentMethod]]: amount ?? 0 }]
       },
       []
     )
 
-    const paymentTypesObject = paymentTypes.reduce((acc, item) => {
+    const paymentMethodsObject = paymentMethods.reduce((acc, item) => {
       return { ...acc, [item[1]]: 0 }
     }, {})
 
-    return paymentTypesHistory.map((item) => ({
-      ...paymentTypesObject,
+    return paymentMethodsHistory.map((item) => ({
+      ...paymentMethodsObject,
       ...item,
     }))
   }

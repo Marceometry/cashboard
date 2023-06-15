@@ -11,7 +11,7 @@ export const addTransactionFormSchema = z.object({
   tags: zodValidator.array,
   date: zodValidator.date,
   datePayed: zodValidator.date.nullable(),
-  paymentType: z.enum(['pix', 'cash', 'credit', 'debit', 'other']),
+  paymentMethod: z.enum(['pix', 'cash', 'credit', 'debit', 'other']),
   type: z.enum(['income', 'outcome']),
 })
 
@@ -24,7 +24,7 @@ export const addTransactionFormDefaultValues: AddTransactionFormInputs = {
   category: '',
   description: '',
   type: 'outcome',
-  paymentType: 'pix',
+  paymentMethod: 'pix',
   tags: [],
   date: formatDateToInput(new Date()),
   datePayed: formatDateToInput(new Date()),

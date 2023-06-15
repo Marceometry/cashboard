@@ -11,7 +11,7 @@ export const addRecurrenceFormSchema = z.object({
   tags: zodValidator.array,
   startDate: zodValidator.date,
   installments: z.string().nullable(),
-  paymentType: z.enum(['pix', 'cash', 'credit', 'debit', 'other']),
+  paymentMethod: z.enum(['pix', 'cash', 'credit', 'debit', 'other']),
   type: z.enum(['income', 'outcome']),
 })
 
@@ -24,7 +24,7 @@ export const addRecurrenceFormDefaultValues: AddRecurrenceFormInputs = {
   category: '',
   description: '',
   type: 'outcome',
-  paymentType: 'credit',
+  paymentMethod: 'credit',
   tags: [],
   startDate: formatDateToInput(new Date()),
   installments: null,

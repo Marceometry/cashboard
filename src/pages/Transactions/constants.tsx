@@ -1,6 +1,6 @@
 import { Center, Text } from '@chakra-ui/react'
 import { ColumnProps, IconButton, TableButtons } from '@/components'
-import { DateParam, PaymentTypes, TransactionModel } from '@/types'
+import { DateParam, PaymentMethods, TransactionModel } from '@/types'
 import { currency, sortByDate } from '@/utils'
 
 export const getButtons = (
@@ -61,8 +61,8 @@ export const getColumns = (
     },
     {
       label: 'Pagamento',
-      field: 'paymentType',
-      customRender: ({ paymentType }) => PaymentTypes[paymentType],
+      field: 'paymentMethod',
+      customRender: ({ paymentMethod }) => PaymentMethods[paymentMethod],
     },
     {
       label: 'Data',

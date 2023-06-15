@@ -5,7 +5,7 @@ import {
   AddTransactionModel,
   CategoryModel,
   DateParam,
-  PaymentTypes,
+  PaymentMethods,
   TagModel,
   TransactionModel,
 } from '@/types'
@@ -23,7 +23,7 @@ export const formatTransaction = (
   return {
     id: payload.id,
     type: payload.type,
-    paymentType: payload.paymentType,
+    paymentMethod: payload.paymentMethod,
     description: payload.description,
     amount: payload.amount,
     category: payload.category || 'Outros',
@@ -41,7 +41,7 @@ export const isTransactionInvalid = (
     if (!item.description) error()
     if (typeof item.category !== 'string') error()
     if (item.type !== 'income' && item.type !== 'outcome') error()
-    if (!PaymentTypes[item.paymentType]) error()
+    if (!PaymentMethods[item.paymentMethod]) error()
     if (!isValid(new Date(item.date))) error()
     if (!isValid(new Date(item.datePayed || item.date))) error()
     if (isNaN(item.amount)) error()
