@@ -27,10 +27,9 @@ export const Sidebar = () => {
     <Flex
       px='2'
       as='aside'
-      align='center'
       direction='column'
       maxW='container.lg'
-      width={isOpen ? '280px' : '68px'}
+      width={isOpen ? '264px' : '68px'}
       transitionProperty='width'
       transitionDuration='500ms'
       overflow='hidden'
