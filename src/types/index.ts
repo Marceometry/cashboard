@@ -1,4 +1,5 @@
 export * from './categories'
+export * from './paymentMethods'
 export * from './recurrences'
 export * from './tags'
 export * from './transactions'

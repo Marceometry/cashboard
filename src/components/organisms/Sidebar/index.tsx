@@ -30,7 +30,7 @@ export const Sidebar = () => {
       align='center'
       direction='column'
       maxW='container.lg'
-      width={isOpen ? '237px' : '68px'}
+      width={isOpen ? '280px' : '68px'}
       transitionProperty='width'
       transitionDuration='500ms'
       overflow='hidden'
@@ -56,14 +56,14 @@ export const Sidebar = () => {
         )}
       </Heading>
 
-      <Divider />
+      <Divider mb='2' />
 
       <List width='full'>
         {dashboardRoutes.map((route) => (
           <ListItem key={route.path}>
             <Link to={route.path} aria-label={route.label}>
               <Text
-                px='4'
+                pl='4'
                 py='2'
                 gap='3'
                 display='flex'

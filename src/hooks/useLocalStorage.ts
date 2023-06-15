@@ -2,6 +2,7 @@ type LocaStorageItem =
   | 'transactions-table-filters'
   | 'transactions-table-filters-specific-date'
   | 'categories-page-filters'
+  | 'payment-methods-page-filters'
   | 'sidebar-default-open'
   | 'categories-average-outcome-filter'
   | 'categories-average-month-count-filter'

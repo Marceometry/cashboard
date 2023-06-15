@@ -3,6 +3,7 @@ import {
   ChartPie,
   ClipboardText,
   House,
+  Money,
   Swap,
   Tag,
 } from 'phosphor-react'
@@ -10,6 +11,7 @@ import {
   Categories,
   Home,
   Login,
+  PaymentMethods,
   Recurrences,
   Summary,
   Tags,
@@ -60,6 +62,12 @@ export const dashboardRoutes: Route[] = [
     path: '/tags',
     element: <Tags />,
     icon: <Tag />,
+  },
+  {
+    label: 'Meios de pagamento',
+    path: '/payment-methods',
+    element: <PaymentMethods />,
+    icon: <Money />,
   },
 ]
 
