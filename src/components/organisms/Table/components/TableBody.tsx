@@ -4,7 +4,6 @@ import {
   Table as ChakraTable,
   Tbody,
   Td,
-  Tfoot,
   Th,
   Thead,
   Tr,
@@ -65,9 +64,6 @@ export const TableBody = ({
             </Tr>
           ))}
         </Tbody>
-        <Tfoot>
-          <Tr></Tr>
-        </Tfoot>
       </ChakraTable>
     </Box>
   )
