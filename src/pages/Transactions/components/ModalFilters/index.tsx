@@ -71,6 +71,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
   }, [formMethods, categoryList, selectedCategories])
 
   const handleClearFilters = () => {
+    if (!isOpen) return
     formMethods.setValue('type', 'all')
     formMethods.setValue('startDate', null)
     formMethods.setValue('endDate', null)

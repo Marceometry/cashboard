@@ -55,6 +55,7 @@ export const ModalFilters = ({
   }
 
   const handleClearFilters = () => {
+    if (!isOpen) return
     formMethods.setValue('month', null)
     formMethods.setValue('year', null)
     formMethods.setValue('maxAmount', '')
