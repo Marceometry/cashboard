@@ -6,7 +6,7 @@ export const useFileImport = () => {
 
   useEffect(() => {
     const id = 'cashboard-import-file-input'
-    if (input && document.getElementById(id)) return
+    if (input || document.getElementById(id)) return
 
     const element = document.createElement('input')
     element.id = id

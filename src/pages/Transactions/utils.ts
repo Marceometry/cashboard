@@ -15,8 +15,8 @@ export const filterByMaxAmount = (amount: string, itemAmount: number) => {
   return itemAmount < numberAmount
 }
 
-export const filterByCategory = (categories: string[], category: string) => {
-  return categories.some((item) => item === category)
+export const filterByArray = (items: string[], param: string) => {
+  return items.some((item) => item === param)
 }
 
 export const filterData = (
@@ -30,6 +30,7 @@ export const filterData = (
     selectedMonth,
     selectedYear,
     selectedCategories,
+    paymentMethod,
     showFutureTransactions,
     minAmount,
     maxAmount,
@@ -41,6 +42,10 @@ export const filterData = (
 
     if (type && type !== 'all') {
       included = type === item.type
+      if (!included) return
+    }
+    if (paymentMethod && paymentMethod !== 'all') {
+      included = paymentMethod === item.paymentMethod
       if (!included) return
     }
     if (minAmount) {
@@ -74,7 +79,7 @@ export const filterData = (
       if (!included) return
     }
     if (selectedCategories.length) {
-      included = filterByCategory(selectedCategories, item.category)
+      included = filterByArray(selectedCategories, item.category)
       if (!included) return
     }
 

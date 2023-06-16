@@ -103,8 +103,6 @@ export const Form = ({
       </Grid>
 
       <Radio
-        columns={isSmallScreen ? 2 : 5}
-        gap={3}
         name='paymentMethod'
         label='Método de pagamento'
         required

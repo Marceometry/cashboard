@@ -15,10 +15,6 @@ export const getColumns = (
   toggleActivity: (id: string, isActive: boolean) => void
 ): ColumnProps<RecurrentTransaction>[] => [
   {
-    label: 'Descrição',
-    field: 'description',
-  },
-  {
     label: 'Valor',
     field: 'amount',
     customRender: ({ amount, type }) => (
@@ -26,6 +22,10 @@ export const getColumns = (
         {currency.valueToMoney(amount)}
       </Text>
     ),
+  },
+  {
+    label: 'Descrição',
+    field: 'description',
   },
   {
     label: 'Categoria',

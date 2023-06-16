@@ -121,9 +121,8 @@ export const Form = ({
           />
 
           <Radio
-            columns={3}
             rowGap={3}
-            columnGap={2}
+            columnGap={5}
             name='paymentMethod'
             label='Método de pagamento'
             required

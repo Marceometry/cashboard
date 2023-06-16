@@ -23,6 +23,7 @@ import {
 import { MONTH_LIST } from '@/constants'
 import { useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
+import { paymentMethods } from '@/types'
 import { currency, sortAlphabetically } from '@/utils'
 import {
   filterTransactionsFormDefaultValues,
@@ -72,7 +73,9 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
 
   const handleClearFilters = () => {
     if (!isOpen) return
+    setSpecificDate(false)
     formMethods.setValue('type', 'all')
+    formMethods.setValue('paymentMethod', 'all')
     formMethods.setValue('startDate', null)
     formMethods.setValue('endDate', null)
     formMethods.setValue('selectedMonth', null)
@@ -212,25 +215,40 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
         />
       </Grid>
 
-      <Center pt='3'>
+      <Grid templateColumns='1fr 1fr' gap='4' mt='3'>
+        <GridItem>
+          <Radio
+            name='paymentMethod'
+            label='Métodos de pagamento'
+            options={[
+              { label: 'Todos', value: 'all' },
+              ...paymentMethods
+                .filter((item) => item[0] !== 'other')
+                .map(([value, label]) => ({ value, label })),
+            ]}
+          />
+        </GridItem>
+
+        <GridItem>
+          <Radio
+            name='type'
+            label='Tipos'
+            options={[
+              { label: 'Todas', value: 'all' },
+              { label: 'Entrada', value: 'income' },
+              { label: 'Saída', value: 'outcome' },
+            ]}
+          />
+        </GridItem>
+      </Grid>
+
+      <Center pt='4'>
         <Checkbox
           label='Mostrar transações futuras'
           name='showFutureTransactions'
           defaultChecked={
             storagedFilterValues?.showFutureTransactions !== false
           }
-        />
-      </Center>
-
-      <Center mt='4'>
-        <Radio
-          name='type'
-          columns={3}
-          options={[
-            { label: 'Todas', value: 'all' },
-            { label: 'Entrada', value: 'income' },
-            { label: 'Saída', value: 'outcome' },
-          ]}
         />
       </Center>
     </FormModal>

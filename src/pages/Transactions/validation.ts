@@ -13,6 +13,7 @@ export const filterTransactionsFormSchema = z.object({
   maxAmount: zodValidator.string,
   minAmount: zodValidator.string,
   showFutureTransactions: z.boolean(),
+  paymentMethod: z.enum(['all', 'cash', 'pix', 'credit', 'debit']),
   type: z.enum(['all', 'income', 'outcome']),
 })
 
@@ -34,5 +35,6 @@ export const filterTransactionsFormDefaultValues: FilterTransactionsFormInputs =
     maxAmount: '',
     minAmount: '',
     type: 'all',
+    paymentMethod: 'all',
     showFutureTransactions: true,
   }

@@ -2,9 +2,9 @@ import { useController, useFormContext } from 'react-hook-form'
 import {
   Radio as ChakraRadio,
   FormLabel,
-  Grid,
   useRadioGroup,
 } from '@chakra-ui/react'
+import { Container } from './Container'
 
 type Option = {
   label: string
@@ -27,7 +27,7 @@ export const Radio = ({
   options,
   label,
   required,
-  columns = 2,
+  columns,
   gap = 5,
   rowGap,
   columnGap,
@@ -44,12 +44,12 @@ export const Radio = ({
           {required ? '*' : ''}
         </FormLabel>
       )}
-      <Grid
+      <Container
         gap={gap}
         rowGap={rowGap}
         columnGap={columnGap}
-        templateColumns={`repeat(${columns}, 1fr)`}
-        {...getRootProps()}
+        columns={columns}
+        rootProps={getRootProps()}
       >
         {options.map((option) => (
           <ChakraRadio
@@ -59,7 +59,7 @@ export const Radio = ({
             {option.label}
           </ChakraRadio>
         ))}
-      </Grid>
+      </Container>
     </>
   )
 }
