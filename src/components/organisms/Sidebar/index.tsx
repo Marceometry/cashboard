@@ -34,25 +34,27 @@ export const Sidebar = () => {
       transitionDuration='500ms'
       overflow='hidden'
     >
-      <Heading py='5' size='lg'>
-        {isOpen ? (
-          <Flex gap='2'>
+      <Heading py='5' pl='2' size='lg'>
+        <Flex gap='2'>
+          {isOpen ? (
+            <>
+              <IconButton
+                icon={<ChevronLeftIcon fontSize={24} />}
+                onClick={toggle}
+                aria-label='Fechar Sidebar'
+                variant='outline'
+              />
+              Cashboard
+            </>
+          ) : (
             <IconButton
-              icon={<ChevronLeftIcon fontSize={24} />}
+              icon={<HamburgerIcon />}
               onClick={toggle}
-              aria-label='Fechar Sidebar'
-              variant='ghost'
+              aria-label='Expandir Sidebar'
+              variant='outline'
             />
-            Cashboard
-          </Flex>
-        ) : (
-          <IconButton
-            icon={<HamburgerIcon />}
-            onClick={toggle}
-            aria-label='Expandir Sidebar'
-            variant='ghost'
-          />
-        )}
+          )}
+        </Flex>
       </Heading>
 
       <Divider mb='2' />
