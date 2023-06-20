@@ -65,6 +65,7 @@ export const Recurrences = () => {
         data={recurrenceList}
         buttons={buttons}
         isLoading={isLoadingCache}
+        sortBy='startDate'
       />
 
       <AddRecurrenceModal

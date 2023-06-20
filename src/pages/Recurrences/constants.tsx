@@ -63,8 +63,6 @@ export const getColumns = (
     ),
   },
   {
-    label: '',
-    field: '',
     customRender: (row) => (
       <Center gap='4'>
         <IconButton

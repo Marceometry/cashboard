@@ -3,8 +3,8 @@ import { TableProps as ChakraTableProps } from '@chakra-ui/react'
 import { IconButtonProps, LabelType } from '@/components'
 
 export type ColumnProps<T> = {
-  label: string
-  field: keyof T | ''
+  label?: string
+  field?: keyof T
   customRender?: (data: T) => JSX.Element | string
 }
 
@@ -37,11 +37,6 @@ export type TableProps = ChakraTableProps & {
   noSearch?: boolean
   onSearch?: (text: string, result: any[]) => void
   sortBy?: string
-  sortFunction?: (
-    array: any[],
-    oldestFirst?: boolean,
-    dateField?: string
-  ) => any[]
   charts?: ChartProps[]
   onViewChange?: (view: 'table' | ChartType) => void
 }

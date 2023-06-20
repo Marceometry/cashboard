@@ -33,6 +33,7 @@ export const Tags = () => {
         data={tagList}
         columns={columns}
         isLoading={isLoadingCache}
+        sortBy='balance'
         noSearch
       />
 

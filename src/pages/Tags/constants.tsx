@@ -33,8 +33,6 @@ export const getColumns = (
     ),
   },
   {
-    label: '',
-    field: '',
     customRender: ({ name }) => (
       <Button variant='link' onClick={() => handleOpenTransactions(name)}>
         Ver transações
@@ -42,8 +40,6 @@ export const getColumns = (
     ),
   },
   {
-    label: '',
-    field: '',
     customRender: (props) => (
       <IconButton
         icon='delete'
@@ -79,8 +75,6 @@ export const getTransactionsColumns = (
     },
   },
   {
-    label: '',
-    field: '',
     customRender: ({ id }) => (
       <IconButton
         onClick={() => removeTagFromTransaction(id)}
