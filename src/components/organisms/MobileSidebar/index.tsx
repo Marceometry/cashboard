@@ -8,12 +8,15 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Flex,
+  Heading,
   List,
   ListItem,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
 import { Button } from '@/components'
+import { LogoIcon } from '@/assets'
 import { dashboardRoutes } from '@/router'
 
 type Props = {
@@ -31,7 +34,12 @@ export const MobileSidebar = ({ isOpen, onClose }: Props) => {
       <DrawerOverlay />
       <DrawerContent bg={bg}>
         <DrawerCloseButton top={4} left={4} />
-        <DrawerHeader ml={10}>Cashboard</DrawerHeader>
+        <DrawerHeader ml={10}>
+          <Flex align='center' gap='1'>
+            <LogoIcon size={28} />
+            <Heading size='lg'>Cashboard</Heading>
+          </Flex>
+        </DrawerHeader>
         <Divider />
 
         <DrawerBody px={0}>
