@@ -11,6 +11,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { useLocalStorage } from '@/hooks'
+import { LogoIcon } from '@/assets'
 import { dashboardRoutes } from '@/router'
 
 export const Sidebar = () => {
@@ -35,23 +36,25 @@ export const Sidebar = () => {
       overflow='hidden'
     >
       <Heading py='5' pl='2' size='lg'>
-        <Flex gap='2'>
+        <Flex alignItems='center'>
           {isOpen ? (
             <>
               <IconButton
-                icon={<ChevronLeftIcon fontSize={24} />}
+                icon={<ChevronLeftIcon fontSize={40} />}
                 onClick={toggle}
                 aria-label='Fechar Sidebar'
-                variant='outline'
+                variant='ghost'
+                mr='1'
               />
+              <LogoIcon size={32} style={{ marginRight: 4 }} />
               Cashboard
             </>
           ) : (
             <IconButton
-              icon={<HamburgerIcon />}
+              icon={<HamburgerIcon fontSize={20} />}
               onClick={toggle}
               aria-label='Expandir Sidebar'
-              variant='outline'
+              variant='ghost'
             />
           )}
         </Flex>
