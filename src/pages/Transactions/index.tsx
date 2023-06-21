@@ -4,7 +4,7 @@ import { useDialog, useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
 import { TransactionModel } from '@/types'
 import { currency } from '@/utils'
-import { AddTransactionModal, ModalFilters, TableCaption } from './components'
+import { AddTransactionOverlay, ModalFilters, TableCaption } from './components'
 import {
   chartBars,
   generateChartData,
@@ -97,7 +97,7 @@ export const Transactions = () => {
         ]}
       />
 
-      <AddTransactionModal
+      <AddTransactionOverlay
         isOpen={isModalTransactionOpen}
         onClose={() => setIsModalTransactionOpen(false)}
         selectedId={selectedTransactionId}

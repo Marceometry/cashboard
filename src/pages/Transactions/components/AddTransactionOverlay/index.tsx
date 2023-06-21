@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useBreakpointValue } from '@chakra-ui/react'
 import { isSameDay } from 'date-fns'
-import { FormModal, Radio } from '@/components'
+import { FormOverlay, Radio } from '@/components'
 import { useTransactions } from '@/contexts'
 import { currency, formatDateToInput, formatInputToISOString } from '@/utils'
 import { Form } from './Form'
@@ -12,18 +12,19 @@ import {
   addTransactionFormResolver,
   CategoryFormInputs,
 } from './validation'
+import { FormModal } from '@/components/molecules/FormModal'
 
-type AddTransactionModalProps = {
+type AddTransactionOverlayProps = {
   isOpen: boolean
   onClose: () => void
   selectedId?: string
 }
 
-export const AddTransactionModal = ({
+export const AddTransactionOverlay = ({
   isOpen,
   onClose,
   selectedId,
-}: AddTransactionModalProps) => {
+}: AddTransactionOverlayProps) => {
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const { categoryList, transactionList, addTransaction, updateTransaction } =
     useTransactions()
@@ -113,7 +114,7 @@ export const AddTransactionModal = ({
 
   return (
     <>
-      <FormModal
+      <FormOverlay
         isOpen={isOpen}
         onClose={onClose}
         onConfirm={handleSubmit}
@@ -134,7 +135,7 @@ export const AddTransactionModal = ({
           differentPaymentDate={differentPaymentDate}
           setDifferentPaymentDate={setDifferentPaymentDate}
         />
-      </FormModal>
+      </FormOverlay>
 
       {!!categoryList.length && (
         <FormModal

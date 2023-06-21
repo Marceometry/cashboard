@@ -15,7 +15,7 @@ import {
   Accordion,
   Checkbox,
   CheckboxGroup,
-  FormModal,
+  FormOverlay,
   Input,
   Radio,
   Select,
@@ -109,7 +109,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
   }, [categoryList])
 
   return (
-    <FormModal
+    <FormOverlay
       isOpen={isOpen}
       onClose={onClose}
       onConfirm={handleSubmit}
@@ -215,7 +215,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
         />
       </Grid>
 
-      <Grid templateColumns='1fr 1fr' gap='4' mt='3'>
+      <Grid templateColumns={isSmallScreen ? '1fr' : '1fr 1fr'} gap='4' mt='3'>
         <GridItem>
           <Radio
             name='paymentMethod'
@@ -251,6 +251,6 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
           }
         />
       </Center>
-    </FormModal>
+    </FormOverlay>
   )
 }

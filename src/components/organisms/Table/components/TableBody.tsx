@@ -47,8 +47,9 @@ export const TableBody = ({ data, columns, sortBy, ...props }: TableProps) => {
   }, [sortedData])
 
   useEffect(() => {
-    setSelectedSortBy(sortBy)
-  }, [sortBy])
+    if (selectedSortBy) return
+    setSelectedSortBy(sortBy || dateParam)
+  }, [sortBy, dateParam, selectedSortBy])
 
   return (
     <Box ref={containerRef} overflow='auto' h='100%'>

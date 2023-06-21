@@ -12,7 +12,6 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react'
 import { Button, Form } from '@/components'
-import { useKeyboardListener } from '@/hooks'
 
 type ButtonProps = {
   children: string
@@ -20,7 +19,7 @@ type ButtonProps = {
   isLoading?: boolean
 }
 
-type FormModalProps = ChakraModalProps & {
+export type FormModalProps = ChakraModalProps & {
   title: string
   formMethods: UseFormReturn<any, object>
   onConfirm: (data?: any) => void
@@ -39,9 +38,6 @@ export const FormModal = ({
   maxWidth = 660,
 }: FormModalProps) => {
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
-  const { useShiftShortcut } = useKeyboardListener()
-
-  useShiftShortcut(() => extraButton?.onClick(), 'Enter')
 
   return (
     <ChakraModal
@@ -51,11 +47,15 @@ export const FormModal = ({
       isCentered
     >
       <ModalOverlay />
-      <ModalContent maxW={maxWidth} mx={8} overflow='auto'>
+      <ModalContent maxW={maxWidth} maxH='95vh' my={0} mx={4} overflow='auto'>
         <ModalHeader fontSize='2xl'>{title}</ModalHeader>
-        <ModalCloseButton />
-        <Form formMethods={formMethods} onSubmit={onConfirm}>
-          <ModalBody maxH='50vh'>{children}</ModalBody>
+        <ModalCloseButton top='5' />
+        <Form
+          formMethods={formMethods}
+          onSubmit={onConfirm}
+          onShiftSubmit={extraButton?.onClick}
+        >
+          <ModalBody maxH='65vh'>{children}</ModalBody>
 
           <ModalFooter>
             <Flex
@@ -64,20 +64,15 @@ export const FormModal = ({
               gap={isSmallScreen ? '3' : '6'}
               direction={isSmallScreen ? 'column' : 'row'}
             >
-              <Button type='submit' size='lg' w='100%'>
+              <Button type='submit' w='100%'>
                 Confirmar
               </Button>
               {extraButton && (
-                <Button
-                  onClick={extraButton.onClick}
-                  type='submit'
-                  size='lg'
-                  w='100%'
-                >
+                <Button onClick={extraButton.onClick} type='submit' w='100%'>
                   {extraButton.children}
                 </Button>
               )}
-              <Button onClick={onClose} variant='outline' size='lg' w='100%'>
+              <Button onClick={onClose} variant='outline' w='100%'>
                 Cancelar
               </Button>
             </Flex>
