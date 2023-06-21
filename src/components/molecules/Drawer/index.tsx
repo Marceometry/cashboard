@@ -39,7 +39,7 @@ export const Drawer = ({
       size={size}
     >
       <DrawerOverlay />
-      <DrawerContent bg={bg}>
+      <DrawerContent bg={bg} h='100%'>
         <DrawerCloseButton top={4} />
         <DrawerHeader>{header}</DrawerHeader>
         <Divider />
