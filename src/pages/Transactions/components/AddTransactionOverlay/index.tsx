@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useBreakpointValue } from '@chakra-ui/react'
 import { isSameDay } from 'date-fns'
-import { FormOverlay, Radio } from '@/components'
+import { FormOverlay, RadioGroup } from '@/components'
 import { useTransactions } from '@/contexts'
 import { currency, formatDateToInput, formatInputToISOString } from '@/utils'
 import { Form } from './Form'
@@ -146,7 +146,7 @@ export const AddTransactionOverlay = ({
           formMethods={categoriesFormMethods}
           maxWidth={400}
         >
-          <Radio
+          <RadioGroup
             required
             name='category'
             columns={isSmallScreen ? 2 : 3}

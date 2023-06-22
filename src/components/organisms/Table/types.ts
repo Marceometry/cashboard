@@ -1,6 +1,7 @@
 import React from 'react'
 import { TableProps as ChakraTableProps } from '@chakra-ui/react'
 import { IconButtonProps, LabelType } from '@/components'
+import { DateParam } from '@/types'
 
 export type ColumnProps<T> = {
   label?: string
@@ -39,4 +40,5 @@ export type TableProps = ChakraTableProps & {
   sortBy?: string
   charts?: ChartProps[]
   onViewChange?: (view: 'table' | ChartType) => void
+  mobileCard?: (data: any, dateParam: DateParam) => React.ReactNode
 }

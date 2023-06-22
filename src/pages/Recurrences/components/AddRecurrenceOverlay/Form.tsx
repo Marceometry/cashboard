@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { Center, Grid, GridItem, useBreakpointValue } from '@chakra-ui/react'
-import { Input, MultiSelect, Radio } from '@/components'
+import { Input, MultiSelect, RadioGroup } from '@/components'
 import { useTransactions } from '@/contexts'
 import { paymentMethods } from '@/types'
 import { currency } from '@/utils'
@@ -102,7 +102,7 @@ export const Form = ({
         </GridItem>
       </Grid>
 
-      <Radio
+      <RadioGroup
         name='paymentMethod'
         label='Método de pagamento'
         required
@@ -125,7 +125,7 @@ export const Form = ({
       </Center>
 
       <Center>
-        <Radio
+        <RadioGroup
           name='type'
           options={[
             { label: 'Entrada', value: 'income' },

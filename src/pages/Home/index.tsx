@@ -44,7 +44,7 @@ export const Home = () => {
     <MainTemplate>
       <Flex
         flexDirection='column'
-        justifyContent='space-around'
+        justifyContent={{ base: 'space-between', sm: 'space-around' }}
         alignItems='center'
         w='full'
         h='full'
@@ -75,10 +75,15 @@ export const Home = () => {
           <>
             {!!recurrenceList.length && (
               <Center flexDirection='column' w='full'>
-                <Center mb='8'>
+                <Center mt='4' mb='8'>
                   <Heading size='lg'>Resumo mensal</Heading>
                 </Center>
-                <Flex w='full' gap='8' flexWrap='wrap'>
+                <Flex
+                  w='full'
+                  gap='8'
+                  flexWrap='wrap'
+                  flexDir={{ base: 'column', sm: 'row' }}
+                >
                   {!!monthlyIncomes && (
                     <Stat
                       type='income'
@@ -106,7 +111,11 @@ export const Home = () => {
 
             <Center flexDirection='column' w='full'>
               <Center my='8' gap='2'>
-                <Heading size='lg' textAlign='center'>
+                <Heading
+                  style={{ lineHeight: 1.5 }}
+                  size={{ base: 'md', sm: 'lg' }}
+                  textAlign='center'
+                >
                   Gasto médio por categoria (últimos{' '}
                   <InputNumber
                     value={monthCount}
@@ -117,6 +126,7 @@ export const Home = () => {
                         value
                       )
                     }}
+                    size={{ base: 'sm', sm: 'md' }}
                   />{' '}
                   meses)
                 </Heading>
@@ -126,7 +136,13 @@ export const Home = () => {
                   onClick={() => setIsModalOpen(true)}
                 />
               </Center>
-              <Flex w='full' gap='8' flexWrap='wrap'>
+              <Flex
+                w='full'
+                gap='8'
+                mb='4'
+                flexWrap='wrap'
+                flexDir={{ base: 'column', sm: 'row' }}
+              >
                 {selectedCategories.map((item) => {
                   const category = categories.find((c) => c.name === item)
                   if (!category) return null

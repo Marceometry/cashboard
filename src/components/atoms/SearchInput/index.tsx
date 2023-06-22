@@ -16,6 +16,7 @@ type Props = InputProps & {
 
 export const SearchInput = ({ debouncedOnChange, ...props }: Props) => {
   const [searchText, setSearchText] = useState('')
+
   const debouncedSearchText = useDebouncedValue(searchText)
   const inputRef = useRef<HTMLInputElement>(null)
 

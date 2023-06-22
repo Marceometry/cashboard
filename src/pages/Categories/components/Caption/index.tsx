@@ -1,4 +1,5 @@
-import { Radio, RadioGroup, Stack, Stat, StatArrow } from '@chakra-ui/react'
+import { Stat, StatArrow } from '@chakra-ui/react'
+import { RadioGroup } from '@/components'
 import { TransactionType } from '@/types'
 
 export type CaptionProps = {
@@ -8,17 +9,29 @@ export type CaptionProps = {
 
 export const Caption = ({ currentType, setCurrentType }: CaptionProps) => {
   return (
-    <RadioGroup onChange={setCurrentType} value={currentType}>
-      <Stat>
-        <Stack direction='row'>
-          <Radio value='outcome'>
-            Gastos <StatArrow type='decrease' />
-          </Radio>
-          <Radio value='income'>
-            Ganhos <StatArrow type='increase' />
-          </Radio>
-        </Stack>
-      </Stat>
-    </RadioGroup>
+    <Stat>
+      <RadioGroup
+        onChange={(value) => setCurrentType(value as TransactionType)}
+        value={currentType}
+        options={[
+          {
+            value: 'outcome',
+            label: (
+              <>
+                Gastos <StatArrow type='decrease' />
+              </>
+            ),
+          },
+          {
+            value: 'income',
+            label: (
+              <>
+                Ganhos <StatArrow type='increase' />
+              </>
+            ),
+          },
+        ]}
+      ></RadioGroup>
+    </Stat>
   )
 }

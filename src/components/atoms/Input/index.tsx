@@ -64,7 +64,7 @@ export const Input = ({
         helperText={helperText}
         isDisabled={props.isDisabled}
       >
-        <InputGroup>
+        <InputGroup size={{ base: 'sm', sm: 'md' }}>
           <ChakraInput
             {...inputRegister}
             {...props}
@@ -75,7 +75,14 @@ export const Input = ({
           />
           {rightIcon && (
             <InputRightElement>
-              <IconButton {...rightIcon} borderRadius={0} mb={error ? 6 : 0} />
+              <IconButton
+                {...rightIcon}
+                size={{ base: 'sm', sm: 'md' }}
+                borderRadius={{ base: 'sm', sm: 'md' }}
+                borderTopLeftRadius={0}
+                borderBottomLeftRadius={0}
+                mb={error ? 6 : 0}
+              />
             </InputRightElement>
           )}
 

@@ -163,6 +163,7 @@ export const ModalFilters = ({
               button: (
                 <Checkbox
                   w='fit-content'
+                  size={{ base: 'sm', sm: 'md' }}
                   isChecked={allChecked}
                   isIndeterminate={isIndeterminate}
                   onChange={(e) =>

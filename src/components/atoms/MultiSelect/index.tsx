@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
+import { useBreakpointValue } from '@chakra-ui/react'
 import { CreatableSelect } from 'chakra-react-select'
 import { FormControl } from '@/components'
 
@@ -25,6 +26,7 @@ export const MultiSelect = ({
   options,
 }: Props) => {
   const { control } = useFormContext()
+  const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const [createdOptions, setCreatedOptions] = useState<Option[]>([])
 
   const allOptions = [...options, ...createdOptions]
@@ -37,6 +39,7 @@ export const MultiSelect = ({
         render={({ field: { onChange, value, ref } }) => (
           <CreatableSelect
             isMulti
+            size={isSmallScreen ? 'sm' : 'md'}
             ref={ref}
             options={options}
             placeholder={placeholder}

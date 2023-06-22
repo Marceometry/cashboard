@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { MainTemplate, Table } from '@/components'
 import { useDialog, useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
-import { TransactionModel } from '@/types'
+import { DateParam, TransactionModel } from '@/types'
 import { currency } from '@/utils'
 import { AddTransactionOverlay, ModalFilters, TableCaption } from './components'
 import {
@@ -11,6 +11,7 @@ import {
   getButtons,
   getColumns,
   getIncomeAndOutcome,
+  getMobileCard,
 } from './constants'
 import { filterData } from './utils'
 import {
@@ -68,6 +69,14 @@ export const Transactions = () => {
   const caption = (
     <TableCaption filters={tableFilters} values={incomeAndOutcome} />
   )
+  const mobileCard = (data: TransactionModel, dateParam: DateParam) => {
+    return getMobileCard(
+      data,
+      dateParam,
+      handleOpenDeleteDialog,
+      handleOpenTransactionModal
+    )
+  }
   const buttons = getButtons(
     () => handleOpenTransactionModal(),
     () => setIsModalFiltersOpen(true)
@@ -87,6 +96,7 @@ export const Transactions = () => {
         caption={caption}
         onSearch={handleSearch}
         isLoading={isLoadingCache}
+        mobileCard={mobileCard}
         charts={[
           {
             type: 'bar',

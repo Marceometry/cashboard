@@ -52,7 +52,7 @@ export const Dialog = ({
       isCentered
     >
       <AlertDialogOverlay>
-        <AlertDialogContent>
+        <AlertDialogContent maxW='95vw' w={448}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
               {title}

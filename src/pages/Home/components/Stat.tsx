@@ -12,18 +12,17 @@ export type StatProps = {
   label: string
   value: number
   type: 'income' | 'outcome' | 'balance'
-  isSmallScreen?: boolean
 }
 
-export const Stat = ({ label, value, type, isSmallScreen }: StatProps) => {
+export const Stat = ({ label, value, type }: StatProps) => {
   return (
     <ChakraStat>
       <Grid placeItems='center'>
         <Center gap='2'>
           <StatIndicator type={type} />
-          <StatLabel fontSize={isSmallScreen ? 'md' : 'xl'}>{label}</StatLabel>
+          <StatLabel fontSize={{ base: 'md', sm: 'xl' }}>{label}</StatLabel>
         </Center>
-        <StatNumber fontSize={isSmallScreen ? 'lg' : '3xl'} mt='2'>
+        <StatNumber fontSize={{ base: 'lg', sm: '3xl' }} mt='2'>
           {currency.valueToMoney(value)}
         </StatNumber>
       </Grid>

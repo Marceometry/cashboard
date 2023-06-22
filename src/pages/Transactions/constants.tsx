@@ -1,4 +1,4 @@
-import { Center, Text } from '@chakra-ui/react'
+import { Center, Flex, GridItem, Text } from '@chakra-ui/react'
 import { ColumnProps, IconButton, TableButtons } from '@/components'
 import { DateParam, PaymentMethods, TransactionModel } from '@/types'
 import { currency, sortByDate } from '@/utils'
@@ -90,6 +90,53 @@ export const getColumns = (
   ]
 
   return columns
+}
+
+export const getMobileCard = (
+  item: TransactionModel,
+  dateParam: DateParam,
+  handleDeleteTransaction: (row: TransactionModel) => void,
+  handleEditTransaction: (id: string) => void
+) => {
+  const { id, amount, category, description, paymentMethod, type } = item
+
+  return (
+    <>
+      <GridItem display='flex' flexDir='column' justifyContent='space-between'>
+        <Text>{description}</Text>
+        <Text fontSize='sm' color={type === 'income' ? 'green.400' : 'red.300'}>
+          {currency.valueToMoney(amount)}
+        </Text>
+        <Text fontSize='sm'>{PaymentMethods[paymentMethod]}</Text>
+      </GridItem>
+      <GridItem
+        display='flex'
+        flexDir='column'
+        justifyContent='space-between'
+        justifySelf='end'
+        textAlign='right'
+      >
+        <Flex mb='1' gap='2' justifyContent='flex-end'>
+          <IconButton
+            aria-label='Editar transação'
+            icon='edit'
+            size='xs'
+            onClick={() => handleEditTransaction(id)}
+          />
+          <IconButton
+            aria-label='Excluir transação'
+            icon='delete'
+            size='xs'
+            onClick={() => handleDeleteTransaction(item)}
+          />
+        </Flex>
+        <Text fontSize='sm'>
+          {new Date(item[dateParam]).toLocaleDateString()}
+        </Text>
+        <Text fontSize='sm'>{category}</Text>
+      </GridItem>
+    </>
+  )
 }
 
 type ChartDataResponse = Array<{

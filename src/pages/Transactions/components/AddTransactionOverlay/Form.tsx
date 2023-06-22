@@ -7,7 +7,7 @@ import {
   GridItem,
   useBreakpointValue,
 } from '@chakra-ui/react'
-import { Input, MultiSelect, Radio } from '@/components'
+import { Input, MultiSelect, RadioGroup } from '@/components'
 import { useTransactions } from '@/contexts'
 import { paymentMethods } from '@/types'
 import { currency } from '@/utils'
@@ -120,7 +120,7 @@ export const Form = ({
             }
           />
 
-          <Radio
+          <RadioGroup
             rowGap={3}
             columnGap={5}
             name='paymentMethod'
@@ -147,7 +147,7 @@ export const Form = ({
       </Center>
 
       <Center>
-        <Radio
+        <RadioGroup
           name='type'
           options={[
             { label: 'Entrada', value: 'income' },

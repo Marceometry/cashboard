@@ -20,8 +20,9 @@ export const Editable = ({ onSubmit, defaultValue }: Props) => {
       selectAllOnFocus={false}
       submitOnBlur={false}
       display='flex'
-      flexDir='row'
-      gap='2'
+      alignItems='flex-end'
+      flexDir={{ base: 'column-reverse', sm: 'row' }}
+      gap={{ base: '0', sm: '2' }}
     >
       <Input
         as={EditablePreview}

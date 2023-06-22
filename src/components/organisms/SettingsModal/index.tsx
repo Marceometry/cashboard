@@ -1,15 +1,15 @@
 import { useState } from 'react'
+import { Avatar, Box, Flex, Text } from '@chakra-ui/react'
 import {
-  Avatar,
-  Box,
-  Flex,
-  Radio,
+  Button,
+  DeleteAccountModal,
+  Editable,
+  Label,
+  Modal,
   RadioGroup,
-  Stack,
-  Text,
-} from '@chakra-ui/react'
-import { Button, DeleteAccountModal, Editable, Modal } from '@/components'
+} from '@/components'
 import { useAuth, useTransactions } from '@/contexts'
+import { DateParam } from '@/types'
 
 type Props = {
   isOpen: boolean
@@ -36,41 +36,57 @@ export const SettingsModal = ({
     <>
       <Modal isOpen={isOpen} onClose={onClose} title='Configurações'>
         {!!user && (
-          <Flex flexDir='column' justifyContent='space-between' gap='4' mb='6'>
-            <Flex alignItems='center' gap='4'>
-              <Avatar size='xl' name={user.name} src={user.photoUrl} />
+          <Flex
+            alignItems='center'
+            gap={{ base: '0', sm: '4' }}
+            direction={{ base: 'column', sm: 'row' }}
+            mb='6'
+          >
+            <Avatar
+              size='xl'
+              name={user.name}
+              src={user.photoUrl}
+              borderWidth={2}
+              borderColor='gray.800'
+            />
 
-              <Flex flex='1' flexDir='column' justifyContent='space-between'>
-                <Editable defaultValue={user.name} onSubmit={updateUser} />
+            <Flex
+              w='100%'
+              flex='1'
+              flexDir='column'
+              justifyContent='space-between'
+            >
+              <Editable defaultValue={user.name} onSubmit={updateUser} />
 
-                <Text fontSize='sm' mt='1' mb='2'>
-                  Conectado com sua conta Google
-                </Text>
+              <Text fontSize='sm' mt='1' mb='2'>
+                Conectado com sua conta Google
+              </Text>
 
-                <Box>
-                  <Button
-                    size='xs'
-                    variant='outline'
-                    colorScheme='red'
-                    onClick={handleOpenDeleteAccountModal}
-                  >
-                    Excluir minha conta
-                  </Button>
-                </Box>
-              </Flex>
+              <Box>
+                <Button
+                  size='xs'
+                  variant='outline'
+                  colorScheme='red'
+                  onClick={handleOpenDeleteAccountModal}
+                >
+                  Excluir minha conta
+                </Button>
+              </Box>
             </Flex>
           </Flex>
         )}
 
-        <Box>
-          <Text mb='2'>Classificar e ordenar transações por:</Text>
+        <Box pb='4'>
+          <Label mb='2'>Classificar e ordenar transações por:</Label>
 
-          <RadioGroup value={dateParam} onChange={setDateParam}>
-            <Stack direction='row'>
-              <Radio value='date'>Data da compra</Radio>
-              <Radio value='datePayed'>Data do pagamento</Radio>
-            </Stack>
-          </RadioGroup>
+          <RadioGroup
+            value={dateParam}
+            onChange={(value) => setDateParam(value as DateParam)}
+            options={[
+              { value: 'date', label: 'Data da compra' },
+              { value: 'datePayed', label: 'Data do pagamento' },
+            ]}
+          />
         </Box>
       </Modal>
 

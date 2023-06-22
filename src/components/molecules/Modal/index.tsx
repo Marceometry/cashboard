@@ -31,12 +31,14 @@ export const Modal = ({
       isCentered
     >
       <ModalOverlay />
-      <ModalContent maxW={maxWidth} mx={8} overflow='auto'>
-        <ModalHeader fontSize='2xl'>{title}</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>{children}</ModalBody>
+      <ModalContent w='95vw' maxW={maxWidth} mx={8} overflow='auto'>
+        <ModalHeader pr='16' fontSize='2xl'>
+          {title}
+        </ModalHeader>
+        <ModalCloseButton top={4} right={6} />
+        <ModalBody px={{ base: '4', sm: '6' }}>{children}</ModalBody>
 
-        <ModalFooter>{modalFooter}</ModalFooter>
+        {modalFooter ? <ModalFooter>{modalFooter}</ModalFooter> : ''}
       </ModalContent>
     </ChakraModal>
   )

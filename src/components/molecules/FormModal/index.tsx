@@ -2,16 +2,14 @@ import { UseFormReturn } from 'react-hook-form'
 import {
   Modal as ChakraModal,
   ModalProps as ChakraModalProps,
-  Flex,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useBreakpointValue,
 } from '@chakra-ui/react'
-import { Button, Form } from '@/components'
+import { Form, FormFooter } from '@/components'
 
 type ButtonProps = {
   children: string
@@ -37,8 +35,6 @@ export const FormModal = ({
   formMethods,
   maxWidth = 660,
 }: FormModalProps) => {
-  const isSmallScreen = useBreakpointValue({ base: true, sm: false })
-
   return (
     <ChakraModal
       isOpen={isOpen}
@@ -58,24 +54,7 @@ export const FormModal = ({
           <ModalBody maxH='65vh'>{children}</ModalBody>
 
           <ModalFooter>
-            <Flex
-              w='full'
-              justify='center'
-              gap={isSmallScreen ? '3' : '6'}
-              direction={isSmallScreen ? 'column' : 'row'}
-            >
-              <Button type='submit' w='100%'>
-                Confirmar
-              </Button>
-              {extraButton && (
-                <Button onClick={extraButton.onClick} type='submit' w='100%'>
-                  {extraButton.children}
-                </Button>
-              )}
-              <Button onClick={onClose} variant='outline' w='100%'>
-                Cancelar
-              </Button>
-            </Flex>
+            <FormFooter onClose={onClose} extraButton={extraButton} />
           </ModalFooter>
         </Form>
       </ModalContent>

@@ -1,4 +1,4 @@
-import { Center, Text } from '@chakra-ui/react'
+import { Badge, Center, Flex, GridItem, Text } from '@chakra-ui/react'
 import { ColumnProps, IconButton, Switch } from '@/components'
 import { PaymentMethods, RecurrentTransaction } from '@/types'
 import { currency } from '@/utils'
@@ -59,6 +59,7 @@ export const getColumns = (
         isDisabled={installments === transactions.length}
         isChecked={isActive}
         onChange={() => toggleActivity(id, !isActive)}
+        green
       />
     ),
   },
@@ -80,3 +81,73 @@ export const getColumns = (
     ),
   },
 ]
+
+export const getMobileCard = (
+  item: RecurrentTransaction,
+  handleDeleteTransaction: (row: RecurrentTransaction) => void,
+  handleEditTransaction: (id: string) => void,
+  toggleActivity: (id: string, isActive: boolean) => void
+) => {
+  const {
+    id,
+    amount,
+    category,
+    description,
+    installments,
+    isActive,
+    paymentMethod,
+    startDate,
+    transactions,
+    type,
+  } = item
+
+  return (
+    <>
+      <GridItem display='flex' flexDir='column' justifyContent='space-between'>
+        <Text>{description}</Text>
+        <Text fontSize='sm' color={type === 'income' ? 'green.400' : 'red.300'}>
+          {currency.valueToMoney(amount)}
+        </Text>
+        <Text fontSize='sm'>{PaymentMethods[paymentMethod]}</Text>
+      </GridItem>
+      <GridItem
+        display='flex'
+        flexDir='column'
+        justifyContent='space-between'
+        justifySelf='end'
+        textAlign='right'
+      >
+        <Flex mb='1' gap='2' alignItems='center' justifyContent='flex-end'>
+          <Switch
+            isDisabled={installments === transactions.length}
+            isChecked={isActive}
+            onChange={() => toggleActivity(id, !isActive)}
+            green
+          />
+          <IconButton
+            aria-label='Editar transação'
+            icon='edit'
+            size='xs'
+            onClick={() => handleEditTransaction(id)}
+          />
+          <IconButton
+            aria-label='Excluir transação'
+            icon='delete'
+            size='xs'
+            onClick={() => handleDeleteTransaction(item)}
+          />
+        </Flex>
+        <Text fontSize='sm'>{new Date(startDate).toLocaleDateString()}</Text>
+        <Text fontSize='sm'>{category}</Text>
+        <Text fontSize='sm'>
+          Parcelas:{' '}
+          <Badge fontFamily='monospace' px='1'>
+            {!installments
+              ? String(transactions.length)
+              : `${transactions.length}/${installments}`}
+          </Badge>
+        </Text>
+      </GridItem>
+    </>
+  )
+}

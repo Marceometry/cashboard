@@ -56,14 +56,14 @@ export const UserMenu = () => {
             </MenuButton>
 
             <MenuList minWidth='200px'>
-              <MenuItem icon={<ThemeIcon />} onClick={toggleColorMode}>
-                Alterar Tema
-              </MenuItem>
               <MenuItem
                 icon={<Gear />}
                 onClick={() => setIsSettingsModalOpen(true)}
               >
                 Configurações
+              </MenuItem>
+              <MenuItem icon={<ThemeIcon />} onClick={toggleColorMode}>
+                Alterar Tema
               </MenuItem>
 
               <MenuDivider />

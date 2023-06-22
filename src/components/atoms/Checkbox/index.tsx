@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form'
 import { Checkbox as ChakraCheckbox } from '@chakra-ui/react'
 
-export type CheckboxGroupProps = {
+type CheckboxGroupProps = {
   name: string
   label: string
   defaultChecked?: boolean
@@ -18,6 +18,7 @@ export const Checkbox = ({
     <ChakraCheckbox
       w='fit-content'
       defaultChecked={defaultChecked}
+      size={{ base: 'sm', sm: 'md' }}
       {...register(name)}
     >
       {label}

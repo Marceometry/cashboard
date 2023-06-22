@@ -23,21 +23,24 @@ export const TableHeader = ({
 }: HeaderProps) => {
   return (
     <Flex
+      w='full'
       align='center'
       justify={caption ? 'space-between' : 'flex-end'}
       direction={{ base: 'column', lg: 'row' }}
-      gap={{ base: '4', lg: '8' }}
-      w='full'
-      mb='4'
+      gap={{ base: '2', sm: '4', lg: '8' }}
+      mb={{ base: '2', sm: '4' }}
     >
       {caption && <Heading fontSize='3xl'>{caption}</Heading>}
 
-      <Flex gap='4' flexDirection={{ base: 'column', sm: 'row' }}>
+      <Flex
+        gap={{ base: '2', sm: '4' }}
+        flexDirection={{ base: 'column', sm: 'row' }}
+      >
         {!noSearch && currentView === 'table' && (
           <SearchInput debouncedOnChange={onInputSearch} />
         )}
 
-        <Flex gap='4' justify='center'>
+        <Flex gap={{ base: '2', sm: '4' }} justify='center'>
           {charts?.map((chart) => (
             <IconButton
               key={chart.type}

@@ -1,9 +1,9 @@
-import { Flex, Grid, GridProps } from '@chakra-ui/react'
+import { Flex, Grid, GridProps, ResponsiveValue } from '@chakra-ui/react'
 
 type Props = {
   children: React.ReactNode
   rootProps: GridProps
-  gap?: number | string
+  gap?: ResponsiveValue<number | string>
   rowGap?: number | string
   columnGap?: number | string
   columns?: number
@@ -12,10 +12,10 @@ type Props = {
 export const Container = ({
   children,
   columns,
-  gap,
   rowGap,
   columnGap,
   rootProps,
+  gap = { base: 2, sm: 5 },
 }: Props) => {
   return columns ? (
     <Grid

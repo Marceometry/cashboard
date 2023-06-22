@@ -4,8 +4,8 @@ import {
   FormControlProps,
   FormErrorMessage,
   FormHelperText,
-  FormLabel,
 } from '@chakra-ui/react'
+import { Label } from '@/components'
 
 type Props = FormControlProps & {
   children: React.ReactNode
@@ -31,14 +31,9 @@ export const FormControl = ({
     <ChakraFormControl isInvalid={!!error}>
       {label && (
         <Flex justifyContent='space-between'>
-          <FormLabel
-            htmlFor={name}
-            opacity={isDisabled ? 0.4 : 1}
-            cursor={isDisabled ? 'not-allowed' : 'default'}
-          >
+          <Label htmlFor={name} disabled={isDisabled} required={required}>
             {label}
-            {required ? '*' : ''}
-          </FormLabel>
+          </Label>
         </Flex>
       )}
       {children}

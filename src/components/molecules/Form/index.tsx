@@ -29,3 +29,5 @@ export const Form = ({
     </FormProvider>
   )
 }
+
+export * from './FormFooter'

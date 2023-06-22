@@ -29,6 +29,7 @@ const styles = {
       backgroundColor: 'transparent',
     },
     html: {
+      height: '100vh',
       colorScheme: mode('light', 'dark')(props),
     },
     body: {

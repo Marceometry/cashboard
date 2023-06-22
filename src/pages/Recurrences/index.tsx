@@ -3,8 +3,8 @@ import { MainTemplate, Table } from '@/components'
 import { useDialog, useRecurrences } from '@/contexts'
 import { RecurrentTransaction } from '@/types'
 import { currency } from '@/utils'
-import { AddRecurrenceModal } from './components'
-import { getButtons, getColumns } from './constants'
+import { AddRecurrenceOverlay } from './components'
+import { getButtons, getColumns, getMobileCard } from './constants'
 
 export const Recurrences = () => {
   const { openDialog } = useDialog()
@@ -51,6 +51,14 @@ export const Recurrences = () => {
     })
   }
 
+  const mobileCard = (data: RecurrentTransaction) => {
+    return getMobileCard(
+      data,
+      handleOpenDeleteDialog,
+      handleEditRecurrence,
+      toggleActivity
+    )
+  }
   const buttons = getButtons(() => setIsRecurrenceModalOpen(true))
   const columns = getColumns(
     handleEditRecurrence,
@@ -65,10 +73,11 @@ export const Recurrences = () => {
         data={recurrenceList}
         buttons={buttons}
         isLoading={isLoadingCache}
+        mobileCard={mobileCard}
         sortBy='startDate'
       />
 
-      <AddRecurrenceModal
+      <AddRecurrenceOverlay
         isOpen={isRecurrenceModalOpen}
         onClose={handleCloseModal}
         selectedId={selectedRecurrence}

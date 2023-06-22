@@ -7,18 +7,18 @@ type Props = {
 }
 
 export const MainTemplate = ({ children }: Props) => {
-  const showSidebar = useBreakpointValue({ base: false, sm: true })
+  const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const { isLoading } = useTransactions()
 
   return (
     <Flex h={window.innerHeight} maxH='100vh'>
-      {showSidebar && <Sidebar />}
+      {!isSmallScreen && <Sidebar />}
 
       {isLoading && (
         <Box
           position='fixed'
-          left='5'
-          bottom='5'
+          bottom='0'
+          left='0'
           bg='gray.800'
           borderTopRightRadius='10'
           lineHeight='0'
@@ -32,8 +32,14 @@ export const MainTemplate = ({ children }: Props) => {
       )}
 
       <Flex flex='1' overflow='auto'>
-        <Flex direction='column' w='full' flex='1' p='5' gap='5'>
-          <Header isSidebarAppearing={showSidebar} />
+        <Flex
+          direction='column'
+          w='full'
+          flex='1'
+          gap={isSmallScreen ? '4' : '5'}
+          p={isSmallScreen ? '0' : '5'}
+        >
+          <Header />
 
           <Card>{children}</Card>
         </Flex>

@@ -28,13 +28,17 @@ export const CheckboxGroup = ({
   const { getCheckboxProps } = useCheckboxGroup({ ...field })
 
   return (
-    <Grid gap='5' templateColumns={`repeat(${columns}, 1fr)`}>
+    <Grid
+      gap={{ base: '2', sm: '4' }}
+      templateColumns={`repeat(${columns}, 1fr)`}
+    >
       {options.map((option) => (
         <Checkbox
           w='fit-content'
           key={option.value}
           defaultChecked={option.defaultChecked ?? defaultCheckAll}
           disabled={option.disabled}
+          size={{ base: 'sm', sm: 'md' }}
           {...getCheckboxProps({ value: option.value })}
         >
           {option.label}

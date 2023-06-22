@@ -4,10 +4,8 @@ import {
   Center,
   Checkbox as ChakraCheckbox,
   Flex,
-  FormLabel,
   Grid,
   GridItem,
-  Switch,
   Text,
   useBreakpointValue,
 } from '@chakra-ui/react'
@@ -17,8 +15,10 @@ import {
   CheckboxGroup,
   FormOverlay,
   Input,
-  Radio,
+  Label,
+  RadioGroup,
   Select,
+  Switch,
 } from '@/components'
 import { MONTH_LIST } from '@/constants'
 import { useTransactions } from '@/contexts'
@@ -122,21 +122,21 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
     >
       <Grid gap='4'>
         <GridItem>
-          <Flex>
+          <Flex alignItems='center' mb='4'>
             <Switch
-              mb='4'
               mr='2'
               id='specificDate'
               isChecked={specificDate}
               onChange={(e) => checkSpecificDate(e.target.checked)}
             />
-            <FormLabel
+            <Label
+              m='0'
               htmlFor='specificDate'
               userSelect='none'
               cursor='pointer'
             >
               Selecionar intervalo de data específico
-            </FormLabel>
+            </Label>
           </Flex>
 
           {specificDate ? (
@@ -185,6 +185,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
               button: (
                 <ChakraCheckbox
                   w='fit-content'
+                  size={{ base: 'sm', sm: 'md' }}
                   isChecked={allChecked}
                   isIndeterminate={isIndeterminate}
                   onChange={(e) =>
@@ -217,7 +218,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
 
       <Grid templateColumns={isSmallScreen ? '1fr' : '1fr 1fr'} gap='4' mt='3'>
         <GridItem>
-          <Radio
+          <RadioGroup
             name='paymentMethod'
             label='Métodos de pagamento'
             options={[
@@ -230,7 +231,7 @@ export const ModalFilters = ({ isOpen, onClose, handleFilter }: Props) => {
         </GridItem>
 
         <GridItem>
-          <Radio
+          <RadioGroup
             name='type'
             label='Tipos'
             options={[

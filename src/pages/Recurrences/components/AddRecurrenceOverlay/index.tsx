@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useBreakpointValue } from '@chakra-ui/react'
-import { FormModal, Radio } from '@/components'
+import { FormModal, FormOverlay, RadioGroup } from '@/components'
 import { useRecurrences, useTransactions } from '@/contexts'
 import { AddRecurrentTransaction } from '@/types'
 import { currency, formatDateToInput, formatInputToISOString } from '@/utils'
@@ -13,17 +13,17 @@ import {
   CategoryFormInputs,
 } from './validation'
 
-type AddRecurrenceModalProps = {
+type AddRecurrenceOverlayProps = {
   isOpen: boolean
   onClose: () => void
   selectedId?: string
 }
 
-export const AddRecurrenceModal = ({
+export const AddRecurrenceOverlay = ({
   isOpen,
   onClose,
   selectedId,
-}: AddRecurrenceModalProps) => {
+}: AddRecurrenceOverlayProps) => {
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const { recurrenceList, addRecurrence, updateRecurrence } = useRecurrences()
   const { categoryList } = useTransactions()
@@ -88,7 +88,7 @@ export const AddRecurrenceModal = ({
 
   return (
     <>
-      <FormModal
+      <FormOverlay
         isOpen={isOpen}
         onClose={onClose}
         onConfirm={handleSubmit}
@@ -99,7 +99,7 @@ export const AddRecurrenceModal = ({
           isEditingTransaction={!!selectedId}
           handleOpenCategoriesModal={() => setIsCategoriesModalOpen(true)}
         />
-      </FormModal>
+      </FormOverlay>
 
       {!!categoryList.length && (
         <FormModal
@@ -110,7 +110,7 @@ export const AddRecurrenceModal = ({
           formMethods={categoriesFormMethods}
           maxWidth={400}
         >
-          <Radio
+          <RadioGroup
             required
             name='category'
             columns={isSmallScreen ? 2 : 3}

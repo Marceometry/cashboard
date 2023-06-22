@@ -23,7 +23,11 @@ export const Select = ({ options, name, ...props }: Props) => {
   })
 
   return (
-    <ChakraSelect {...register(name)} {...props}>
+    <ChakraSelect
+      {...register(name)}
+      size={{ base: 'sm', sm: 'md' }}
+      {...props}
+    >
       {formattedOptions.map((option) => (
         <option key={option.value} value={option.value}>
           {option.label}

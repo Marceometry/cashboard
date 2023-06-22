@@ -39,7 +39,7 @@ export function TransactionsContextProvider({
 }: TransactionsContextProviderProps) {
   const storage = useLocalStorage()
   const { user } = useAuth()
-  const { call, isLoading, setIsLoading } = useApiCall()
+  const { call, isLoading, setIsLoading } = useApiCall(false)
   const { onTransactionsValue, remoteAddTransaction, remoteRemoveTransaction } =
     useFirebaseDatabase()
 
@@ -129,6 +129,7 @@ export function TransactionsContextProvider({
     const transactions = storage.get('transaction-list')
     setTransactionList(transactions || [])
     setIsLoadingCache(!transactions?.length)
+    setIsLoading(true)
 
     const unsubscribeOnValue = onTransactionsValue((data) => {
       const transactions = firebaseDataSnapshotToTransactionList(data)

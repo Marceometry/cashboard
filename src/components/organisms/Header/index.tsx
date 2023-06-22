@@ -1,29 +1,28 @@
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { HamburgerIcon } from '@chakra-ui/icons'
-import { Flex, Heading, IconButton } from '@chakra-ui/react'
+import { Flex, Heading, IconButton, useBreakpointValue } from '@chakra-ui/react'
 import { MobileSidebar, UserMenu } from '@/components'
 import { dashboardRoutes } from '@/router'
 
-type Props = {
-  isSidebarAppearing?: boolean
-}
-
-export const Header = ({ isSidebarAppearing }: Props) => {
-  const location = useLocation()
+export const Header = () => {
+  const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const location = useLocation()
 
   const currentPage = dashboardRoutes.find(
     (route) => route.path === location.pathname
   )?.label
+
+  const padding = isSmallScreen ? '4' : '0'
 
   const handleOpenSidebar = () => setIsSidebarOpen(true)
 
   const handleCloseSidebar = () => setIsSidebarOpen(false)
 
   return (
-    <Flex as='header' gap='4'>
-      {!isSidebarAppearing && (
+    <Flex as='header' gap='4' pt={padding} px={padding}>
+      {isSmallScreen && (
         <>
           <IconButton
             icon={<HamburgerIcon />}
