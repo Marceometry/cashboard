@@ -10,7 +10,6 @@ import {
   Thead,
   Tr,
   useBreakpointValue,
-  useColorModeValue,
 } from '@chakra-ui/react'
 import { useTransactions } from '@/contexts'
 import { useInfiniteScroll } from '@/hooks'
@@ -39,8 +38,6 @@ export const TableBody = ({
 
   const { lastElementRef, paginatedData } = useInfiniteScroll(sortedData)
 
-  const headerBgAndBorder = useColorModeValue('gray.300', 'gray.800')
-
   function selectSortBy(field: any) {
     if (selectedSortBy === field) {
       setReverseSort((state) => !state)
@@ -64,7 +61,6 @@ export const TableBody = ({
     <Box ref={containerRef} overflow='auto' h='100%'>
       {isSmallScreen && mobileCard ? (
         <MobileTableBody
-          headerBgAndBorder={headerBgAndBorder}
           selectedSortBy={selectedSortBy}
           setSelectedSortBy={setSelectedSortBy}
           reverseSort={reverseSort}
@@ -82,7 +78,7 @@ export const TableBody = ({
           <Thead>
             <Tr>
               {columns.map((column, index) => (
-                <Th bg={headerBgAndBorder} key={index}>
+                <Th bg='whiteAlpha.200' color='gray.200' key={index}>
                   {column.label ? (
                     <Button
                       __css={{ all: 'unset', cursor: 'pointer' }}
@@ -114,7 +110,7 @@ export const TableBody = ({
             {paginatedData.map((item, index) => (
               <Tr ref={(node) => lastElementRef(node, index)} key={index}>
                 {columns.map((column, columnIndex) => (
-                  <Td key={columnIndex} borderColor={headerBgAndBorder}>
+                  <Td key={columnIndex} borderColor='whiteAlpha.200'>
                     {column.customRender
                       ? column.customRender(item)
                       : column.field

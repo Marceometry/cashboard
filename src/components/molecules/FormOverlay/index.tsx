@@ -26,7 +26,7 @@ export const FormOverlay = ({
   }
 
   return isSmallScreen ? (
-    <FormDrawer size={isSmallScreen ? 'full' : 'lg'} header={title} {...props}>
+    <FormDrawer header={title} {...props}>
       <Flex
         mt='2'
         mb='4'

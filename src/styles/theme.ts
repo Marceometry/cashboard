@@ -17,13 +17,13 @@ const colors = {
 const styles = {
   global: (props: any) => ({
     '&::-webkit-scrollbar': {
-      width: '10px',
-      height: '10px',
+      width: '8px',
+      height: '8px',
       backgroundColor: 'transparent',
     },
     '&::-webkit-scrollbar-thumb': {
-      borderRadius: '8px',
-      backgroundColor: mode('rgb(159 170 191)', 'rgb(64, 75, 94)')(props),
+      borderRadius: '2px',
+      backgroundColor: 'whiteAlpha.50',
     },
     '&::-webkit-scrollbar-corner': {
       backgroundColor: 'transparent',

@@ -17,7 +17,6 @@ export type DrawerProps = {
   header: React.ReactNode
   footer?: React.ReactNode
   placement?: 'left' | 'right'
-  size?: 'md' | 'lg' | 'xl' | 'full'
 }
 
 export const Drawer = ({
@@ -27,16 +26,15 @@ export const Drawer = ({
   children,
   header,
   footer,
-  size,
 }: DrawerProps) => {
-  const bg = useColorModeValue('gray.300', 'gray.700')
+  const bg = useColorModeValue('gray.300', 'gray.800')
 
   return (
     <ChakraDrawer
       isOpen={isOpen}
       onClose={onClose}
       placement={placement}
-      size={size}
+      size='full'
     >
       <DrawerOverlay />
       <DrawerContent bg={bg} h='100%'>

@@ -18,7 +18,6 @@ import { DateParam } from '@/types'
 import { ColumnProps } from '../types'
 
 type Props = {
-  headerBgAndBorder: string
   selectedSortBy: any
   setSelectedSortBy: (value: any) => void
   reverseSort: boolean
@@ -30,7 +29,6 @@ type Props = {
 }
 
 export const MobileTableBody = ({
-  headerBgAndBorder,
   selectedSortBy,
   setSelectedSortBy,
   reverseSort,
@@ -44,7 +42,16 @@ export const MobileTableBody = ({
 
   return (
     <Box overflow='hidden'>
-      <Flex justifyContent='flex-end' p='2' w='full' bg={headerBgAndBorder}>
+      <Flex
+        justifyContent='flex-end'
+        py='1'
+        px='2'
+        w='full'
+        borderRadius='md'
+        borderTopRightRadius='0'
+        borderBottomRightRadius='0'
+        bg='whiteAlpha.200'
+      >
         <Box position='relative'>
           <Menu closeOnSelect={false}>
             <MenuButton
@@ -108,7 +115,7 @@ export const MobileTableBody = ({
           <Grid p='2' gap='1' templateColumns='3fr 2fr'>
             {mobileCard(item, dateParam)}
           </Grid>
-          <Divider borderColor={headerBgAndBorder} />
+          <Divider borderColor='whiteAlpha.200' />
         </Box>
       ))}
     </Box>
