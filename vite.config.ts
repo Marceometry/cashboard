@@ -22,7 +22,7 @@ export default defineConfig({
         short_name: 'Cashboard',
         description:
           'Cashboard - registre e analise todos os seus ganhos e despesas da maneira que desejar.',
-        background_color: '#48bb78',
+        background_color: '#1a202c',
         theme_color: '#48bb78',
         icons: [
           {
