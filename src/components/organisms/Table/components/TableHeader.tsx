@@ -28,7 +28,7 @@ export const TableHeader = ({
       justify={caption ? 'space-between' : 'flex-end'}
       direction={{ base: 'column', lg: 'row' }}
       gap={{ base: '2', sm: '4', lg: '8' }}
-      mb={{ base: '2', sm: '4' }}
+      p={{ base: '2', sm: '4' }}
     >
       {caption && <Heading fontSize='3xl'>{caption}</Heading>}
 

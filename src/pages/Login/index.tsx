@@ -16,7 +16,11 @@ export const Login = () => {
     <LoginTemplate>
       <Logo />
 
-      <Button leftIcon={<GoogleLogo />} onClick={signIn} mt='4'>
+      <Button
+        leftIcon={<GoogleLogo weight='fill' size={24} />}
+        onClick={signIn}
+        mt='4'
+      >
         Entrar com Google
       </Button>
     </LoginTemplate>

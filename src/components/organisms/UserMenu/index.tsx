@@ -3,28 +3,32 @@ import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons'
 import {
   Avatar,
   Button as ChakraButton,
+  Flex,
   Menu,
   MenuButton,
   MenuDivider,
   MenuItem,
   MenuList,
+  Text,
+  Tooltip,
   useBreakpointValue,
   useColorMode,
 } from '@chakra-ui/react'
-import { Download, FileArrowDown, Gear, SignOut } from 'phosphor-react'
+import { Download, FileArrowDown, Gear, SignOut, WifiX } from 'phosphor-react'
 import { FileImportModal, SettingsModal, ThemeIcon } from '@/components'
-import { useAuth, useTransactions } from '@/contexts'
+import { useAuth, useFirebaseContext, useTransactions } from '@/contexts'
 import { useFileDownload } from '@/hooks'
 import { sortByDate } from '@/utils'
 
 export const UserMenu = () => {
-  const showName = useBreakpointValue({ base: false, sm: true })
+  const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const { toggleColorMode } = useColorMode()
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
-  const [isImportFileModalOpen, setIsImportFileModalOpen] = useState(false)
   const downloadFile = useFileDownload()
+  const { isOnline } = useFirebaseContext()
   const { transactionList } = useTransactions()
   const { user, signOut } = useAuth()
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+  const [isImportFileModalOpen, setIsImportFileModalOpen] = useState(false)
 
   if (!user) return null
 
@@ -38,21 +42,35 @@ export const UserMenu = () => {
   const openImportFileModal = () => setIsImportFileModalOpen(true)
   const closeImportFileModal = () => setIsImportFileModalOpen(false)
 
+  const avatar = <Avatar size='sm' name={user.name} src={user.photoUrl} />
+
   return (
-    <>
+    <Flex align='center' gap='2'>
+      {!isOnline && (
+        <Tooltip
+          label='Não há conexão com a internet'
+          bg='yellow.400'
+          borderRadius='md'
+          hasArrow
+        >
+          <Text color='yellow.400'>
+            <WifiX size={24} />
+          </Text>
+        </Tooltip>
+      )}
       <Menu>
         {({ isOpen }) => (
           <>
             <MenuButton
               as={ChakraButton}
-              px='2'
+              borderWidth={1}
+              borderColor={isOnline ? 'gray.900' : 'yellow.400'}
               borderRadius='999'
-              leftIcon={
-                <Avatar size='sm' name={user.name} src={user.photoUrl} />
-              }
+              px='2'
+              leftIcon={isSmallScreen ? undefined : avatar}
               rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
             >
-              {showName && user.name}
+              {isSmallScreen ? avatar : user.name}
             </MenuButton>
 
             <MenuList minWidth='200px'>
@@ -93,6 +111,6 @@ export const UserMenu = () => {
         onClose={() => setIsSettingsModalOpen(false)}
         openSettingsModal={() => setIsSettingsModalOpen(true)}
       />
-    </>
+    </Flex>
   )
 }

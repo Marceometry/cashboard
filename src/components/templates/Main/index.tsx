@@ -17,15 +17,10 @@ export const MainTemplate = ({ children }: Props) => {
       {isLoading && (
         <Box
           position='fixed'
-          bottom='0'
-          left='0'
-          bg='gray.800'
-          borderTopRightRadius='10'
+          left={{ base: '50%', sm: '4' }}
+          bottom={{ base: '2', sm: '5' }}
+          transform={{ base: 'translateX(-50%)', sm: 'none' }}
           lineHeight='0'
-          pt='2'
-          pr='2'
-          pl='1'
-          pb='1'
         >
           <Spinner size='lg' />
         </Box>

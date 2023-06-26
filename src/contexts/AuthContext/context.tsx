@@ -5,7 +5,8 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { useApiCall, useFirebaseAuth } from '@/hooks'
+import { useFirebaseContext } from '@/contexts'
+import { useApiCall, useLocalStorage } from '@/hooks'
 import { AuthContextData, GoogleUser, User } from './types'
 
 export type AuthContextProviderProps = {
@@ -24,13 +25,13 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     firebaseSignOut,
     onAuthChange,
     deleteCurrentAccount,
-  } = useFirebaseAuth()
-  const [user, setUser] = useState<User | null>(null)
+  } = useFirebaseContext()
+  const [user, setUser] = useState<User | null>(useLocalStorage().getUser())
 
   const signIn = authApi.call(
     async () => {
-      const { user } = await signInWithGoogle()
-      return user.displayName
+      const response = await signInWithGoogle()
+      return response?.user?.displayName
     },
     {
       startInfoToast: 'Faça login com sua conta Google',
@@ -86,7 +87,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     return () => {
       unsubscribe()
     }
-  }, [])
+  }, [onAuthChange])
 
   return (
     <AuthContext.Provider

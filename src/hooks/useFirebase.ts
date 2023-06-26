@@ -1,34 +1,34 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import {
+  Auth,
   deleteUser,
-  getAuth,
   GoogleAuthProvider,
-  onAuthStateChanged,
   reauthenticateWithPopup,
   signInWithPopup,
   signOut,
   updateProfile,
 } from 'firebase/auth'
-import { getDatabase, onValue, ref, remove, set } from 'firebase/database'
-import { useAuth } from '@/contexts'
+import { Database, onValue, ref, remove, set } from 'firebase/database'
 import {
   AddTransactionModel,
   RecurrentTransaction,
   TransactionModel,
 } from '@/types'
-import { firebaseApp } from '@/services'
 
 export type FirebaseDataSnapshot<T> = { [key: string]: T }
 
-export const useFirebaseAuth = () => {
-  const auth = getAuth()
-
+export const useFirebaseAuth = (
+  database: Database | null,
+  auth: Auth | null
+) => {
   const signInWithGoogle = () => {
+    if (!auth) return
     const authProvider = new GoogleAuthProvider()
     return signInWithPopup(auth, authProvider)
   }
 
   const reauthenticate = async () => {
-    if (!auth.currentUser) return
+    if (!auth?.currentUser) return
     const authProvider = new GoogleAuthProvider()
     const response = await reauthenticateWithPopup(
       auth.currentUser,
@@ -38,21 +38,17 @@ export const useFirebaseAuth = () => {
   }
 
   const firebaseSignOut = () => {
-    return signOut(auth)
-  }
-
-  const onAuthChange = (callback: (user: any) => void) => {
-    return onAuthStateChanged(auth, callback)
+    if (auth) return signOut(auth)
   }
 
   const updateCurrentUser = async (name: string) => {
-    if (!auth.currentUser) return
+    if (!auth?.currentUser) return
     const data = { displayName: name }
     await updateProfile(auth.currentUser, data)
   }
 
   const deleteCurrentAccount = async () => {
-    const user = auth.currentUser
+    const user = auth?.currentUser
     if (!user) return
     try {
       await deleteUser(user)
@@ -65,9 +61,10 @@ export const useFirebaseAuth = () => {
       if (!user) return null
       await deleteUser(user)
 
-      const database = getDatabase(firebaseApp)
-      const userPath = `users/${user.uid}`
-      await set(ref(database, userPath), {})
+      if (database) {
+        const userPath = `users/${user.uid}`
+        await set(ref(database, userPath), {})
+      }
 
       return user
     }
@@ -76,34 +73,31 @@ export const useFirebaseAuth = () => {
   return {
     signInWithGoogle,
     firebaseSignOut,
-    onAuthChange,
     updateCurrentUser,
     deleteCurrentAccount,
   }
 }
 
-export const useFirebaseDatabase = () => {
-  const database = getDatabase(firebaseApp)
-  const { user } = useAuth()
-  const userId = user?.id
-
+export const useFirebaseDatabase = (
+  database: Database | null,
+  userId?: string
+) => {
   const transactionsPath = `users/${userId}/transactions`
-  const transactionsRef = ref(database, transactionsPath)
-
   const recurrencesPath = `users/${userId}/recurrences`
-  const recurrencesRef = ref(database, recurrencesPath)
 
   // Transactions //
 
   const onTransactionsValue = (
     callback: (data: FirebaseDataSnapshot<AddTransactionModel>) => void
   ) => {
-    return onValue(transactionsRef, (data) =>
+    if (!database) return () => {}
+    return onValue(ref(database, transactionsPath), (data) =>
       callback(data.exists() ? data.val() : {})
     )
   }
 
   const remoteAddTransaction = (transaction: TransactionModel) => {
+    if (!database) return
     return set(ref(database, `${transactionsPath}/${transaction.id}`), {
       ...transaction,
       userId,
@@ -111,6 +105,7 @@ export const useFirebaseDatabase = () => {
   }
 
   const remoteRemoveTransaction = (id: string) => {
+    if (!database) return
     return remove(ref(database, `${transactionsPath}/${id}`))
   }
 
@@ -119,12 +114,14 @@ export const useFirebaseDatabase = () => {
   const onRecurrencesValue = (
     callback: (data: FirebaseDataSnapshot<RecurrentTransaction>) => void
   ) => {
-    return onValue(recurrencesRef, (data) =>
+    if (!database) return () => {}
+    return onValue(ref(database, recurrencesPath), (data) =>
       callback(data.exists() ? data.val() : {})
     )
   }
 
   const remoteAddRecurrence = (recurrence: RecurrentTransaction) => {
+    if (!database) return
     return set(ref(database, `${recurrencesPath}/${recurrence.id}`), {
       ...recurrence,
       userId,
@@ -132,6 +129,7 @@ export const useFirebaseDatabase = () => {
   }
 
   const remoteRemoveRecurrence = (id: string) => {
+    if (!database) return
     return remove(ref(database, `${recurrencesPath}/${id}`))
   }
 

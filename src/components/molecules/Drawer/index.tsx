@@ -27,7 +27,7 @@ export const Drawer = ({
   header,
   footer,
 }: DrawerProps) => {
-  const bg = useColorModeValue('gray.300', 'gray.800')
+  const bg = useColorModeValue('gray.50', 'gray.800')
 
   return (
     <ChakraDrawer

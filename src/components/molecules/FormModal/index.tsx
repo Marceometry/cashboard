@@ -8,6 +8,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { Form, FormFooter } from '@/components'
 
@@ -35,6 +36,8 @@ export const FormModal = ({
   formMethods,
   maxWidth = 660,
 }: FormModalProps) => {
+  const bg = useColorModeValue('gray.50', 'gray.800')
+
   return (
     <ChakraModal
       isOpen={isOpen}
@@ -43,7 +46,14 @@ export const FormModal = ({
       isCentered
     >
       <ModalOverlay />
-      <ModalContent maxW={maxWidth} maxH='95vh' my={0} mx={4} overflow='auto'>
+      <ModalContent
+        maxW={maxWidth}
+        bg={bg}
+        maxH='95vh'
+        my={0}
+        mx={4}
+        overflow='auto'
+      >
         <ModalHeader fontSize='2xl'>{title}</ModalHeader>
         <ModalCloseButton top='5' />
         <Form

@@ -44,16 +44,20 @@ export const Table = ({
   }, [currentView])
 
   return (
-    <Flex flex='1' direction='column' overflow='hidden' p='1'>
-      <TableHeader
-        caption={caption}
-        noSearch={noSearch}
-        onInputSearch={setSearchText}
-        buttons={buttons}
-        toggleChart={toggleChart}
-        currentView={currentView}
-        charts={charts}
-      />
+    <Flex flex='1' direction='column' overflow='hidden'>
+      {noSearch && !caption && !charts?.length && !buttons ? (
+        ''
+      ) : (
+        <TableHeader
+          caption={caption}
+          noSearch={noSearch}
+          onInputSearch={setSearchText}
+          buttons={buttons}
+          toggleChart={toggleChart}
+          currentView={currentView}
+          charts={charts}
+        />
+      )}
 
       {isLoading ? (
         <Loading />

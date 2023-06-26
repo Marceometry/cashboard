@@ -35,7 +35,7 @@ const styles = {
     body: {
       fontFamily: 'sans-serif',
       color: mode('gray.800', 'gray.200')(props),
-      bg: mode('gray.200', 'gray.800')(props),
+      bg: mode('gray.200', 'gray.900')(props),
       overflow: 'hidden',
       height: '100vh',
     },

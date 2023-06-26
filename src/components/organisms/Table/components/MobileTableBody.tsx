@@ -41,15 +41,12 @@ export const MobileTableBody = ({
   const { dateParam } = useTransactions()
 
   return (
-    <Box overflow='hidden'>
+    <Box h='100%' overflowY='auto' overflowX='hidden'>
       <Flex
         justifyContent='flex-end'
         py='1'
         px='2'
         w='full'
-        borderRadius='md'
-        borderTopRightRadius='0'
-        borderBottomRightRadius='0'
         bg='whiteAlpha.200'
       >
         <Box position='relative'>

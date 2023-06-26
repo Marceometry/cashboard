@@ -1,6 +1,6 @@
 import { useToast as useChakraToast } from '@chakra-ui/react'
 
-type ToastVariant = 'success' | 'error' | 'info'
+type ToastVariant = 'success' | 'error' | 'warning' | 'info'
 
 export const useToast = () => {
   const toast = useChakraToast()

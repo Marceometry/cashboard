@@ -47,7 +47,7 @@ export const SettingsModal = ({
               name={user.name}
               src={user.photoUrl}
               borderWidth={2}
-              borderColor='gray.800'
+              borderColor='gray.900'
             />
 
             <Flex

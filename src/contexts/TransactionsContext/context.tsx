@@ -7,7 +7,8 @@ import {
 } from 'react'
 import { v4 as uuid } from 'uuid'
 import { useAuth } from '@/contexts'
-import { useApiCall, useFirebaseDatabase, useLocalStorage } from '@/hooks'
+import { useFirebaseContext } from '@/contexts'
+import { useApiCall, useLocalStorage } from '@/hooks'
 import {
   AddTransactionModel,
   CategoryModel,
@@ -40,8 +41,12 @@ export function TransactionsContextProvider({
   const storage = useLocalStorage()
   const { user } = useAuth()
   const { call, isLoading, setIsLoading } = useApiCall(false)
-  const { onTransactionsValue, remoteAddTransaction, remoteRemoveTransaction } =
-    useFirebaseDatabase()
+  const {
+    isOnline,
+    onTransactionsValue,
+    remoteAddTransaction,
+    remoteRemoveTransaction,
+  } = useFirebaseContext()
 
   const [isLoadingCache, setIsLoadingCache] = useState(true)
   const [dateParam, setDateParam] = useState<DateParam>(
@@ -111,8 +116,9 @@ export function TransactionsContextProvider({
     filterMostRepeatedTransactions(text, mostRepeatedTransactions)
 
   useEffect(() => {
+    if (!dateParam) return
     storage.set('date-param', dateParam)
-  }, [dateParam])
+  }, [user, dateParam])
 
   useEffect(() => {
     const categories = generateCategories(transactionList)
@@ -129,8 +135,9 @@ export function TransactionsContextProvider({
     const transactions = storage.get('transaction-list')
     setTransactionList(transactions || [])
     setIsLoadingCache(!transactions?.length)
-    setIsLoading(true)
 
+    if (!isOnline) return
+    setIsLoading(true)
     const unsubscribeOnValue = onTransactionsValue((data) => {
       const transactions = firebaseDataSnapshotToTransactionList(data)
       storage.set('transaction-list', transactions)
@@ -142,7 +149,7 @@ export function TransactionsContextProvider({
     return () => {
       unsubscribeOnValue()
     }
-  }, [user?.id])
+  }, [user?.id, isOnline, onTransactionsValue])
 
   return (
     <TransactionsContext.Provider

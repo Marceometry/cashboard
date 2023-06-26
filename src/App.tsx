@@ -2,6 +2,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import {
   AuthContextProvider,
   DialogContextProvider,
+  FirebaseContextProvider,
   RecurrencesContextProvider,
   TransactionsContextProvider,
 } from '@/contexts'
@@ -11,15 +12,17 @@ import { theme } from '@/styles'
 export const App = () => {
   return (
     <ChakraProvider theme={theme}>
-      <AuthContextProvider>
-        <RecurrencesContextProvider>
-          <TransactionsContextProvider>
-            <DialogContextProvider>
-              <Router />
-            </DialogContextProvider>
-          </TransactionsContextProvider>
-        </RecurrencesContextProvider>
-      </AuthContextProvider>
+      <FirebaseContextProvider>
+        <AuthContextProvider>
+          <RecurrencesContextProvider>
+            <TransactionsContextProvider>
+              <DialogContextProvider>
+                <Router />
+              </DialogContextProvider>
+            </TransactionsContextProvider>
+          </RecurrencesContextProvider>
+        </AuthContextProvider>
+      </FirebaseContextProvider>
     </ChakraProvider>
   )
 }

@@ -7,7 +7,8 @@ import {
 } from 'react'
 import { v4 as uuid } from 'uuid'
 import { formatTransaction, useAuth } from '@/contexts'
-import { useApiCall, useFirebaseDatabase, useLocalStorage } from '@/hooks'
+import { useFirebaseContext } from '@/contexts'
+import { useApiCall, useLocalStorage } from '@/hooks'
 import {
   AddRecurrentTransaction,
   AddTransactionModel,
@@ -39,7 +40,7 @@ export function RecurrencesContextProvider({
     remoteRemoveRecurrence,
     remoteAddTransaction,
     remoteRemoveTransaction,
-  } = useFirebaseDatabase()
+  } = useFirebaseContext()
   const [isLoadingCache, setIsLoadingCache] = useState(true)
   const [recurrenceList, setRecurrenceList] = useState<RecurrentTransaction[]>(
     []
@@ -136,7 +137,7 @@ export function RecurrencesContextProvider({
     return () => {
       unsubscribeOnValue()
     }
-  }, [user?.id])
+  }, [user?.id, onRecurrencesValue])
 
   return (
     <RecurrencesContext.Provider

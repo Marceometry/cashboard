@@ -23,6 +23,10 @@ export const useApiCall = (startLoadingState = true) => {
   }
 
   const call = <T = void>(callback: Callback<T>, options?: Options) => {
+    if (!navigator.onLine) {
+      return async () => toast('Você está offline', 'warning')
+    }
+
     return async (args: T) => {
       try {
         const info = options?.startInfoToast
