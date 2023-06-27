@@ -8,6 +8,7 @@ import {
 import { useFirebaseContext } from '@/contexts'
 import { useApiCall, useLocalStorage } from '@/hooks'
 import { AuthContextData, GoogleUser, User } from './types'
+import { formatUser } from './utils'
 
 export type AuthContextProviderProps = {
   children: ReactNode
@@ -16,6 +17,7 @@ export type AuthContextProviderProps = {
 export const AuthContext = createContext({} as AuthContextData)
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
+  const storage = useLocalStorage()
   const authApi = useApiCall()
   const updateUserApi = useApiCall(false)
   const deleteAccountApi = useApiCall(false)
@@ -26,7 +28,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     onAuthChange,
     deleteCurrentAccount,
   } = useFirebaseContext()
-  const [user, setUser] = useState<User | null>(useLocalStorage().getUser())
+  const [user, setUser] = useState<User | null>(formatUser(storage.getUser()))
 
   const signIn = authApi.call(
     async () => {
@@ -70,15 +72,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   )
 
   const handleAuthChange = (currentUser: GoogleUser) => {
-    const userInfo = currentUser
-      ? {
-          id: currentUser.uid,
-          email: currentUser.email,
-          name: currentUser.displayName,
-          photoUrl: currentUser.photoURL,
-        }
-      : null
-    setUser(userInfo)
+    setUser(formatUser(currentUser))
     authApi.setIsLoading(false)
   }
 

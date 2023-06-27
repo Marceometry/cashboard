@@ -7,9 +7,8 @@ import {
   useEffect,
   useState,
 } from 'react'
-import { initializeApp } from 'firebase/app'
-import { Auth, getAuth, onAuthStateChanged } from 'firebase/auth'
-import { Database, getDatabase } from 'firebase/database'
+import { FirebaseApp, initializeApp } from 'firebase/app'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import {
   useFirebaseAuth,
   useFirebaseDatabase,
@@ -24,15 +23,14 @@ export const FirebaseContext = createContext({} as FirebaseContextData)
 export function FirebaseContextProvider({ children }: { children: ReactNode }) {
   const storage = useLocalStorage()
   const isOnline = useNetworkStatus()
-  const [database, setDatabase] = useState<Database | null>(null)
-  const [auth, setAuth] = useState<Auth | null>(null)
+  const [firebaseApp, setFirebaseApp] = useState<FirebaseApp | null>(null)
   const [userId, setUserId] = useState<string | undefined>('')
   const {
     firebaseSignOut,
     signInWithGoogle,
     updateCurrentUser,
     deleteCurrentAccount,
-  } = useFirebaseAuth(database, auth)
+  } = useFirebaseAuth(firebaseApp)
   const {
     onTransactionsValue,
     remoteAddTransaction,
@@ -40,13 +38,13 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
     onRecurrencesValue,
     remoteAddRecurrence,
     remoteRemoveRecurrence,
-  } = useFirebaseDatabase(database, userId)
+  } = useFirebaseDatabase(firebaseApp, userId)
 
   const onAuthChange = useCallback(
     (callback: (user: any) => void) => {
       callback(storage.getUser())
-      if (!auth) return () => {}
-
+      if (!isOnline || !firebaseApp) return () => () => {}
+      const auth = getAuth()
       return onAuthStateChanged(auth, (user) => {
         const uid = user?.uid
         storage.setUser(user)
@@ -54,21 +52,13 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
         callback(user)
       })
     },
-    [auth, isOnline]
+    [isOnline, firebaseApp]
   )
 
   useEffect(() => {
-    if (isOnline) {
-      initializeApp(firebaseConfig)
-      const database = getDatabase()
-      const auth = getAuth()
-      setDatabase(database)
-      setAuth(auth)
-    } else {
-      setDatabase(null)
-      setAuth(null)
-    }
-  }, [isOnline])
+    const app = initializeApp(firebaseConfig)
+    setFirebaseApp(app)
+  }, [])
 
   return (
     <FirebaseContext.Provider
