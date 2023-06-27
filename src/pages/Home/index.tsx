@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Badge, Center, Flex, Heading, Text } from '@chakra-ui/react'
+import {
+  Badge,
+  Center,
+  Flex,
+  Heading,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import { EmptyData, IconButton, Loading, MainTemplate } from '@/components'
 import { useAuth, useRecurrences, useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
@@ -15,6 +22,7 @@ export const Home = () => {
   const storagedFilterCategories = storage.get(
     'categories-average-outcome-filter'
   )
+  const badgeColor = useColorModeValue('green.500', 'green.400')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [loadedDefaultCategories, setLoadedDefaultCategories] = useState(false)
   const [monthCount, setMonthCount] = useState(Number(storagedMonthCount) || 3)
@@ -60,7 +68,7 @@ export const Home = () => {
               <Link to='/transactions'>
                 <Badge
                   display='inline-block'
-                  color='green.400'
+                  color={badgeColor}
                   py='1'
                   px='2'
                   _hover={{ textDecoration: 'underline' }}

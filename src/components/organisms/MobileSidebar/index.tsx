@@ -1,5 +1,12 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Flex, Heading, List, ListItem, Text } from '@chakra-ui/react'
+import {
+  Flex,
+  Heading,
+  List,
+  ListItem,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import { Drawer } from '@/components'
 import { LogoIcon } from '@/assets'
 import { dashboardRoutes } from '@/router'
@@ -17,6 +24,7 @@ const header = (
 )
 
 export const MobileSidebar = ({ isOpen, onClose }: Props) => {
+  const color = useColorModeValue('green.500', 'green.400')
   const location = useLocation()
 
   return (
@@ -33,8 +41,8 @@ export const MobileSidebar = ({ isOpen, onClose }: Props) => {
                 alignItems='center'
                 fontSize='1.25rem'
                 transition='color 0.2s'
-                _hover={{ color: 'green.400' }}
-                color={location.pathname === route.path ? 'green.400' : ''}
+                _hover={{ color }}
+                color={location.pathname === route.path ? color : ''}
               >
                 {route.icon}
                 {isOpen ? route.label : ''}

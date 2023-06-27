@@ -36,7 +36,7 @@ export const FormModal = ({
   formMethods,
   maxWidth = 660,
 }: FormModalProps) => {
-  const bg = useColorModeValue('gray.50', 'gray.800')
+  const bg = useColorModeValue('whitesmoke', 'gray.800')
 
   return (
     <ChakraModal

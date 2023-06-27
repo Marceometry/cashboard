@@ -12,6 +12,7 @@ import {
   MenuList,
   MenuOptionGroup,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { useTransactions } from '@/contexts'
 import { DateParam } from '@/types'
@@ -39,16 +40,11 @@ export const MobileTableBody = ({
   mobileCard: mobileCard,
 }: Props) => {
   const { dateParam } = useTransactions()
+  const headerBg = useColorModeValue('gray.100', 'whiteAlpha.200')
 
   return (
     <Box h='100%' overflowY='auto' overflowX='hidden'>
-      <Flex
-        justifyContent='flex-end'
-        py='1'
-        px='2'
-        w='full'
-        bg='whiteAlpha.200'
-      >
+      <Flex justifyContent='flex-end' py='1' px='4' w='full' bg={headerBg}>
         <Box position='relative'>
           <Menu closeOnSelect={false}>
             <MenuButton
@@ -109,7 +105,7 @@ export const MobileTableBody = ({
       </Flex>
       {paginatedData.map((item, index) => (
         <Box key={index} ref={(node) => lastElementRef(node, index)}>
-          <Grid p='2' gap='1' templateColumns='3fr 2fr'>
+          <Grid p='4' gap='1' templateColumns='3fr 2fr'>
             {mobileCard(item, dateParam)}
           </Grid>
           <Divider borderColor='whiteAlpha.200' />

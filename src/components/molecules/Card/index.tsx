@@ -6,7 +6,7 @@ interface CardProps extends ChakraProps {
 }
 
 export const Card = ({ children, ...props }: CardProps) => {
-  const bg = useColorModeValue('gray.50', 'gray.800')
+  const bg = useColorModeValue('whitesmoke', 'gray.800')
 
   return (
     <Flex

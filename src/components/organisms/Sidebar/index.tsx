@@ -9,6 +9,7 @@ import {
   List,
   ListItem,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { useLocalStorage } from '@/hooks'
 import { LogoIcon } from '@/assets'
@@ -18,6 +19,7 @@ export const Sidebar = () => {
   const location = useLocation()
   const storage = useLocalStorage()
   const [isOpen, setIsOpen] = useState(storage.get('sidebar-default-open'))
+  const color = useColorModeValue('green.500', 'green.400')
 
   const toggle = () => {
     setIsOpen(!isOpen)
@@ -74,8 +76,8 @@ export const Sidebar = () => {
                 alignItems='center'
                 fontSize='1.25rem'
                 transition='color 0.2s'
-                _hover={{ color: '#48bb78' }}
-                color={location.pathname === route.path ? '#48bb78' : ''}
+                _hover={{ color }}
+                color={location.pathname === route.path ? color : ''}
               >
                 {route.icon}
                 {isOpen ? route.label : ''}

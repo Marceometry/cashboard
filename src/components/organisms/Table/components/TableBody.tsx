@@ -10,6 +10,7 @@ import {
   Thead,
   Tr,
   useBreakpointValue,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { useTransactions } from '@/contexts'
 import { useInfiniteScroll } from '@/hooks'
@@ -25,6 +26,7 @@ export const TableBody = ({
   ...props
 }: TableProps) => {
   const { dateParam } = useTransactions()
+  const headerBg = useColorModeValue('gray.100', 'whiteAlpha.200')
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const containerRef = useRef<HTMLDivElement>(null)
   const [reverseSort, setReverseSort] = useState(false)
@@ -77,7 +79,7 @@ export const TableBody = ({
         <Thead>
           <Tr>
             {columns.map((column, index) => (
-              <Th bg='whiteAlpha.200' color='gray.200' key={index}>
+              <Th bg={headerBg} key={index}>
                 {column.label ? (
                   <Button
                     __css={{ all: 'unset', cursor: 'pointer' }}

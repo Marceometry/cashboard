@@ -8,7 +8,7 @@ type Props = {
 export const LoginTemplate = ({ children }: Props) => {
   return (
     <Grid placeItems='center' h='100vh'>
-      <Card w='80vw' maxW='400px'>
+      <Card w='80vw' maxW='400px' p='4'>
         {children}
       </Card>
     </Grid>

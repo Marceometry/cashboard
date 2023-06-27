@@ -1,5 +1,4 @@
-import { Text } from '@chakra-ui/react'
-import { Button, ColumnProps, IconButton } from '@/components'
+import { Button, ColumnProps, Currency, IconButton } from '@/components'
 import { DateParam, TagModel, TransactionModel } from '@/types'
 import { currency } from '@/utils'
 
@@ -26,10 +25,8 @@ export const getColumns = (
   {
     label: 'Balanço',
     field: 'balance',
-    customRender: (props) => (
-      <Text color={props.balance > 0 ? 'green.400' : 'red.300'}>
-        {currency.valueToMoney(props.balance)}
-      </Text>
+    customRender: ({ balance }) => (
+      <Currency type={balance > 0 ? 'income' : 'outcome'} amount={balance} />
     ),
   },
   {
@@ -58,9 +55,7 @@ export const getTransactionsColumns = (
     label: 'Valor',
     field: 'amount',
     customRender: ({ amount, type }) => (
-      <Text color={type === 'income' ? '#48bb78' : '#f56565'}>
-        {currency.valueToMoney(amount)}
-      </Text>
+      <Currency type={type} amount={amount} />
     ),
   },
   {

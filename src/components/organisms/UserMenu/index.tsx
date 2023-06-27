@@ -13,6 +13,7 @@ import {
   Tooltip,
   useBreakpointValue,
   useColorMode,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { Download, FileArrowDown, Gear, SignOut, WifiX } from 'phosphor-react'
 import { FileImportModal, SettingsModal, ThemeIcon } from '@/components'
@@ -21,6 +22,7 @@ import { useFileDownload } from '@/hooks'
 import { sortByDate } from '@/utils'
 
 export const UserMenu = () => {
+  const yellow = useColorModeValue('yellow.500', 'yellow.400')
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const { toggleColorMode } = useColorMode()
   const downloadFile = useFileDownload()
@@ -49,11 +51,11 @@ export const UserMenu = () => {
       {!isOnline && (
         <Tooltip
           label='Não há conexão com a internet'
-          bg='yellow.400'
+          bg={yellow}
           borderRadius='md'
           hasArrow
         >
-          <Text color='yellow.400'>
+          <Text color={yellow}>
             <WifiX size={24} />
           </Text>
         </Tooltip>
@@ -64,7 +66,7 @@ export const UserMenu = () => {
             <MenuButton
               as={ChakraButton}
               borderWidth={1}
-              borderColor={isOnline ? 'gray.900' : 'yellow.400'}
+              borderColor={isOnline ? 'transparent' : yellow}
               borderRadius='999'
               px='2'
               leftIcon={isSmallScreen ? undefined : avatar}

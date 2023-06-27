@@ -24,7 +24,7 @@ export const Modal = ({
   modalFooter,
   maxWidth = 660,
 }: ModalProps) => {
-  const bg = useColorModeValue('gray.50', 'gray.800')
+  const bg = useColorModeValue('whitesmoke', 'gray.800')
 
   return (
     <ChakraModal

@@ -1,7 +1,6 @@
 import { Badge, Center, Flex, GridItem, Text } from '@chakra-ui/react'
-import { ColumnProps, IconButton, Switch } from '@/components'
+import { ColumnProps, Currency, IconButton, Switch } from '@/components'
 import { PaymentMethods, RecurrentTransaction } from '@/types'
-import { currency } from '@/utils'
 
 export const getButtons = (handleRecurrenceModal: () => void) => ({
   textButtons: [
@@ -18,9 +17,7 @@ export const getColumns = (
     label: 'Valor',
     field: 'amount',
     customRender: ({ amount, type }) => (
-      <Text color={type === 'income' ? 'green.400' : 'red.300'}>
-        {currency.valueToMoney(amount)}
-      </Text>
+      <Currency type={type} amount={amount} />
     ),
   },
   {
@@ -105,9 +102,7 @@ export const getMobileCard = (
     <>
       <GridItem display='flex' flexDir='column' justifyContent='space-between'>
         <Text>{description}</Text>
-        <Text fontSize='sm' color={type === 'income' ? 'green.400' : 'red.300'}>
-          {currency.valueToMoney(amount)}
-        </Text>
+        <Currency fontSize='sm' type={type} amount={amount} />
         <Text fontSize='sm'>{PaymentMethods[paymentMethod]}</Text>
       </GridItem>
       <GridItem
