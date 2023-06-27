@@ -137,8 +137,8 @@ export function TransactionsContextProvider({
     setIsLoadingCache(!transactions?.length)
 
     if (!isOnline) return
-    setIsLoading(true)
-    const unsubscribeOnValue = onTransactionsValue((data) => {
+    // setIsLoading(true)
+    const unsubscribeOnValue = onTransactionsValue((data: any) => {
       const transactions = firebaseDataSnapshotToTransactionList(data)
       storage.set('transaction-list', transactions)
       setTransactionList(transactions)

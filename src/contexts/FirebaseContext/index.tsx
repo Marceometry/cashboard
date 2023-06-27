@@ -44,13 +44,13 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
     (callback: (user: any) => void) => {
       callback(storage.getUser())
       if (!isOnline || !firebaseApp) return () => () => {}
-      const auth = getAuth()
-      return onAuthStateChanged(auth, (user) => {
-        const uid = user?.uid
-        storage.setUser(user)
-        setUserId(uid)
-        callback(user)
-      })
+      // const auth = getAuth()
+      // return onAuthStateChanged(auth, (user) => {
+      //   const uid = user?.uid
+      //   storage.setUser(user)
+      //   setUserId(uid)
+      //   callback(user)
+      // })
     },
     [isOnline, firebaseApp]
   )

@@ -127,7 +127,7 @@ export function RecurrencesContextProvider({
     setRecurrenceList(recurrences || [])
     setIsLoadingCache(!recurrences?.length)
 
-    const unsubscribeOnValue = onRecurrencesValue((data) => {
+    const unsubscribeOnValue = onRecurrencesValue((data: any) => {
       const recurrences = firebaseDataSnapshotToRecurrenceList(data)
       storage.set('recurrence-list', recurrences)
       setRecurrenceList(recurrences)
