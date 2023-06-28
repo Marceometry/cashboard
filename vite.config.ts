@@ -18,7 +18,6 @@ export default defineConfig({
         description:
           'Cashboard - registre e analise todos os seus ganhos e despesas da maneira que desejar.',
         lang: 'pt-BR',
-        start_url: '/transactions',
         background_color: '#171923',
         theme_color: '#171923',
         icons: [
