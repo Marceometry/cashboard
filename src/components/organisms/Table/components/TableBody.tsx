@@ -55,7 +55,7 @@ export const TableBody = ({
   }, [sortedData])
 
   useEffect(() => {
-    if (selectedSortBy) return
+    if (columns.some((column) => column.field === selectedSortBy)) return
     setSelectedSortBy(sortBy || dateParam)
   }, [sortBy, dateParam, selectedSortBy])
 

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import { useCallback } from 'react'
 import { FirebaseApp } from 'firebase/app'
 import {
   deleteUser,
