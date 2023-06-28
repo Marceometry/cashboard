@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import { useCallback } from 'react'
 import { FirebaseApp } from 'firebase/app'
 import {
   deleteUser,
@@ -91,15 +92,16 @@ export const useFirebaseDatabase = (
 
   // Transactions //
 
-  const onTransactionsValue = (
-    callback: (data: FirebaseDataSnapshot<AddTransactionModel>) => void
-  ) => {
-    if (!firebaseApp) return () => {}
-    const database = getDatabase()
-    return onValue(ref(database, transactionsPath), (data) =>
-      callback(data.exists() ? data.val() : {})
-    )
-  }
+  const onTransactionsValue = useCallback(
+    (callback: (data: FirebaseDataSnapshot<AddTransactionModel>) => void) => {
+      if (!firebaseApp) return () => {}
+      const database = getDatabase()
+      return onValue(ref(database, transactionsPath), (data) =>
+        callback(data.exists() ? data.val() : {})
+      )
+    },
+    [firebaseApp, userId]
+  )
 
   const remoteAddTransaction = (transaction: TransactionModel) => {
     if (!firebaseApp) return
@@ -118,15 +120,16 @@ export const useFirebaseDatabase = (
 
   // Recurrences //
 
-  const onRecurrencesValue = (
-    callback: (data: FirebaseDataSnapshot<RecurrentTransaction>) => void
-  ) => {
-    if (!firebaseApp) return () => {}
-    const database = getDatabase()
-    return onValue(ref(database, recurrencesPath), (data) =>
-      callback(data.exists() ? data.val() : {})
-    )
-  }
+  const onRecurrencesValue = useCallback(
+    (callback: (data: FirebaseDataSnapshot<RecurrentTransaction>) => void) => {
+      if (!firebaseApp) return () => {}
+      const database = getDatabase()
+      return onValue(ref(database, recurrencesPath), (data) =>
+        callback(data.exists() ? data.val() : {})
+      )
+    },
+    [firebaseApp, userId]
+  )
 
   const remoteAddRecurrence = (recurrence: RecurrentTransaction) => {
     if (!firebaseApp) return
