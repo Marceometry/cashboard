@@ -26,7 +26,7 @@ export const SearchInput = ({ debouncedOnChange, ...props }: Props) => {
 
   return (
     <InputGroup w='auto'>
-      <InputLeftElement pointerEvents='none'>
+      <InputLeftElement pointerEvents='none' zIndex='0'>
         <SearchIcon color='gray.300' />
       </InputLeftElement>
       <Input
