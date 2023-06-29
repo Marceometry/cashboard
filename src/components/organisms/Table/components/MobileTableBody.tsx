@@ -5,15 +5,14 @@ import {
   Flex,
   Grid,
   IconButton,
-  Menu,
   MenuButton,
   MenuDivider,
   MenuItemOption,
-  MenuList,
   MenuOptionGroup,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
+import { Menu } from '@/components'
 import { useTransactions } from '@/contexts'
 import { DateParam } from '@/types'
 import { ColumnProps } from '../types'
@@ -46,60 +45,59 @@ export const MobileTableBody = ({
     <Box h='100%' overflowY='auto' overflowX='hidden'>
       <Flex justifyContent='flex-end' py='1' px='4' w='full' bg={headerBg}>
         <Box position='relative'>
-          <Menu closeOnSelect={false}>
-            <MenuButton
-              as={IconButton}
-              size='sm'
-              variant='outline'
-              aria-label='Ordenar por'
+          <Menu
+            closeOnSelect={false}
+            trigger={
+              <MenuButton
+                as={IconButton}
+                icon={<HamburgerIcon />}
+                size='sm'
+                variant='outline'
+                aria-label='Ordenar por'
+              />
+            }
+          >
+            <MenuOptionGroup
+              type='radio'
+              defaultValue={selectedSortBy}
+              onChange={setSelectedSortBy}
             >
-              <HamburgerIcon />
-            </MenuButton>
-            <MenuList>
-              <MenuOptionGroup
-                type='radio'
-                defaultValue={selectedSortBy}
-                onChange={setSelectedSortBy}
-              >
-                <Text fontWeight='bold' fontSize='sm' mx='4' mb='1'>
-                  Ordenar por
-                </Text>
-                {columns
-                  .filter((column) => !!column.field)
-                  .map((column) => {
-                    const value = column.field as string
-                    return (
-                      <MenuItemOption
-                        key={value}
-                        value={value}
-                        fontSize='sm'
-                        py='1'
-                        px='4'
-                      >
-                        {column.label}
-                      </MenuItemOption>
-                    )
-                  })}
-              </MenuOptionGroup>
-              <MenuDivider />
-              <MenuOptionGroup
-                type='radio'
-                defaultValue={String(reverseSort)}
-                onChange={(value) =>
-                  setReverseSort(JSON.parse(value as string))
-                }
-              >
-                <Text fontWeight='bold' fontSize='sm' mx='4' mb='1'>
-                  Ordem
-                </Text>
-                <MenuItemOption value='true' fontSize='sm' py='1' px='4'>
-                  Crescente
-                </MenuItemOption>
-                <MenuItemOption value='false' fontSize='sm' py='1' px='4'>
-                  Decrescente
-                </MenuItemOption>
-              </MenuOptionGroup>
-            </MenuList>
+              <Text fontWeight='bold' fontSize='sm' mx='4' mb='1'>
+                Ordenar por
+              </Text>
+              {columns
+                .filter((column) => !!column.field)
+                .map((column) => {
+                  const value = column.field as string
+                  return (
+                    <MenuItemOption
+                      key={value}
+                      value={value}
+                      fontSize='sm'
+                      py='1'
+                      px='4'
+                    >
+                      {column.label}
+                    </MenuItemOption>
+                  )
+                })}
+            </MenuOptionGroup>
+            <MenuDivider />
+            <MenuOptionGroup
+              type='radio'
+              defaultValue={String(reverseSort)}
+              onChange={(value) => setReverseSort(JSON.parse(value as string))}
+            >
+              <Text fontWeight='bold' fontSize='sm' mx='4' mb='1'>
+                Ordem
+              </Text>
+              <MenuItemOption value='true' fontSize='sm' py='1' px='4'>
+                Crescente
+              </MenuItemOption>
+              <MenuItemOption value='false' fontSize='sm' py='1' px='4'>
+                Decrescente
+              </MenuItemOption>
+            </MenuOptionGroup>
           </Menu>
         </Box>
       </Flex>

@@ -4,11 +4,9 @@ import {
   Avatar,
   Button as ChakraButton,
   Flex,
-  Menu,
   MenuButton,
   MenuDivider,
   MenuItem,
-  MenuList,
   Text,
   Tooltip,
   useBreakpointValue,
@@ -16,7 +14,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { Download, FileArrowDown, Gear, SignOut, WifiX } from 'phosphor-react'
-import { FileImportModal, SettingsModal, ThemeIcon } from '@/components'
+import { FileImportModal, Menu, SettingsModal, ThemeIcon } from '@/components'
 import { useAuth, useFirebaseContext, useTransactions } from '@/contexts'
 import { useFileDownload } from '@/hooks'
 import { sortByDate } from '@/utils'
@@ -60,47 +58,40 @@ export const UserMenu = () => {
           </Text>
         </Tooltip>
       )}
-      <Menu>
-        {({ isOpen }) => (
-          <>
-            <MenuButton
-              as={ChakraButton}
-              borderWidth={1}
-              borderColor={isOnline ? 'transparent' : yellow}
-              borderRadius='999'
-              px='2'
-              leftIcon={isSmallScreen ? undefined : avatar}
-              rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
-            >
-              {isSmallScreen ? avatar : user.name}
-            </MenuButton>
-
-            <MenuList minWidth='200px'>
-              <MenuItem
-                icon={<Gear />}
-                onClick={() => setIsSettingsModalOpen(true)}
-              >
-                Configurações
-              </MenuItem>
-              <MenuItem icon={<ThemeIcon />} onClick={toggleColorMode}>
-                Alterar Tema
-              </MenuItem>
-
-              <MenuDivider />
-              <MenuItem icon={<Download />} onClick={localBackup}>
-                Backup Local
-              </MenuItem>
-              <MenuItem icon={<FileArrowDown />} onClick={openImportFileModal}>
-                Importar arquivo
-              </MenuItem>
-
-              <MenuDivider />
-              <MenuItem icon={<SignOut />} onClick={signOut}>
-                Sair
-              </MenuItem>
-            </MenuList>
-          </>
+      <Menu
+        trigger={({ isOpen }) => (
+          <MenuButton
+            as={ChakraButton}
+            borderWidth={1}
+            borderColor={isOnline ? 'transparent' : yellow}
+            borderRadius='999'
+            px='2'
+            leftIcon={isSmallScreen ? undefined : avatar}
+            rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+          >
+            {isSmallScreen ? avatar : user.name}
+          </MenuButton>
         )}
+      >
+        <MenuItem icon={<Gear />} onClick={() => setIsSettingsModalOpen(true)}>
+          Configurações
+        </MenuItem>
+        <MenuItem icon={<ThemeIcon />} onClick={toggleColorMode}>
+          Alterar Tema
+        </MenuItem>
+
+        <MenuDivider />
+        <MenuItem icon={<Download />} onClick={localBackup}>
+          Backup Local
+        </MenuItem>
+        <MenuItem icon={<FileArrowDown />} onClick={openImportFileModal}>
+          Importar arquivo
+        </MenuItem>
+
+        <MenuDivider />
+        <MenuItem icon={<SignOut />} onClick={signOut}>
+          Sair
+        </MenuItem>
       </Menu>
 
       <FileImportModal
