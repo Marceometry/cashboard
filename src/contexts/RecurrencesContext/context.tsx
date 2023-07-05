@@ -33,7 +33,7 @@ export function RecurrencesContextProvider({
 }: RecurrencesContextProviderProps) {
   const storage = useLocalStorage()
   const { user } = useAuth()
-  const { call } = useApiCall()
+  const { call, isLoading } = useApiCall()
   const {
     onRecurrencesValue,
     remoteAddRecurrence,
@@ -112,7 +112,7 @@ export function RecurrencesContextProvider({
   }
 
   useEffect(() => {
-    if (!user?.id || !recurrenceList.length) return
+    if (!user?.id || !recurrenceList.length || isLoading) return
     checkRecurrences({
       recurrenceList,
       addTransaction,
