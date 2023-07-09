@@ -33,7 +33,7 @@ export function RecurrencesContextProvider({
 }: RecurrencesContextProviderProps) {
   const storage = useLocalStorage()
   const { user } = useAuth()
-  const { call, isLoading } = useApiCall()
+  const { call, isLoading, setIsLoading } = useApiCall()
   const {
     onRecurrencesValue,
     remoteAddRecurrence,
@@ -132,6 +132,7 @@ export function RecurrencesContextProvider({
       storage.set('recurrence-list', recurrences)
       setRecurrenceList(recurrences)
       setIsLoadingCache(false)
+      setIsLoading(false)
     })
 
     return () => {
