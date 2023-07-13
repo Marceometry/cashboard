@@ -33,7 +33,7 @@ type Categories = Array<{
 
 const monthsAgo = (quantity: number, date: string) => {
   const difference = differenceInCalendarMonths(new Date(), new Date(date))
-  return difference <= quantity
+  return difference !== 0 && difference <= quantity
 }
 
 export const generateCategories = (
