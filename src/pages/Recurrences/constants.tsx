@@ -43,10 +43,12 @@ export const getColumns = (
   {
     label: 'Parcelas',
     field: 'installments',
-    customRender: ({ installments, transactions }) =>
-      !installments
+    customRender: ({ installments, ...item }) => {
+      const transactions = item.transactions.filter((t) => !!t.id)
+      return !installments
         ? String(transactions.length)
-        : `${transactions.length}/${installments}`,
+        : `${transactions.length}/${installments}`
+    },
   },
   {
     label: 'Ativo',

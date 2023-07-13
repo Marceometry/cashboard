@@ -64,22 +64,32 @@ export const checkRecurrences = async ({
     item: RecurrentTransaction,
     resolve: (value?: unknown) => void
   ) => {
-    let isActive = item.isActive
-    if (!isActive) return resolve()
-
     const startDate = new Date(item.startDate)
     if (isFuture(startDate) && !isThisMonth(startDate)) return resolve()
 
     const { installments } = item
-    const transactions = item.transactions
     const monthsPassed = differenceInCalendarMonths(new Date(), startDate)
 
-    if (transactions.length - 1 === monthsPassed) return resolve()
+    if (item.transactions.length - 1 === monthsPassed) return resolve()
 
-    const latestTransactionDate = transactions.length
-      ? new Date(sortByDate(transactions)[0].date)
+    const latestTransactionDate = item.transactions.length
+      ? new Date(sortByDate(item.transactions)[0].date)
       : subMonths(startDate, 1)
 
+    let isActive = item.isActive
+    if (!isActive) {
+      const { installments, transactions } = item
+      if (installments && transactions.length >= installments) return resolve()
+
+      const date = addMonths(latestTransactionDate, 1).toISOString()
+      recurrencesToUpdate.push({
+        id: item.id,
+        transactions: [...transactions, { id: '', date }],
+      })
+      return resolve()
+    }
+
+    const transactions = item.transactions.filter((t) => !!t.id)
     for (let i = 1; transactions.length - 1 !== monthsPassed; i++) {
       if (installments && transactions.length === installments) {
         isActive = false
@@ -101,7 +111,7 @@ export const checkRecurrences = async ({
       })
       transactions.push({ id, date })
 
-      if (installments && transactions.length === installments) {
+      if (installments && transactions.length >= installments) {
         isActive = false
       }
     }
