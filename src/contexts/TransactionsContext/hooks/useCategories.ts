@@ -20,19 +20,17 @@ export const useCategories = () => {
   ) => {
     const { month, year, minAmount, maxAmount, selectedCategories } = filters
 
-    const transactions = sortByDate(transactionList, true).filter(
-      (item: TransactionModel) => {
-        if (month && !filterByMonth(item[dateParam], month)) return false
-        if (year && !filterByYear(item[dateParam], year)) return false
-        if (
-          selectedCategories.length &&
-          !selectedCategories.includes(item.category)
-        ) {
-          return false
-        }
-        return true
+    const transactions = sortByDate(transactionList, true).filter((item) => {
+      if (month && !filterByMonth(item[dateParam], month)) return false
+      if (year && !filterByYear(item[dateParam], year)) return false
+      if (
+        selectedCategories.length &&
+        !selectedCategories.includes(item.category)
+      ) {
+        return false
       }
-    )
+      return true
+    })
 
     return generateCategories(transactions).filter((item) => {
       if (minAmount && item[type] < minAmount) return false
@@ -46,7 +44,7 @@ export const useCategories = () => {
     type: TransactionType
   ) => {
     const { month, year, minAmount, maxAmount, selectedCategories } = filters
-    const orderedList: TransactionModel[] = sortByDate(transactionList, true)
+    const orderedList = sortByDate(transactionList, true)
 
     const categoriesHistory = orderedList.reduce(
       (acc: any[], item: TransactionModel) => {

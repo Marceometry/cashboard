@@ -1,10 +1,26 @@
 import { Badge, Center, Flex, GridItem, Text } from '@chakra-ui/react'
-import { ColumnProps, Currency, IconButton, Switch } from '@/components'
+import {
+  ColumnProps,
+  Currency,
+  IconButton,
+  Switch,
+  TableButtons,
+} from '@/components'
 import { PaymentMethods, RecurrentTransaction } from '@/types'
 
-export const getButtons = (handleRecurrenceModal: () => void) => ({
+export const getButtons = (
+  handleRecurrenceModal: () => void,
+  handleModalFilters: () => void
+): TableButtons => ({
   textButtons: [
     { children: 'Nova recorrência', onClick: handleRecurrenceModal },
+  ],
+  iconButtons: [
+    {
+      icon: 'filter',
+      'aria-label': 'Selecionar Filtros',
+      onClick: handleModalFilters,
+    },
   ],
 })
 

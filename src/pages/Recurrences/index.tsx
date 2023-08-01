@@ -1,17 +1,40 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { MainTemplate, Table } from '@/components'
 import { useDialog, useRecurrences } from '@/contexts'
+import { useLocalStorage } from '@/hooks'
 import { RecurrentTransaction } from '@/types'
 import { currency } from '@/utils'
-import { AddRecurrenceOverlay } from './components'
+import { AddRecurrenceOverlay, ModalFilters } from './components'
 import { getButtons, getColumns, getMobileCard } from './constants'
+import { filterData } from './utils'
+import {
+  filterRecurrencesFormDefaultValues,
+  FilterRecurrencesFormInputs,
+} from './validation'
 
 export const Recurrences = () => {
+  const storage = useLocalStorage()
+  const storagedFilterValues = storage.get('recurrences-table-filters')
+
   const { openDialog } = useDialog()
   const { recurrenceList, updateRecurrence, removeRecurrence, isLoadingCache } =
     useRecurrences()
   const [selectedRecurrence, setSelectedRecurrence] = useState('')
   const [isRecurrenceModalOpen, setIsRecurrenceModalOpen] = useState(false)
+  const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
+  const [tableFilters, setTableFilters] = useState<FilterRecurrencesFormInputs>(
+    () => storagedFilterValues || filterRecurrencesFormDefaultValues
+  )
+
+  const tableData = useMemo(
+    () => filterData(recurrenceList, tableFilters),
+    [recurrenceList, tableFilters]
+  )
+
+  const handleSetFilters = (filters: FilterRecurrencesFormInputs) => {
+    setTableFilters(filters)
+    storage.set('recurrences-table-filters', filters)
+  }
 
   const toggleActivity = (id: string, isActive: boolean) => {
     const date = new Date().toISOString()
@@ -59,7 +82,10 @@ export const Recurrences = () => {
       toggleActivity
     )
   }
-  const buttons = getButtons(() => setIsRecurrenceModalOpen(true))
+  const buttons = getButtons(
+    () => setIsRecurrenceModalOpen(true),
+    () => setIsModalFiltersOpen(true)
+  )
   const columns = getColumns(
     handleEditRecurrence,
     handleOpenDeleteDialog,
@@ -70,7 +96,7 @@ export const Recurrences = () => {
     <MainTemplate>
       <Table
         columns={columns}
-        data={recurrenceList}
+        data={tableData}
         buttons={buttons}
         isLoading={isLoadingCache}
         mobileCard={mobileCard}
@@ -81,6 +107,12 @@ export const Recurrences = () => {
         isOpen={isRecurrenceModalOpen}
         onClose={handleCloseModal}
         selectedId={selectedRecurrence}
+      />
+
+      <ModalFilters
+        isOpen={isModalFiltersOpen}
+        onClose={() => setIsModalFiltersOpen(false)}
+        handleFilter={handleSetFilters}
       />
     </MainTemplate>
   )

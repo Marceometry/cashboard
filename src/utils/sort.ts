@@ -16,8 +16,8 @@ export const sortAlphabetically = (array: any[], sortBy: string) => {
   return array.sort((a, b) => alphabetically(a[sortBy], b[sortBy]))
 }
 
-export const sortByDate = (
-  array: any[],
+export const sortByDate = <T extends Array<any>>(
+  array: T,
   oldestFirst?: boolean,
   dateField = 'date'
 ) => {

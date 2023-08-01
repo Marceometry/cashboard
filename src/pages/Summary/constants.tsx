@@ -34,43 +34,38 @@ export const getChartData = (
   view: View,
   dateParam: DateParam
 ) => {
-  return sortByDate(list, true).reduce(
-    (acc: ChartData, item: TransactionModel) => {
-      const { amount, type } = item
-      const date = new Date(item[dateParam])
+  return sortByDate(list, true).reduce((acc: ChartData, item) => {
+    const { amount, type } = item
+    const date = new Date(item[dateParam])
 
-      const name =
-        view === 'year' ? String(getYear(date)) : getFormattedMonthAndYear(date)
-      const itemIndex = acc.findIndex((accItem) => accItem.name === name)
-      const isIncome = type === 'income'
+    const name =
+      view === 'year' ? String(getYear(date)) : getFormattedMonthAndYear(date)
+    const itemIndex = acc.findIndex((accItem) => accItem.name === name)
+    const isIncome = type === 'income'
 
-      if (acc[itemIndex]) {
-        const balance = isIncome
-          ? acc[itemIndex]?.balance + amount
-          : acc[itemIndex]?.balance - amount
-        const income = isIncome
-          ? acc[itemIndex].income + amount
-          : acc[itemIndex].income
-        const outcome = !isIncome
-          ? acc[itemIndex].outcome + amount
-          : acc[itemIndex].outcome
-
-        acc[itemIndex] = { name, balance, income, outcome }
-        return [...acc]
-      }
-
-      const currentBalance = acc[acc.length - 1]?.balance || 0
+    if (acc[itemIndex]) {
       const balance = isIncome
-        ? currentBalance + amount
-        : currentBalance - amount
+        ? acc[itemIndex]?.balance + amount
+        : acc[itemIndex]?.balance - amount
+      const income = isIncome
+        ? acc[itemIndex].income + amount
+        : acc[itemIndex].income
+      const outcome = !isIncome
+        ? acc[itemIndex].outcome + amount
+        : acc[itemIndex].outcome
 
-      const income = isIncome ? amount : 0
-      const outcome = !isIncome ? amount : 0
+      acc[itemIndex] = { name, balance, income, outcome }
+      return [...acc]
+    }
 
-      return [...acc, { name, balance, income, outcome }]
-    },
-    []
-  )
+    const currentBalance = acc[acc.length - 1]?.balance || 0
+    const balance = isIncome ? currentBalance + amount : currentBalance - amount
+
+    const income = isIncome ? amount : 0
+    const outcome = !isIncome ? amount : 0
+
+    return [...acc, { name, balance, income, outcome }]
+  }, [])
 }
 
 export const getChartSections = (view: View) => {
