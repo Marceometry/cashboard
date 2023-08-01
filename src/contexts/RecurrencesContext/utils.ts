@@ -85,6 +85,7 @@ export const checkRecurrences = async ({
       recurrencesToUpdate.push({
         id: item.id,
         transactions: [...transactions, { id: '', date }],
+        isActive: false,
       })
       return resolve()
     }
