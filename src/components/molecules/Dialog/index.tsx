@@ -9,6 +9,7 @@ import {
   AlertDialogOverlay,
   AlertDialogProps,
   Checkbox,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { Button } from '@/components'
 
@@ -37,6 +38,7 @@ export const Dialog = ({
 }: DialogProps) => {
   const { handleSubmit, register, reset } = useForm()
   const cancelRef = useRef<HTMLButtonElement | null>(null)
+  const bg = useColorModeValue('whitesmoke', 'gray.800')
 
   const onSubmit = (data: any) => {
     onConfirm?.(data)
@@ -52,7 +54,7 @@ export const Dialog = ({
       isCentered
     >
       <AlertDialogOverlay>
-        <AlertDialogContent maxW='95vw' w={448}>
+        <AlertDialogContent maxW='95vw' bg={bg} w={448}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
               {title}
