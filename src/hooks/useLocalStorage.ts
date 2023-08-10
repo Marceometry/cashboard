@@ -7,6 +7,7 @@ type LocaStorageItem =
   | 'recurrence-list'
   | 'transactions-table-filters'
   | 'transactions-table-filters-specific-date'
+  | 'recurrences-table-filters'
   | 'categories-page-filters'
   | 'payment-methods-page-filters'
   | 'sidebar-default-open'

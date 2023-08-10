@@ -31,8 +31,12 @@ export const getColumns = (
   },
   {
     customRender: ({ name }) => (
-      <Button variant='link' onClick={() => handleOpenTransactions(name)}>
-        Ver transações
+      <Button
+        variant='link'
+        fontWeight='normal'
+        onClick={() => handleOpenTransactions(name)}
+      >
+        Transações
       </Button>
     ),
   },
@@ -75,6 +79,7 @@ export const getTransactionsColumns = (
         onClick={() => removeTagFromTransaction(id)}
         aria-label='Remover tag desta transação'
         icon='close'
+        size='sm'
         hasTooltip
       />
     ),

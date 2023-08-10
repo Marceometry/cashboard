@@ -55,13 +55,11 @@ export const usePaymentMethods = () => {
   ) => {
     const { month, year, minAmount, maxAmount } = filters
 
-    const transactions = sortByDate(transactionList, true).filter(
-      (item: TransactionModel) => {
-        if (month && !filterByMonth(item[dateParam], month)) return false
-        if (year && !filterByYear(item[dateParam], year)) return false
-        return true
-      }
-    )
+    const transactions = sortByDate(transactionList, true).filter((item) => {
+      if (month && !filterByMonth(item[dateParam], month)) return false
+      if (year && !filterByYear(item[dateParam], year)) return false
+      return true
+    })
 
     return generatePaymentMethods(transactions).filter((item) => {
       if (minAmount && item[type] < minAmount) return false
@@ -75,7 +73,7 @@ export const usePaymentMethods = () => {
     type: TransactionType
   ) => {
     const { month, year, minAmount, maxAmount } = filters
-    const orderedList: TransactionModel[] = sortByDate(transactionList, true)
+    const orderedList = sortByDate(transactionList, true)
 
     const paymentMethodsHistory = orderedList.reduce(
       (acc: any[], item: TransactionModel) => {

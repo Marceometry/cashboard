@@ -164,7 +164,7 @@ type AccumulatorModel = Array<
 export const generateMostRepeatedTransactions = (
   transactions: TransactionModel[]
 ): TransactionModel[] => {
-  const sortedTransactions: TransactionModel[] = sortByDate(transactions, true)
+  const sortedTransactions = sortByDate(transactions, true)
 
   const mostRepeated = sortedTransactions.reduce((acc, transaction) => {
     const itemIndex = acc.findIndex(

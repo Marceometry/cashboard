@@ -3,7 +3,7 @@ import { useToast } from '@/hooks'
 
 type ToastText = string | ((data: any) => string)
 
-type Callback<T> = (args: T) => Promise<any> | any
+type Callback<T extends any[]> = (...args: T) => Promise<any> | any
 
 type Options = {
   toastText?: ToastText
@@ -22,31 +22,37 @@ export const useApiCall = (startLoadingState = true) => {
     return typeof text === 'function' ? text(data) : text
   }
 
-  const call = <T = void>(callback: Callback<T>, options?: Options) => {
-    if (!navigator.onLine) {
-      return async () => toast('Você está offline', 'warning')
-    }
-
-    return async (args: T) => {
+  const call = <T extends any[]>(callback: Callback<T>, options?: Options) => {
+    return async (...args: T) => {
       try {
+        if (!navigator.onLine) {
+          toast('Você está offline', 'warning')
+          throw new Error('Offline')
+        }
+
+        setIsLoading(true)
         const info = options?.startInfoToast
         const closeToast = info && toast(info, 'info')
-        setIsLoading(true)
-        const data = await callback(args)
+        const data = await callback(...args)
+
         if (closeToast) closeToast()
         if (options?.toastText) {
           const text = generateToast(data, options.toastText)
-          toast(
-            text,
-            options.toastSuccessAsInfo ? 'info' : 'success',
-            options.toastDuration
-          )
+          if (text) {
+            toast(
+              text,
+              options.toastSuccessAsInfo ? 'info' : 'success',
+              options.toastDuration
+            )
+          }
         }
+
         return data
       } catch (error) {
         console.warn(error)
         const text = generateToast(error, options?.toastError)
         toast(text || 'Algo deu errado', 'error', options?.toastDuration)
+        throw error
       } finally {
         setIsLoading(false)
       }

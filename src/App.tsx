@@ -14,13 +14,13 @@ export const App = () => {
     <ChakraProvider theme={theme}>
       <FirebaseContextProvider>
         <AuthContextProvider>
-          <RecurrencesContextProvider>
-            <TransactionsContextProvider>
+          <TransactionsContextProvider>
+            <RecurrencesContextProvider>
               <DialogContextProvider>
                 <Router />
               </DialogContextProvider>
-            </TransactionsContextProvider>
-          </RecurrencesContextProvider>
+            </RecurrencesContextProvider>
+          </TransactionsContextProvider>
         </AuthContextProvider>
       </FirebaseContextProvider>
     </ChakraProvider>
