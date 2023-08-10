@@ -1,5 +1,6 @@
 import { Badge, Center, Flex, GridItem, Text } from '@chakra-ui/react'
 import {
+  Button,
   ColumnProps,
   Currency,
   IconButton,
@@ -25,9 +26,10 @@ export const getButtons = (
 })
 
 export const getColumns = (
-  handleEdit: (id: string) => void,
+  handleEdit: (row: RecurrentTransaction) => void,
   handleDelete: (row: RecurrentTransaction) => void,
-  toggleActivity: (id: string, isActive: boolean) => void
+  toggleActivity: (id: string, isActive: boolean) => void,
+  handleOpenTransactions: (recurrence: RecurrentTransaction) => void
 ): ColumnProps<RecurrentTransaction>[] => [
   {
     label: 'Valor',
@@ -79,12 +81,23 @@ export const getColumns = (
     ),
   },
   {
+    customRender: (recurrence) => (
+      <Button
+        variant='link'
+        fontWeight='normal'
+        onClick={() => handleOpenTransactions(recurrence)}
+      >
+        Transações
+      </Button>
+    ),
+  },
+  {
     customRender: (row) => (
       <Center gap='4'>
         <IconButton
           icon='edit'
           aria-label='Editar recorrência'
-          onClick={() => handleEdit(row.id)}
+          onClick={() => handleEdit(row)}
         />
 
         <IconButton
@@ -100,7 +113,7 @@ export const getColumns = (
 export const getMobileCard = (
   item: RecurrentTransaction,
   handleDeleteTransaction: (row: RecurrentTransaction) => void,
-  handleEditTransaction: (id: string) => void,
+  handleEditTransaction: (item: RecurrentTransaction) => void,
   toggleActivity: (id: string, isActive: boolean) => void
 ) => {
   const {
@@ -141,7 +154,7 @@ export const getMobileCard = (
             aria-label='Editar transação'
             icon='edit'
             size='xs'
-            onClick={() => handleEditTransaction(id)}
+            onClick={() => handleEditTransaction(item)}
           />
           <IconButton
             aria-label='Excluir transação'

@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { useBreakpointValue } from '@chakra-ui/react'
 import { FormModal, FormOverlay, RadioGroup } from '@/components'
 import { useRecurrences, useTransactions } from '@/contexts'
-import { AddRecurrentTransaction } from '@/types'
+import { AddRecurrentTransaction, RecurrentTransaction } from '@/types'
 import { currency, formatDateToInput, formatInputToISOString } from '@/utils'
 import { Form } from './Form'
 import {
@@ -16,16 +16,16 @@ import {
 type AddRecurrenceOverlayProps = {
   isOpen: boolean
   onClose: () => void
-  selectedId?: string
+  selectedRecurrence: RecurrentTransaction | null
 }
 
 export const AddRecurrenceOverlay = ({
   isOpen,
   onClose,
-  selectedId,
+  selectedRecurrence,
 }: AddRecurrenceOverlayProps) => {
   const isSmallScreen = useBreakpointValue({ base: true, sm: false })
-  const { recurrenceList, addRecurrence, updateRecurrence } = useRecurrences()
+  const { addRecurrence, updateRecurrence } = useRecurrences()
   const { categoryList } = useTransactions()
 
   const formMethods = useForm({
@@ -36,15 +36,13 @@ export const AddRecurrenceOverlay = ({
 
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false)
 
-  const loadRecurrenceById = (id: string) => {
-    const selectedRecurrence = recurrenceList.find((item) => item.id === id)
-    if (!selectedRecurrence) return
+  const loadRecurrence = (recurrence: RecurrentTransaction) => {
     const newFormValues: AddRecurrenceFormInputs = {
-      ...selectedRecurrence,
-      startDate: formatDateToInput(selectedRecurrence.startDate),
-      installments: String(selectedRecurrence.installments),
-      amount: currency.maskMonetaryValue(selectedRecurrence.amount),
-      tags: selectedRecurrence.tags || [],
+      ...recurrence,
+      startDate: formatDateToInput(recurrence.startDate),
+      installments: String(recurrence.installments),
+      amount: currency.maskMonetaryValue(recurrence.amount),
+      tags: recurrence.tags || [],
     }
     formMethods.reset(newFormValues || addRecurrenceFormDefaultValues)
   }
@@ -59,9 +57,9 @@ export const AddRecurrenceOverlay = ({
   }, [isCategoriesModalOpen])
 
   useEffect(() => {
-    if (!selectedId || !isOpen) return
-    loadRecurrenceById(selectedId)
-  }, [isOpen, selectedId])
+    if (!selectedRecurrence || !isOpen) return
+    loadRecurrence(selectedRecurrence)
+  }, [isOpen, selectedRecurrence])
 
   const handleSubmit = (data: AddRecurrenceFormInputs) => {
     const payload: AddRecurrentTransaction = {
@@ -70,10 +68,10 @@ export const AddRecurrenceOverlay = ({
       installments: Number(data.installments) || null,
       amount: currency.unMaskMonetaryValue(data.amount),
     }
-    if (selectedId) {
+    if (selectedRecurrence?.id) {
       updateRecurrence({
         ...payload,
-        id: selectedId,
+        id: selectedRecurrence.id,
       })
     } else {
       addRecurrence(payload)
@@ -93,10 +91,10 @@ export const AddRecurrenceOverlay = ({
         onClose={onClose}
         onConfirm={handleSubmit}
         formMethods={formMethods}
-        title={`${selectedId ? 'Editar' : 'Adicionar'} recorrência`}
+        title={`${selectedRecurrence ? 'Editar' : 'Adicionar'} recorrência`}
       >
         <Form
-          isEditingTransaction={!!selectedId}
+          isEditingTransaction={!!selectedRecurrence}
           handleOpenCategoriesModal={() => setIsCategoriesModalOpen(true)}
         />
       </FormOverlay>

@@ -1,10 +1,14 @@
 import { useMemo, useState } from 'react'
 import { MainTemplate, Table } from '@/components'
-import { useDialog, useRecurrences } from '@/contexts'
+import { useDialog, useRecurrences, useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
-import { RecurrentTransaction } from '@/types'
+import { RecurrentTransaction, TransactionModel } from '@/types'
 import { currency } from '@/utils'
-import { AddRecurrenceOverlay, ModalFilters } from './components'
+import {
+  AddRecurrenceOverlay,
+  ModalFilters,
+  TransactionsModal,
+} from './components'
 import { getButtons, getColumns, getMobileCard } from './constants'
 import { filterData } from './utils'
 import {
@@ -17,9 +21,15 @@ export const Recurrences = () => {
   const storagedFilterValues = storage.get('recurrences-table-filters')
 
   const { openDialog } = useDialog()
+  const { transactionList } = useTransactions()
   const { recurrenceList, updateRecurrence, removeRecurrence, isLoadingCache } =
     useRecurrences()
-  const [selectedRecurrence, setSelectedRecurrence] = useState('')
+  const [selectedRecurrence, setSelectedRecurrence] =
+    useState<RecurrentTransaction | null>(null)
+  const [recurrenceTransactions, setRecurrenceTransactions] = useState<
+    TransactionModel[]
+  >([])
+  const [isTransactionsModalOpen, setIsTransactionsModalOpen] = useState(false)
   const [isRecurrenceModalOpen, setIsRecurrenceModalOpen] = useState(false)
   const [isModalFiltersOpen, setIsModalFiltersOpen] = useState(false)
   const [tableFilters, setTableFilters] = useState<FilterRecurrencesFormInputs>(
@@ -47,13 +57,23 @@ export const Recurrences = () => {
     updateRecurrence(payload)
   }
 
-  const handleEditRecurrence = (id: string) => {
-    setSelectedRecurrence(id)
+  const handleOpenTransactions = (recurrence: RecurrentTransaction) => {
+    setSelectedRecurrence(recurrence)
+    setIsTransactionsModalOpen(true)
+    setRecurrenceTransactions(
+      transactionList.filter((item) =>
+        recurrence.transactions.find((i) => i.id === item.id)
+      )
+    )
+  }
+
+  const handleEditRecurrence = (recurrence: RecurrentTransaction) => {
+    setSelectedRecurrence(recurrence)
     setIsRecurrenceModalOpen(true)
   }
 
   const handleCloseModal = () => {
-    setSelectedRecurrence('')
+    setSelectedRecurrence(null)
     setIsRecurrenceModalOpen(false)
   }
 
@@ -66,10 +86,7 @@ export const Recurrences = () => {
         label: 'Excluir todas as transações vinculadas à essa recorrência',
       },
       onConfirm: (data) => {
-        removeRecurrence({
-          id: row.id,
-          deleteAllTransactions: data.deleteAllTransactions,
-        })
+        removeRecurrence(row.id, data.deleteAllTransactions)
       },
     })
   }
@@ -89,7 +106,8 @@ export const Recurrences = () => {
   const columns = getColumns(
     handleEditRecurrence,
     handleOpenDeleteDialog,
-    toggleActivity
+    toggleActivity,
+    handleOpenTransactions
   )
 
   return (
@@ -106,13 +124,20 @@ export const Recurrences = () => {
       <AddRecurrenceOverlay
         isOpen={isRecurrenceModalOpen}
         onClose={handleCloseModal}
-        selectedId={selectedRecurrence}
+        selectedRecurrence={selectedRecurrence}
       />
 
       <ModalFilters
         isOpen={isModalFiltersOpen}
         onClose={() => setIsModalFiltersOpen(false)}
         handleFilter={handleSetFilters}
+      />
+
+      <TransactionsModal
+        isOpen={isTransactionsModalOpen}
+        onClose={() => setIsTransactionsModalOpen(false)}
+        recurrence={selectedRecurrence!}
+        data={recurrenceTransactions}
       />
     </MainTemplate>
   )

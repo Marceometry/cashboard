@@ -21,8 +21,3 @@ export type AddRecurrentTransaction = Omit<
 >
 
 export type UpdateRecurrentTransaction = Partial<RecurrentTransaction>
-
-export type RemoveRecurrenceArgs = {
-  id: string
-  deleteAllTransactions: boolean
-}

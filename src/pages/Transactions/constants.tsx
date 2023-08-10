@@ -50,6 +50,10 @@ export const getColumns = (
       ),
     },
     {
+      label: 'Id',
+      field: 'id',
+    },
+    {
       label: 'Descrição',
       field: 'description',
     },

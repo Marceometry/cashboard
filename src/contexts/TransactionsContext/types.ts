@@ -21,7 +21,7 @@ export type TransactionsContextData = {
   updateTransaction: (
     transaction: Optional<TransactionModel, 'datePayed'>
   ) => Promise<TransactionModel>
-  removeTransaction: (transaction: TransactionModel) => void
+  removeTransaction: (transaction: TransactionModel) => Promise<void>
   updateTransactionList: (list: TransactionModel[]) => void
   uploadTransactionList: (list: string) => void
   getAvailableYearList: () => Option[]
