@@ -79,6 +79,7 @@ export function TransactionsContextProvider({
 
   const removeTransaction = call(
     async (transaction: TransactionModel) => {
+      if (!transaction.id) throw new Error()
       await remoteRemoveTransaction(transaction.id)
     },
     { toastText: 'Transação excluída com sucesso!' }

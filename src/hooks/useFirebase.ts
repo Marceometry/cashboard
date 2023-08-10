@@ -113,7 +113,7 @@ export const useFirebaseDatabase = (
   }
 
   const remoteRemoveTransaction = (id: string) => {
-    if (!firebaseApp) return
+    if (!firebaseApp || !id) return
     const database = getDatabase()
     return remove(ref(database, `${transactionsPath}/${id}`))
   }
