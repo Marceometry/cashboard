@@ -15,7 +15,12 @@ import {
 } from '@chakra-ui/react'
 import { Download, FileArrowDown, Gear, SignOut, WifiX } from 'phosphor-react'
 import { FileImportModal, Menu, SettingsModal, ThemeIcon } from '@/components'
-import { useAuth, useFirebaseContext, useTransactions } from '@/contexts'
+import {
+  useAuth,
+  useFirebaseContext,
+  useRecurrences,
+  useTransactions,
+} from '@/contexts'
 import { useFileDownload } from '@/hooks'
 import { sortByDate } from '@/utils'
 
@@ -26,6 +31,7 @@ export const UserMenu = () => {
   const downloadFile = useFileDownload()
   const { isOnline } = useFirebaseContext()
   const { transactionList } = useTransactions()
+  const { recurrenceList } = useRecurrences()
   const { user, signOut } = useAuth()
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
   const [isImportFileModalOpen, setIsImportFileModalOpen] = useState(false)
@@ -36,7 +42,11 @@ export const UserMenu = () => {
     const username = user.name.toUpperCase().replaceAll(' ', '-')
     const date = new Date().toISOString().split('T')[0]
     const fileName = `cashboard-backup-${username}-${date}`
-    downloadFile(fileName, sortByDate(transactionList, true), 'json')
+    const payload = {
+      transactions: sortByDate(transactionList, true),
+      recurrences: sortByDate(recurrenceList, true),
+    }
+    downloadFile(fileName, payload, 'json')
   }
 
   const openImportFileModal = () => setIsImportFileModalOpen(true)

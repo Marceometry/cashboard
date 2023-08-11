@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Code, Flex, Text } from '@chakra-ui/react'
 import { Button, CodeBlock, Modal } from '@/components'
-import { useTransactions } from '@/contexts'
+import { useRecurrences, useTransactions } from '@/contexts'
 import { useFileImport } from '@/hooks'
 import { CODE_EXAMPLE, FORMATTED_CODE_EXAMPLE } from '../UserMenu/constants'
 
@@ -13,11 +13,16 @@ type Props = {
 export const FileImportModal = ({ isOpen, onClose }: Props) => {
   const { importFile, fileContent } = useFileImport()
   const { uploadTransactionList } = useTransactions()
+  const { uploadRecurrenceList } = useRecurrences()
 
   useEffect(() => {
-    if (!fileContent) return
     onClose()
-    uploadTransactionList(fileContent)
+    if (!fileContent) return
+    const data = JSON.parse(fileContent)
+    uploadTransactionList(data.transactions)
+    setTimeout(() => {
+      uploadRecurrenceList(data.recurrences)
+    }, 500)
   }, [fileContent])
 
   return (

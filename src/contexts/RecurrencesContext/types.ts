@@ -14,6 +14,7 @@ export type RecurrencesContextData = {
     noToast?: boolean
   ) => void
   removeRecurrence: (id: string, deleteAllTransactions: boolean) => void
+  uploadRecurrenceList: (list: RecurrentTransaction[]) => void
 }
 
 export type UpdateRecurrenceTransactionListArgs = {

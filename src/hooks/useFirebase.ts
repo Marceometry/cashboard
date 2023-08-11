@@ -103,6 +103,14 @@ export const useFirebaseDatabase = (
     [firebaseApp, userId]
   )
 
+  const remoteAddTransactionList = (
+    transactions: FirebaseDataSnapshot<TransactionModel>
+  ) => {
+    if (!firebaseApp) return
+    const database = getDatabase()
+    return set(ref(database, `${transactionsPath}`), transactions)
+  }
+
   const remoteAddTransaction = (transaction: TransactionModel) => {
     if (!firebaseApp) return
     const database = getDatabase()
@@ -131,6 +139,14 @@ export const useFirebaseDatabase = (
     [firebaseApp, userId]
   )
 
+  const remoteAddRecurrenceList = (
+    recurrences: FirebaseDataSnapshot<RecurrentTransaction>
+  ) => {
+    if (!firebaseApp) return
+    const database = getDatabase()
+    return set(ref(database, `${recurrencesPath}`), recurrences)
+  }
+
   const remoteAddRecurrence = (recurrence: RecurrentTransaction) => {
     if (!firebaseApp) return
     const database = getDatabase()
@@ -148,9 +164,11 @@ export const useFirebaseDatabase = (
 
   return {
     onTransactionsValue,
+    remoteAddTransactionList,
     remoteAddTransaction,
     remoteRemoveTransaction,
     onRecurrencesValue,
+    remoteAddRecurrenceList,
     remoteAddRecurrence,
     remoteRemoveRecurrence,
   }

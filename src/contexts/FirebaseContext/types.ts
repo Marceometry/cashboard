@@ -16,6 +16,9 @@ export type FirebaseContextData = {
   onTransactionsValue: (
     callback: (data: FirebaseDataSnapshot<AddTransactionModel>) => void
   ) => () => void
+  remoteAddTransactionList: (
+    transactions: FirebaseDataSnapshot<TransactionModel>
+  ) => Promise<void> | undefined
   remoteAddTransaction: (
     transaction: TransactionModel
   ) => Promise<void> | undefined
@@ -23,6 +26,9 @@ export type FirebaseContextData = {
   onRecurrencesValue: (
     callback: (data: FirebaseDataSnapshot<RecurrentTransaction>) => void
   ) => () => void
+  remoteAddRecurrenceList: (
+    recurrences: FirebaseDataSnapshot<RecurrentTransaction>
+  ) => Promise<void> | undefined
   remoteAddRecurrence: (
     recurrence: RecurrentTransaction
   ) => Promise<void> | undefined

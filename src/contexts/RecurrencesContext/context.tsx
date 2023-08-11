@@ -19,7 +19,12 @@ import {
   RecurrencesContextData,
   UpdateRecurrenceTransactionListArgs,
 } from './types'
-import { checkRecurrences, firebaseDataSnapshotToRecurrenceList } from './utils'
+import {
+  checkRecurrences,
+  firebaseDataSnapshotToRecurrenceList,
+  isRecurrenceListInvalid,
+  recurrenceListToFirebaseDataSnapshot,
+} from './utils'
 
 type RecurrencesContextProviderProps = {
   children: ReactNode
@@ -35,6 +40,7 @@ export function RecurrencesContextProvider({
   const { call, isLoading, setIsLoading } = useApiCall()
   const {
     onRecurrencesValue,
+    remoteAddRecurrenceList,
     remoteAddRecurrence,
     remoteRemoveRecurrence,
     remoteAddTransaction,
@@ -47,7 +53,7 @@ export function RecurrencesContextProvider({
   )
 
   const addRecurrence = call(
-    async (payload: AddRecurrentTransaction) => {
+    async (payload: AddRecurrentTransaction, noToast?: boolean) => {
       const recurrence = {
         ...payload,
         id: uuid(),
@@ -56,8 +62,12 @@ export function RecurrencesContextProvider({
         isActive: true,
       }
       await remoteAddRecurrence(recurrence)
+      return noToast
     },
-    { toastText: 'Recorrência adicionada com sucesso!' }
+    {
+      toastText: (noToast) =>
+        noToast ? '' : 'Recorrência adicionada com sucesso!',
+    }
   )
 
   const removeRecurrence = call(
@@ -102,6 +112,15 @@ export function RecurrencesContextProvider({
         isActive,
       })
     }
+  )
+
+  const uploadRecurrenceList = call(
+    (list: RecurrentTransaction[]) => {
+      const isInvalid = isRecurrenceListInvalid(list)
+      if (isInvalid) throw new Error()
+      remoteAddRecurrenceList(recurrenceListToFirebaseDataSnapshot(list))
+    },
+    { toastError: 'Arquivo Inválido' }
   )
 
   const addTransaction = call(async (payload: AddTransactionModel) => {
@@ -162,6 +181,7 @@ export function RecurrencesContextProvider({
         addRecurrence,
         updateRecurrence,
         removeRecurrence,
+        uploadRecurrenceList,
         isLoadingCache,
       }}
     >

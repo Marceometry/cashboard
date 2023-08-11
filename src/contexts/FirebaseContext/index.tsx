@@ -33,9 +33,11 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
   } = useFirebaseAuth(firebaseApp)
   const {
     onTransactionsValue,
+    remoteAddTransactionList,
     remoteAddTransaction,
     remoteRemoveTransaction,
     onRecurrencesValue,
+    remoteAddRecurrenceList,
     remoteAddRecurrence,
     remoteRemoveRecurrence,
   } = useFirebaseDatabase(firebaseApp, userId)
@@ -70,9 +72,11 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
         updateCurrentUser,
         deleteCurrentAccount,
         onTransactionsValue,
+        remoteAddTransactionList,
         remoteAddTransaction,
         remoteRemoveTransaction,
         onRecurrencesValue,
+        remoteAddRecurrenceList,
         remoteAddRecurrence,
         remoteRemoveRecurrence,
       }}

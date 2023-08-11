@@ -79,6 +79,16 @@ export const firebaseDataSnapshotToTransactionList = (
   )
 }
 
+export const transactionListToFirebaseDataSnapshot = (
+  data: TransactionModel[]
+) => {
+  return data.reduce((acc, item) => {
+    const id = item.id || uuid()
+    acc[id] = formatTransaction({ ...item, id })
+    return acc
+  }, {} as FirebaseDataSnapshot<TransactionModel>)
+}
+
 export const getYearList = (
   transactionList: TransactionModel[],
   dateParam: DateParam

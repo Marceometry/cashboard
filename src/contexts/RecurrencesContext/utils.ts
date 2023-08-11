@@ -4,11 +4,14 @@ import {
   isFuture,
   isSameDay,
   isThisMonth,
+  isValid,
   subMonths,
 } from 'date-fns'
+import { v4 as uuid, validate } from 'uuid'
 import { FirebaseDataSnapshot } from '@/hooks'
 import {
   AddTransactionModel,
+  PaymentMethods,
   RecurrentTransaction,
   TransactionModel,
 } from '@/types'
@@ -23,6 +26,62 @@ export const firebaseDataSnapshotToRecurrenceList = (
     transactions: values.transactions || [],
     id,
   }))
+}
+
+export const recurrenceListToFirebaseDataSnapshot = (
+  data: RecurrentTransaction[]
+) => {
+  return data.reduce((acc, item) => {
+    acc[item.id] = item
+    return acc
+  }, {} as { [key: string]: RecurrentTransaction })
+}
+
+const error = () => {
+  throw new Error()
+}
+
+export const isRecurrenceInvalid = (item: RecurrentTransaction) => {
+  try {
+    if (item.id && !validate(item.id)) error()
+    if (!item.description) error()
+    if (typeof item.category !== 'string') error()
+    if (item.type !== 'income' && item.type !== 'outcome') error()
+    if (!PaymentMethods[item.paymentMethod]) error()
+    if (!isValid(new Date(item.startDate))) error()
+    if (isNaN(item.amount)) error()
+    if (item.installments && isNaN(item.installments)) error()
+    if (item.isActive && typeof item.isActive !== 'boolean') error()
+    if (item.transactions.length) {
+      item.transactions.forEach((t) => {
+        if (t.id && !validate(t.id)) error()
+        if (!isValid(new Date(t.date))) error()
+      })
+    }
+
+    return false
+  } catch (error) {
+    return true
+  }
+}
+
+export const isRecurrenceListInvalid = (list: RecurrentTransaction[]) => {
+  try {
+    if (!list) error()
+
+    const isSomeInvalid = list.some((item: any) => {
+      return isRecurrenceInvalid(item)
+    })
+    if (isSomeInvalid) error()
+
+    const ids = list.map((i) => i.id || uuid())
+    const hasDuplicateId = new Set(ids).size !== ids.length
+    if (hasDuplicateId) error()
+
+    return false
+  } catch (error) {
+    return true
+  }
 }
 
 export const getDescriptionWithInstallments = (
@@ -82,8 +141,6 @@ export const checkRecurrences = async ({
         date: transaction?.date || i.date,
       }
     })
-    if (item.description === 'Spotify')
-      console.log(correctedTransactions.filter((i) => i.id === ''))
 
     const monthsPassed = differenceInCalendarMonths(new Date(), startDate)
 
@@ -103,8 +160,6 @@ export const checkRecurrences = async ({
 
       return acc
     }, [] as string[])
-    if (item.description === 'Spotify')
-      console.log('datesLacking', datesLacking)
 
     if (
       !datesLacking.length &&
@@ -160,8 +215,6 @@ export const checkRecurrences = async ({
       const date =
         datesLacking.shift() ||
         addMonths(latestTransactionDate, i).toISOString()
-
-      if (item.description === 'Spotify') console.log(date, datesLacking)
       if (isFuture(new Date(date)) && !isThisMonth(new Date(date))) break
 
       const description = getDescriptionWithInstallments(

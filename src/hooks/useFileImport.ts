@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 
+const id = 'cashboard-import-file-input'
+const getElement = () => document.getElementById(id) as HTMLInputElement | null
+
 export const useFileImport = () => {
-  const [input, setInput] = useState<HTMLInputElement | null>(null)
+  const [input, setInput] = useState<HTMLInputElement | null>(getElement())
   const [fileContent, setFileContent] = useState('')
 
   useEffect(() => {
-    const id = 'cashboard-import-file-input'
-    if (input || document.getElementById(id)) return
+    if (input) return
 
     const element = document.createElement('input')
     element.id = id

@@ -27,6 +27,7 @@ import {
   generateTags,
   getYearList,
   isTransactionListInvalid,
+  transactionListToFirebaseDataSnapshot,
 } from './utils'
 
 export type TransactionsContextProviderProps = {
@@ -44,6 +45,7 @@ export function TransactionsContextProvider({
   const {
     isOnline,
     onTransactionsValue,
+    remoteAddTransactionList,
     remoteAddTransaction,
     remoteRemoveTransaction,
   } = useFirebaseContext()
@@ -95,12 +97,10 @@ export function TransactionsContextProvider({
   })
 
   const uploadTransactionList = call(
-    (list: string) => {
-      const parsed: TransactionModel[] = JSON.parse(list)
-
-      const isInvalid = isTransactionListInvalid(parsed)
+    (list: TransactionModel[]) => {
+      const isInvalid = isTransactionListInvalid(list)
       if (isInvalid) throw new Error()
-      updateTransactionList(parsed)
+      remoteAddTransactionList(transactionListToFirebaseDataSnapshot(list))
     },
     { toastText: 'Upload feito com sucesso!', toastError: 'Arquivo Inválido' }
   )

@@ -23,7 +23,7 @@ export type TransactionsContextData = {
   ) => Promise<TransactionModel>
   removeTransaction: (transaction: TransactionModel) => Promise<void>
   updateTransactionList: (list: TransactionModel[]) => void
-  uploadTransactionList: (list: string) => void
+  uploadTransactionList: (list: TransactionModel[]) => void
   getAvailableYearList: () => Option[]
   getFilteredMostRepeatedTransactions: (text: string) => TransactionModel[]
   dateParam: DateParam
