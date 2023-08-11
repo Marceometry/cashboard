@@ -49,7 +49,6 @@ export const useApiCall = (startLoadingState = true) => {
 
         return data
       } catch (error) {
-        console.warn(error)
         const text = generateToast(error, options?.toastError)
         toast(text || 'Algo deu errado', 'error', options?.toastDuration)
         throw error

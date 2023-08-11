@@ -52,11 +52,15 @@ export const getColumns = (
     customRender: ({ paymentMethod }) => PaymentMethods[paymentMethod],
   },
   {
-    label: 'Data de início',
-    field: 'startDate',
-    customRender: ({ startDate }) => {
-      return new Date(startDate).toLocaleDateString()
-    },
+    customRender: (recurrence) => (
+      <Button
+        variant='link'
+        fontWeight='normal'
+        onClick={() => handleOpenTransactions(recurrence)}
+      >
+        Transações
+      </Button>
+    ),
   },
   {
     label: 'Parcelas',
@@ -81,15 +85,11 @@ export const getColumns = (
     ),
   },
   {
-    customRender: (recurrence) => (
-      <Button
-        variant='link'
-        fontWeight='normal'
-        onClick={() => handleOpenTransactions(recurrence)}
-      >
-        Transações
-      </Button>
-    ),
+    label: 'Data de início',
+    field: 'startDate',
+    customRender: ({ startDate }) => {
+      return new Date(startDate).toLocaleDateString()
+    },
   },
   {
     customRender: (row) => (

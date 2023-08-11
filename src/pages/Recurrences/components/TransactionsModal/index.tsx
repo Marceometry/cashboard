@@ -1,17 +1,25 @@
-import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Flex } from '@chakra-ui/react'
 import { Button, Form, Input, Modal, Table } from '@/components'
-import { useDialog, useRecurrences, useTransactions } from '@/contexts'
+import {
+  formatTransaction,
+  useDialog,
+  useRecurrences,
+  useTransactions,
+} from '@/contexts'
 import { RecurrentTransaction, TransactionModel } from '@/types'
 import { currency, formatInputToISOString } from '@/utils'
 import { getTransactionsColumns } from './constants'
+
+export type TransactionsModalItem =
+  | TransactionModel
+  | { id: string; date: string }
 
 type Props = {
   isOpen: boolean
   onClose: () => void
   recurrence: RecurrentTransaction
-  data: TransactionModel[]
+  data: TransactionsModalItem[]
 }
 
 export const TransactionsModal = ({
@@ -20,15 +28,10 @@ export const TransactionsModal = ({
   recurrence,
   data,
 }: Props) => {
-  const [transactionList, setTransactionList] = useState(data)
   const formMethods = useForm()
   const { openDialog } = useDialog()
   const { updateRecurrence } = useRecurrences()
   const { addTransaction, dateParam, removeTransaction } = useTransactions()
-
-  useEffect(() => {
-    setTransactionList(data)
-  }, [data])
 
   const handleSubmit = formMethods.handleSubmit(async (data) => {
     const date = formatInputToISOString(data.date)
@@ -39,7 +42,6 @@ export const TransactionsModal = ({
 
     const transactions = [...recurrence.transactions, { date, id }]
     updateRecurrence({ ...recurrence, transactions }, true)
-    setTransactionList((state) => [...state, { ...transaction, id }])
     formMethods.reset()
   })
 
@@ -47,17 +49,35 @@ export const TransactionsModal = ({
     openDialog({
       title: `${row.description} | ${currency.valueToMoney(row.amount)}`,
       body: 'Deseja realmente excluir esta transação? Essa ação não pode ser desfeita.',
-      onConfirm: async () => {
-        await removeTransaction(row)
-        setTransactionList((state) =>
-          state.filter((item) => item.id !== row.id)
-        )
-      },
+      onConfirm: () => removeTransaction(row),
     })
+  }
+
+  const removeEmptySpace = (date: string) => {
+    const transactions = data
+      .filter((item) => item.id || item.date !== date)
+      .map((t) => ({ id: t.id, date: t.date }))
+    updateRecurrence({ ...recurrence, transactions }, true)
+  }
+
+  const addTransactionInDate = async (date: string) => {
+    const transaction = formatTransaction({
+      ...recurrence,
+      datePayed: date,
+      date,
+    })
+    const { id } = await addTransaction(transaction)
+    const transactions = data.map((item) => {
+      if (item.id || item.date !== date) return item
+      return { id, date: item.date }
+    })
+    updateRecurrence({ ...recurrence, transactions }, true)
   }
 
   const columns = getTransactionsColumns(
     handleOpenDeleteTransactionDialog,
+    removeEmptySpace,
+    addTransactionInDate,
     dateParam
   )
 
@@ -73,7 +93,7 @@ export const TransactionsModal = ({
           </Flex>
         </Form>
       </Flex>
-      <Table data={transactionList} columns={columns} size='sm' noSearch />
+      <Table data={data} columns={columns} size='sm' noSearch />
     </Modal>
   )
 }

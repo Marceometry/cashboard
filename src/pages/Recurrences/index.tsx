@@ -1,13 +1,14 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { MainTemplate, Table } from '@/components'
 import { useDialog, useRecurrences, useTransactions } from '@/contexts'
 import { useLocalStorage } from '@/hooks'
-import { RecurrentTransaction, TransactionModel } from '@/types'
+import { RecurrentTransaction } from '@/types'
 import { currency } from '@/utils'
 import {
   AddRecurrenceOverlay,
   ModalFilters,
   TransactionsModal,
+  TransactionsModalItem,
 } from './components'
 import { getButtons, getColumns, getMobileCard } from './constants'
 import { filterData } from './utils'
@@ -26,8 +27,9 @@ export const Recurrences = () => {
     useRecurrences()
   const [selectedRecurrence, setSelectedRecurrence] =
     useState<RecurrentTransaction | null>(null)
+  const [selectedRecurrenceId, setSelectedRecurrenceId] = useState('')
   const [recurrenceTransactions, setRecurrenceTransactions] = useState<
-    TransactionModel[]
+    TransactionsModalItem[]
   >([])
   const [isTransactionsModalOpen, setIsTransactionsModalOpen] = useState(false)
   const [isRecurrenceModalOpen, setIsRecurrenceModalOpen] = useState(false)
@@ -58,14 +60,21 @@ export const Recurrences = () => {
   }
 
   const handleOpenTransactions = (recurrence: RecurrentTransaction) => {
-    setSelectedRecurrence(recurrence)
+    setSelectedRecurrenceId(recurrence.id)
     setIsTransactionsModalOpen(true)
+  }
+
+  useEffect(() => {
+    if (!selectedRecurrenceId) return
+    const recurrence = recurrenceList.find((r) => r.id === selectedRecurrenceId)
+    if (!recurrence) return
+    setSelectedRecurrence(recurrence)
     setRecurrenceTransactions(
-      transactionList.filter((item) =>
-        recurrence.transactions.find((i) => i.id === item.id)
+      recurrence.transactions.map(
+        (item) => transactionList.find((i) => i.id === item.id) || item
       )
     )
-  }
+  }, [selectedRecurrenceId, recurrenceList, transactionList])
 
   const handleEditRecurrence = (recurrence: RecurrentTransaction) => {
     setSelectedRecurrence(recurrence)

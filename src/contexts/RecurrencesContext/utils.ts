@@ -82,10 +82,34 @@ export const checkRecurrences = async ({
         date: transaction?.date || i.date,
       }
     })
+    if (item.description === 'Spotify')
+      console.log(correctedTransactions.filter((i) => i.id === ''))
 
     const monthsPassed = differenceInCalendarMonths(new Date(), startDate)
 
-    if (correctedTransactions.length - 1 >= monthsPassed) {
+    const transactionsByDate = sortByDate(correctedTransactions)
+    const datesLacking = transactionsByDate.reduce((acc, t, index, array) => {
+      if (index === 0) return acc
+
+      const currentDate = new Date(t.date)
+      const lastDate = new Date(array[index - 1].date)
+      const difference = differenceInCalendarMonths(lastDate, currentDate)
+      if (difference > 1) {
+        const dates = new Array(difference - 1)
+          .fill('')
+          .map((_, index) => subMonths(lastDate, index + 1).toISOString())
+        return [...acc, ...dates]
+      }
+
+      return acc
+    }, [] as string[])
+    if (item.description === 'Spotify')
+      console.log('datesLacking', datesLacking)
+
+    if (
+      !datesLacking.length &&
+      correctedTransactions.length - 1 >= monthsPassed
+    ) {
       if (transactionsChanged) {
         recurrencesToUpdate.push({
           ...item,
@@ -96,7 +120,7 @@ export const checkRecurrences = async ({
     }
 
     const latestTransactionDate = correctedTransactions.length
-      ? new Date(sortByDate(correctedTransactions)[0].date)
+      ? new Date(transactionsByDate[0].date)
       : subMonths(startDate, 1)
 
     const { installments } = item
@@ -121,14 +145,25 @@ export const checkRecurrences = async ({
       return resolve()
     }
 
-    const transactions = correctedTransactions.filter((t) => !!t.id)
-    for (let i = 1; transactions.length - 1 < monthsPassed; i++) {
-      if (installments && transactions.length === installments) {
+    const transactions = correctedTransactions
+    const validTransactions = transactions.filter((t) => !!t.id)
+    for (
+      let i = 1;
+      transactions.length - 1 < monthsPassed || !!datesLacking.length;
+      i++
+    ) {
+      if (installments && validTransactions.length === installments) {
         isActive = false
         break
       }
 
-      const date = addMonths(latestTransactionDate, i).toISOString()
+      const date =
+        datesLacking.shift() ||
+        addMonths(latestTransactionDate, i).toISOString()
+
+      if (item.description === 'Spotify') console.log(date, datesLacking)
+      if (isFuture(new Date(date)) && !isThisMonth(new Date(date))) break
+
       const description = getDescriptionWithInstallments(
         item.description,
         transactions.length + 1,
@@ -143,7 +178,7 @@ export const checkRecurrences = async ({
       })
       transactions.push({ id, date })
 
-      if (installments && transactions.length >= installments) {
+      if (installments && validTransactions.length >= installments) {
         isActive = false
       }
     }
