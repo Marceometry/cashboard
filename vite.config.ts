@@ -10,7 +10,10 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      workbox: { globPatterns: ['**/*'] },
+      workbox: {
+        globPatterns: ['**/*'],
+        maximumFileSizeToCacheInBytes: 10000000, // 10mb
+      },
       includeAssets: ['**/*'],
       manifest: {
         name: 'Cashboard',
