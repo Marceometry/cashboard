@@ -6,7 +6,7 @@ import { DateParam, TransactionModel } from '@/types'
 export const getTransactionsColumns = (
   deleteTransaction: (row: TransactionModel) => void,
   removeEmptySpace: (date: string) => void,
-  addTransactionInDate: (date: string) => void,
+  addTransaction: (date: string) => void,
   dateParam: DateParam
 ): ColumnProps<TransactionModel>[] => [
   {
@@ -49,7 +49,7 @@ export const getTransactionsColumns = (
             />
           )}
           <IconButton
-            onClick={() => addTransactionInDate(row.date)}
+            onClick={() => addTransaction(row.date)}
             aria-label='Adicionar transação nesta data'
             icon='add'
             size='sm'

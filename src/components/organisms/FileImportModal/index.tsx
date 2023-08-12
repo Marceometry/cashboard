@@ -41,8 +41,11 @@ export const FileImportModal = ({ isOpen, onClose }: Props) => {
         </Flex>
       }
     >
+      <Text mb='2' color='yellow.400'>
+        Atenção! Essa ação substituirá todos os seus dados atuais.
+      </Text>
       <Text mb='6'>
-        Para adicionar várias transações a partir de um arquivo local, você deve
+        Para adicionar várias transações e recorrências de uma só vez, você deve
         importar um arquivo <Code>.json</Code> com o seguinte formato:
       </Text>
       <CodeBlock

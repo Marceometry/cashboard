@@ -207,7 +207,7 @@ export const checkRecurrences = async ({
       transactions.length - 1 < monthsPassed || !!datesLacking.length;
       i++
     ) {
-      if (installments && validTransactions.length === installments) {
+      if (installments && validTransactions.length >= installments) {
         isActive = false
         break
       }

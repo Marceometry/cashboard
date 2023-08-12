@@ -1,12 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { Flex } from '@chakra-ui/react'
 import { Button, Form, Input, Modal, Table } from '@/components'
-import {
-  formatTransaction,
-  useDialog,
-  useRecurrences,
-  useTransactions,
-} from '@/contexts'
+import { useDialog, useRecurrences, useTransactions } from '@/contexts'
 import { RecurrentTransaction, TransactionModel } from '@/types'
 import { currency, formatInputToISOString } from '@/utils'
 import { getTransactionsColumns } from './constants'
@@ -30,18 +25,12 @@ export const TransactionsModal = ({
 }: Props) => {
   const formMethods = useForm()
   const { openDialog } = useDialog()
-  const { updateRecurrence } = useRecurrences()
-  const { addTransaction, dateParam, removeTransaction } = useTransactions()
+  const { updateRecurrence, addTransactionInDate } = useRecurrences()
+  const { dateParam, removeTransaction } = useTransactions()
 
   const handleSubmit = formMethods.handleSubmit(async (data) => {
     const date = formatInputToISOString(data.date)
-    const transaction = { ...recurrence, date, datePayed: date }
-
-    const { id } = await addTransaction(transaction)
-    if (!id) return
-
-    const transactions = [...recurrence.transactions, { date, id }]
-    updateRecurrence({ ...recurrence, transactions }, true)
+    await addTransactionInDate(date, recurrence)
     formMethods.reset()
   })
 
@@ -60,24 +49,14 @@ export const TransactionsModal = ({
     updateRecurrence({ ...recurrence, transactions }, true)
   }
 
-  const addTransactionInDate = async (date: string) => {
-    const transaction = formatTransaction({
-      ...recurrence,
-      datePayed: date,
-      date,
-    })
-    const { id } = await addTransaction(transaction)
-    const transactions = data.map((item) => {
-      if (item.id || item.date !== date) return item
-      return { id, date: item.date }
-    })
-    updateRecurrence({ ...recurrence, transactions }, true)
+  const addTransaction = (date: string) => {
+    addTransactionInDate(date, recurrence)
   }
 
   const columns = getTransactionsColumns(
     handleOpenDeleteTransactionDialog,
     removeEmptySpace,
-    addTransactionInDate,
+    addTransaction,
     dateParam
   )
 

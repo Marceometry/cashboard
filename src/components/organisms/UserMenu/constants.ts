@@ -20,10 +20,10 @@ export const CODE_EXAMPLE = `{
   ],
   "recurrences": [
     {
-      "id": "${uuid()}", // string | null
-      "type": "outcome", // 'income' | 'outcome'
-      "paymentMethod": "credit", // 'pix' | 'cash' | 'credit' | 'debit'
-      "amount": 3599, // valor em centavos
+      "id": "${uuid()}",
+      "type": "outcome",
+      "paymentMethod": "credit",
+      "amount": 3599,
       "installments": 10, // number | null
       "startDate": "${getFormattedDate()}",
       "category": "Estudo",
@@ -32,7 +32,7 @@ export const CODE_EXAMPLE = `{
       "transactions": [
         {
           "date": "${getFormattedDate()}",
-          "id": "${uuid()}"
+          "id": "${uuid()}" // string | ""
         }
       ]
     },

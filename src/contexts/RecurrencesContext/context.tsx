@@ -22,6 +22,7 @@ import {
 import {
   checkRecurrences,
   firebaseDataSnapshotToRecurrenceList,
+  getDescriptionWithInstallments,
   isRecurrenceListInvalid,
   recurrenceListToFirebaseDataSnapshot,
 } from './utils'
@@ -129,6 +130,34 @@ export function RecurrencesContextProvider({
     return transaction
   })
 
+  const addTransactionInDate = call(
+    async (date: string, recurrence: RecurrentTransaction) => {
+      const currentInstalment = recurrence.installments
+        ? recurrence.transactions.filter((t) => !!t.id).length + 1
+        : 0
+      const description = getDescriptionWithInstallments(
+        recurrence.description,
+        currentInstalment,
+        recurrence.installments
+      )
+      const transaction = { ...recurrence, description, date, datePayed: date }
+
+      const { id } = await addTransaction(transaction)
+      if (!id) return
+
+      const transactions = [...recurrence.transactions]
+      const index = transactions.findIndex((t) => !t.id && t.date === date)
+      const value = { date, id }
+      if (index !== -1) {
+        transactions[index] = value
+      } else {
+        transactions.push(value)
+      }
+
+      await updateRecurrence({ ...recurrence, transactions }, true)
+    }
+  )
+
   const removeTransaction = call(async (id: string) =>
     remoteRemoveTransaction(id)
   )
@@ -182,6 +211,7 @@ export function RecurrencesContextProvider({
         updateRecurrence,
         removeRecurrence,
         uploadRecurrenceList,
+        addTransactionInDate,
         isLoadingCache,
       }}
     >

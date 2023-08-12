@@ -15,6 +15,10 @@ export type RecurrencesContextData = {
   ) => void
   removeRecurrence: (id: string, deleteAllTransactions: boolean) => void
   uploadRecurrenceList: (list: RecurrentTransaction[]) => void
+  addTransactionInDate: (
+    date: string,
+    recurrence: RecurrentTransaction
+  ) => Promise<void>
 }
 
 export type UpdateRecurrenceTransactionListArgs = {
