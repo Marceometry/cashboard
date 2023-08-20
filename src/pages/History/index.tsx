@@ -3,7 +3,7 @@ import { ComposedChart, Loading, MainTemplate, Tabs } from '@/components'
 import { useTransactions } from '@/contexts'
 import { getChartData, getChartSections, getTabs, View } from './constants'
 
-export const Summary = () => {
+export const History = () => {
   const { transactionList, dateParam, isLoadingCache } = useTransactions()
   const [currentView, setCurrentView] = useState<View>('month')
 

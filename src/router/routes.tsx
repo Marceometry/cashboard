@@ -1,7 +1,7 @@
 import {
   CalendarCheck,
   ChartPie,
-  ClipboardText,
+  ClockCounterClockwise,
   House,
   Money,
   Swap,
@@ -9,11 +9,11 @@ import {
 } from 'phosphor-react'
 import {
   Categories,
+  History,
   Home,
   Login,
   PaymentMethods,
   Recurrences,
-  Summary,
   Tags,
   Transactions,
 } from '@/pages'
@@ -34,10 +34,10 @@ export const dashboardRoutes: Route[] = [
     icon: <House />,
   },
   {
-    label: 'Resumo',
-    path: '/summary',
-    element: <Summary />,
-    icon: <ClipboardText />,
+    label: 'Histórico',
+    path: '/history',
+    element: <History />,
+    icon: <ClockCounterClockwise />,
   },
   {
     label: 'Transações',
