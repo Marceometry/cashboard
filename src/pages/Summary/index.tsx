@@ -14,7 +14,7 @@ import { useLocalStorage } from '@/hooks'
 import { InputNumber, ModalCategoriesFilter, Stat } from './components'
 import { generateCategories, getMonthSummary } from './utils'
 
-export const Home = () => {
+export const Summary = () => {
   const storage = useLocalStorage()
   const storagedMonthCount = storage.get(
     'categories-average-month-count-filter'

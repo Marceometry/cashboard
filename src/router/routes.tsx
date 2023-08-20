@@ -1,8 +1,8 @@
 import {
   CalendarCheck,
   ChartPie,
+  ClipboardText,
   ClockCounterClockwise,
-  House,
   Money,
   Swap,
   Tag,
@@ -10,10 +10,10 @@ import {
 import {
   Categories,
   History,
-  Home,
   Login,
   PaymentMethods,
   Recurrences,
+  Summary,
   Tags,
   Transactions,
 } from '@/pages'
@@ -28,10 +28,10 @@ type Route = {
 
 export const dashboardRoutes: Route[] = [
   {
-    label: 'Início',
-    path: '/',
-    element: <Home />,
-    icon: <House />,
+    label: 'Resumo',
+    path: '/summary',
+    element: <Summary />,
+    icon: <ClipboardText />,
   },
   {
     label: 'Histórico',
