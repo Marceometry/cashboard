@@ -34,7 +34,7 @@ export const getChartData = (
   view: View,
   dateParam: DateParam
 ) => {
-  return sortByDate(list, true).reduce((acc: ChartData, item) => {
+  return sortByDate(list, true, dateParam).reduce((acc: ChartData, item) => {
     const { amount, type } = item
     const date = new Date(item[dateParam])
 
