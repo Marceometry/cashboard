@@ -142,6 +142,11 @@ export const checkRecurrences = async ({
       }
     })
 
+    if (item.description === 'Passagem - Manaus') {
+      console.log('transactions', item.transactions)
+      console.log('correctedTransactions', correctedTransactions)
+    }
+
     const monthsPassed = differenceInCalendarMonths(new Date(), startDate)
 
     const transactionsByDate = sortByDate(correctedTransactions)

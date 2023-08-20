@@ -47,7 +47,8 @@ export function RecurrencesContextProvider({
     remoteAddTransaction,
     remoteRemoveTransaction,
   } = useFirebaseContext()
-  const { transactionList } = useTransactions()
+  const { transactionList, isLoading: isLoadingTransactions } =
+    useTransactions()
   const [isLoadingCache, setIsLoadingCache] = useState(true)
   const [recurrenceList, setRecurrenceList] = useState<RecurrentTransaction[]>(
     []
@@ -171,7 +172,8 @@ export function RecurrencesContextProvider({
       !user?.id ||
       !recurrenceList.length ||
       !transactionList.length ||
-      isLoading
+      isLoading ||
+      isLoadingTransactions
     ) {
       return
     }
@@ -181,7 +183,13 @@ export function RecurrencesContextProvider({
       addTransaction,
       updateRecurrenceTransactionList,
     })
-  }, [user?.id, recurrenceList, transactionList])
+  }, [
+    user?.id,
+    recurrenceList,
+    transactionList,
+    isLoading,
+    isLoadingTransactions,
+  ])
 
   useEffect(() => {
     if (!user?.id) return clearState()
