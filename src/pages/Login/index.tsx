@@ -9,7 +9,7 @@ export const Login = () => {
   const { signIn, user } = useAuth()
 
   useEffect(() => {
-    if (user) navigate('/')
+    if (user) navigate('/transactions')
   }, [user])
 
   return (

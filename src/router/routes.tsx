@@ -10,6 +10,7 @@ import {
 import {
   Categories,
   History,
+  Home,
   Login,
   PaymentMethods,
   Recurrences,
@@ -72,6 +73,11 @@ export const dashboardRoutes: Route[] = [
 ]
 
 export const routes: Route[] = [
+  {
+    path: '/',
+    element: <Home />,
+    isPublic: true,
+  },
   {
     path: '/login',
     element: <Login />,

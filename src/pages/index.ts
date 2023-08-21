@@ -1,5 +1,6 @@
 export * from './Categories'
 export * from './History'
+export * from './Home'
 export * from './Login'
 export * from './PaymentMethods'
 export * from './Recurrences'

@@ -12,6 +12,8 @@ export const CustomRoute = ({ children, isPublic }: Props) => {
 
   if (isLoading) return <LoadingTemplate />
 
+  if (isPublic && !!user) return <Navigate to='/transactions' />
+
   if (isPublic || !!user) return <>{children}</>
 
   return <Navigate to='/login' />

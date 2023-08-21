@@ -13,7 +13,7 @@ export const Card = ({ children, ...props }: CardProps) => {
       flex='1'
       direction='column'
       overflow='auto'
-      shadow='lg'
+      shadow={{ base: 'none', sm: 'lg' }}
       rounded={{ base: 'none', sm: 'md' }}
       bg={bg}
       {...props}
