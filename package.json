@@ -17,7 +17,7 @@
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11",
     "@hookform/resolvers": "^2.9.11",
-    "chakra-react-select": "^4.1.4",
+    "chakra-react-select": "^4.7.0",
     "date-fns": "^2.28.0",
     "firebase": "^10.1.0",
     "framer-motion": "^6",
