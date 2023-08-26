@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { useBreakpointValue } from '@chakra-ui/react'
+import { useColorModeValue } from '@chakra-ui/react'
 import { CreatableSelect } from 'chakra-react-select'
 import { FormControl } from '@/components'
 
@@ -26,8 +26,8 @@ export const MultiSelect = ({
   options,
 }: Props) => {
   const { control } = useFormContext()
-  const isSmallScreen = useBreakpointValue({ base: true, sm: false })
   const [createdOptions, setCreatedOptions] = useState<Option[]>([])
+  const menuListBg = useColorModeValue('whitesmoke', 'gray.800')
 
   const allOptions = [...options, ...createdOptions]
 
@@ -39,12 +39,12 @@ export const MultiSelect = ({
         render={({ field: { onChange, value, ref } }) => (
           <CreatableSelect
             isMulti
-            size={isSmallScreen ? 'sm' : 'md'}
             ref={ref}
             options={options}
             placeholder={placeholder}
+            size={{ base: 'sm', sm: 'md' }}
+            chakraStyles={{ menuList: (s) => ({ ...s, bg: menuListBg }) }}
             formatCreateLabel={(value) => `Adicionar "${value}"`}
-            chakraStyles={{ container: () => ({ width: '100%' }) }}
             onChange={(values) => onChange(values.map((val) => val.value))}
             value={value?.map((val: string) =>
               allOptions.find((c) => c.value === val)
