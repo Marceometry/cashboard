@@ -62,7 +62,7 @@ export const getColumns = (
     label: 'Parcelas',
     field: 'installments',
     customRender: ({ installments, ...item }) => {
-      const transactions = item.transactions.filter((t) => !!t.id)
+      const transactions = item.transactions.filter((t) => !!t?.id)
       return !installments
         ? String(transactions.length)
         : `${transactions.length}/${installments}`
@@ -73,7 +73,7 @@ export const getColumns = (
     field: 'isActive',
     customRender: ({ id, isActive, installments, transactions }) => (
       <Switch
-        isDisabled={installments === transactions.length}
+        isDisabled={installments === transactions.filter((t) => !!t?.id).length}
         isChecked={isActive}
         onChange={() => toggleActivity(id, !isActive)}
         green
@@ -114,7 +114,8 @@ export const getMobileCard = (
   item: RecurrentTransaction,
   handleDeleteTransaction: (row: RecurrentTransaction) => void,
   handleEditTransaction: (item: RecurrentTransaction) => void,
-  toggleActivity: (id: string, isActive: boolean) => void
+  toggleActivity: (id: string, isActive: boolean) => void,
+  handleOpenTransactions: (recurrence: RecurrentTransaction) => void
 ) => {
   const {
     id,
@@ -134,6 +135,7 @@ export const getMobileCard = (
       <GridItem display='flex' flexDir='column' justifyContent='space-between'>
         <Text>{description}</Text>
         <Currency fontSize='sm' type={type} amount={amount} />
+        <Text fontSize='sm'>{category}</Text>
         <Text fontSize='sm'>{PaymentMethods[paymentMethod]}</Text>
       </GridItem>
       <GridItem
@@ -164,7 +166,15 @@ export const getMobileCard = (
           />
         </Flex>
         <Text fontSize='sm'>{new Date(startDate).toLocaleDateString()}</Text>
-        <Text fontSize='sm'>{category}</Text>
+        <Button
+          variant='link'
+          fontWeight='normal'
+          size='sm'
+          alignSelf='flex-end'
+          onClick={() => handleOpenTransactions(item)}
+        >
+          Transações
+        </Button>
         <Text fontSize='sm'>
           Parcelas:{' '}
           <Badge fontFamily='monospace' px='1'>

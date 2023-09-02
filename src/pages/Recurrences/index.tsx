@@ -105,7 +105,8 @@ export const Recurrences = () => {
       data,
       handleOpenDeleteDialog,
       handleEditRecurrence,
-      toggleActivity
+      toggleActivity,
+      handleOpenTransactions
     )
   }
   const buttons = getButtons(
