@@ -24,7 +24,8 @@ export const getTransactionsColumns = (
     label: 'Data',
     field: dateParam,
     customRender: (props) => {
-      return new Date(props[dateParam]).toLocaleDateString()
+      const date = props[dateParam] || props.date
+      return new Date(date).toLocaleDateString()
     },
   },
   {
