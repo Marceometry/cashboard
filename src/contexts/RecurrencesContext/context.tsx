@@ -154,8 +154,10 @@ export function RecurrencesContextProvider({
       } else {
         transactions.push(value)
       }
-
-      await updateRecurrence({ ...recurrence, transactions }, true)
+      const isActive = recurrence.installments
+        ? currentInstalment !== recurrence.installments
+        : true
+      await updateRecurrence({ ...recurrence, transactions, isActive }, true)
     }
   )
 
