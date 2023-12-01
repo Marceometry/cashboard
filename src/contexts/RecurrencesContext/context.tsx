@@ -50,6 +50,7 @@ export function RecurrencesContextProvider({
   const { transactionList, isLoading: isLoadingTransactions } =
     useTransactions()
   const [isLoadingCache, setIsLoadingCache] = useState(true)
+  const [isCheckingRecurrences, setIsCheckingRecurrences] = useState(true)
   const [recurrenceList, setRecurrenceList] = useState<RecurrentTransaction[]>(
     []
   )
@@ -175,7 +176,8 @@ export function RecurrencesContextProvider({
       !recurrenceList.length ||
       !transactionList.length ||
       isLoading ||
-      isLoadingTransactions
+      isLoadingTransactions ||
+      isCheckingRecurrences
     ) {
       return
     }
@@ -184,6 +186,7 @@ export function RecurrencesContextProvider({
       transactionList,
       addTransaction,
       updateRecurrenceTransactionList,
+      resolve: () => setIsCheckingRecurrences(false),
     })
   }, [
     user?.id,
@@ -191,6 +194,7 @@ export function RecurrencesContextProvider({
     transactionList,
     isLoading,
     isLoadingTransactions,
+    isCheckingRecurrences,
   ])
 
   useEffect(() => {
