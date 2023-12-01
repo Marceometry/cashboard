@@ -109,6 +109,7 @@ export const checkRecurrences = async ({
   transactionList,
   addTransaction,
   updateRecurrenceTransactionList,
+  resolve,
 }: CheckRecurrencesProps) => {
   const recurrencesToUpdate: UpdateRecurrenceTransactionListArgs[] = []
 
@@ -266,4 +267,6 @@ export const checkRecurrences = async ({
   await Promise.all(promises)
 
   recurrencesToUpdate.forEach((item) => updateRecurrenceTransactionList(item))
+
+  resolve()
 }
