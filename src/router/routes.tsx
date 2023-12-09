@@ -65,7 +65,7 @@ export const dashboardRoutes: Route[] = [
     icon: <Tag />,
   },
   {
-    label: 'Meios de pagamento',
+    label: 'Pagamentos',
     path: '/payment-methods',
     element: <PaymentMethods />,
     icon: <Money />,

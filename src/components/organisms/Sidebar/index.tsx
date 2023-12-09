@@ -32,7 +32,7 @@ export const Sidebar = () => {
       as='aside'
       direction='column'
       maxW='container.lg'
-      width={isOpen ? '264px' : '68px'}
+      width={isOpen ? '260px' : '68px'}
       transitionProperty='width'
       transitionDuration='500ms'
       overflow='hidden'
@@ -40,17 +40,12 @@ export const Sidebar = () => {
       <Heading py='5' pl='2' size='lg'>
         <Flex alignItems='center'>
           {isOpen ? (
-            <>
-              <IconButton
-                icon={<ChevronLeftIcon fontSize={40} />}
-                onClick={toggle}
-                aria-label='Fechar Sidebar'
-                variant='ghost'
-                mr='1'
-              />
-              <LogoIcon size={32} style={{ marginRight: 4 }} />
-              Cashboard
-            </>
+            <IconButton
+              icon={<ChevronLeftIcon fontSize={40} />}
+              onClick={toggle}
+              aria-label='Fechar Sidebar'
+              variant='ghost'
+            />
           ) : (
             <IconButton
               icon={<HamburgerIcon fontSize={20} />}
@@ -59,6 +54,24 @@ export const Sidebar = () => {
               variant='ghost'
             />
           )}
+          <LogoIcon
+            size={32}
+            style={{
+              flexShrink: 0,
+              marginLeft: 8,
+              marginRight: 4,
+              opacity: isOpen ? 1 : 0,
+              transition: 'opacity 150ms',
+            }}
+          />
+          <Text
+            as='strong'
+            transition='opacity 150ms'
+            opacity={isOpen ? 1 : 0}
+            userSelect={!isOpen ? 'none' : undefined}
+          >
+            Cashboard
+          </Text>
         </Flex>
       </Heading>
 
@@ -78,9 +91,17 @@ export const Sidebar = () => {
                 transition='color 0.2s'
                 _hover={{ color }}
                 color={location.pathname === route.path ? color : ''}
+                sx={{ svg: { flexShrink: 0 } }}
               >
                 {route.icon}
-                {isOpen ? route.label : ''}
+                <Text
+                  as='span'
+                  transition='opacity 150ms'
+                  opacity={isOpen ? 1 : 0}
+                  userSelect={!isOpen ? 'none' : undefined}
+                >
+                  {route.label}
+                </Text>
               </Text>
             </Link>
           </ListItem>
