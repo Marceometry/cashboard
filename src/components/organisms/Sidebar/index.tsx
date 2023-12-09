@@ -80,7 +80,7 @@ export const Sidebar = () => {
       <List width='full'>
         {dashboardRoutes.map((route) => (
           <ListItem key={route.path}>
-            <Link to={route.path} aria-label={route.label}>
+            <Link to={route.path} aria-label={route.label} title={route.label}>
               <Text
                 pl='4'
                 py='2'
@@ -99,6 +99,7 @@ export const Sidebar = () => {
                   transition='opacity 150ms'
                   opacity={isOpen ? 1 : 0}
                   userSelect={!isOpen ? 'none' : undefined}
+                  whiteSpace='nowrap'
                 >
                   {route.label}
                 </Text>
