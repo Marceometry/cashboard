@@ -145,35 +145,38 @@ export const generateChartData = (
   list: TransactionModel[],
   dateParam: DateParam
 ) => {
-  return sortByDate(list, true).reduce((acc: ChartDataResponse, item) => {
-    const { amount, type } = item
-    const isIncome = type === 'income'
-    const date = new Date(item[dateParam])
-    const name = `${date.getDate()}/${date.getMonth() + 1}`
-    const itemIndex = acc.findIndex((accItem) => accItem.name === name)
+  return sortByDate(list, true, dateParam).reduce(
+    (acc: ChartDataResponse, item) => {
+      const { amount, type } = item
+      const isIncome = type === 'income'
+      const date = new Date(item[dateParam])
+      const name = `${date.getDate()}/${date.getMonth() + 1}`
+      const itemIndex = acc.findIndex((accItem) => accItem.name === name)
 
-    if (acc[itemIndex]) {
-      const income = isIncome
-        ? acc[itemIndex].income + amount
-        : acc[itemIndex].income
+      if (acc[itemIndex]) {
+        const income = isIncome
+          ? acc[itemIndex].income + amount
+          : acc[itemIndex].income
 
-      const outcome = !isIncome
-        ? acc[itemIndex].outcome + amount
-        : acc[itemIndex].outcome
+        const outcome = !isIncome
+          ? acc[itemIndex].outcome + amount
+          : acc[itemIndex].outcome
 
-      acc[itemIndex] = { name, income, outcome }
-      return [...acc]
-    }
+        acc[itemIndex] = { name, income, outcome }
+        return [...acc]
+      }
 
-    return [
-      ...acc,
-      {
-        name,
-        income: isIncome ? amount : 0,
-        outcome: !isIncome ? amount : 0,
-      },
-    ]
-  }, [])
+      return [
+        ...acc,
+        {
+          name,
+          income: isIncome ? amount : 0,
+          outcome: !isIncome ? amount : 0,
+        },
+      ]
+    },
+    []
+  )
 }
 
 export const chartBars = [

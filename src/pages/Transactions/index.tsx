@@ -86,6 +86,7 @@ export const Transactions = () => {
     handleOpenTransactionModal,
     dateParam
   )
+  const chartData = generateChartData(tableData, dateParam)
 
   return (
     <MainTemplate>
@@ -102,7 +103,7 @@ export const Transactions = () => {
             type: 'bar',
             labelType: 'day',
             sections: chartBars,
-            data: generateChartData(tableData, dateParam),
+            data: chartData,
           },
         ]}
       />

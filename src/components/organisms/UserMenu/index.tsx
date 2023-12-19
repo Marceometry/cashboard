@@ -41,7 +41,7 @@ export const UserMenu = () => {
   const localBackup = () => {
     const username = user.name.toUpperCase().replaceAll(' ', '-')
     const date = new Date().toISOString().split('T')[0]
-    const fileName = `cashboard-backup-${username}-${date}`
+    const fileName = `cashboard-backup-${date}-${username}`
     const payload = {
       transactions: sortByDate(transactionList, true),
       recurrences: sortByDate(recurrenceList, true),
