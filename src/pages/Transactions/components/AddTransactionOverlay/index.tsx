@@ -144,7 +144,7 @@ export const AddTransactionOverlay = ({
           onClose={() => setIsCategoriesModalOpen(false)}
           onConfirm={handleSelectCategory}
           formMethods={categoriesFormMethods}
-          maxWidth={400}
+          maxWidth={500}
         >
           <RadioGroup
             required

@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { useKeyboardListener } from '@/hooks'
 
@@ -6,6 +7,7 @@ type Props = {
   formMethods: UseFormReturn<any, object>
   onSubmit: (data?: any) => void
   onShiftSubmit?: () => void
+  style?: CSSProperties
 }
 
 export const Form = ({
@@ -13,6 +15,7 @@ export const Form = ({
   onShiftSubmit,
   formMethods,
   children,
+  style,
 }: Props) => {
   const { useShiftShortcut } = useKeyboardListener()
 
@@ -22,7 +25,7 @@ export const Form = ({
     <FormProvider {...formMethods}>
       <form
         onSubmit={formMethods.handleSubmit(onSubmit)}
-        style={{ height: '100%' }}
+        style={{ height: '100%', ...style }}
       >
         {children}
       </form>

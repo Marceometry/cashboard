@@ -46,20 +46,19 @@ export const FormModal = ({
       isCentered
     >
       <ModalOverlay />
-      <ModalContent
-        maxW={maxWidth}
-        bg={bg}
-        maxH='95vh'
-        my={0}
-        mx={4}
-        overflow='auto'
-      >
+      <ModalContent maxW={maxWidth} bg={bg} maxH='95vh' my={0} mx={4}>
         <ModalHeader fontSize='2xl'>{title}</ModalHeader>
         <ModalCloseButton top='5' />
         <Form
           formMethods={formMethods}
           onSubmit={onConfirm}
           onShiftSubmit={extraButton?.onClick}
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'auto',
+          }}
         >
           <ModalBody maxH='65vh'>{children}</ModalBody>
 
