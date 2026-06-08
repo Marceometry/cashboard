@@ -149,7 +149,10 @@ export const checkRecurrences = async ({
       }
     })
 
-    const monthsPassed = differenceInCalendarMonths(new Date(), startDate)
+    const monthsPassed = differenceInCalendarMonths(
+      addMonths(new Date(), 1),
+      startDate
+    )
     const transactionsByDate = sortByDate(correctedTransactions)
     const datesLacking = transactionsByDate.reduce((acc, t, index, array) => {
       if (index === 0) return acc
@@ -221,7 +224,13 @@ export const checkRecurrences = async ({
       const date =
         datesLacking.shift() ||
         addMonths(latestTransactionDate, i).toISOString()
-      if (isFuture(new Date(date)) && !isThisMonth(new Date(date))) break
+      if (
+        isFuture(new Date(date)) &&
+        !isThisMonth(new Date(date)) &&
+        !isThisMonth(subMonths(new Date(date), 1))
+      ) {
+        break
+      }
 
       const description = getDescriptionWithInstallments(
         item.description,
