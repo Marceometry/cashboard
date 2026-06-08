@@ -126,7 +126,13 @@ export const checkRecurrences = async ({
   ) => {
     let transactionsChanged = false
     const startDate = new Date(item.startDate)
-    if (isFuture(startDate) && !isThisMonth(startDate)) return resolve()
+    if (
+      isFuture(startDate) &&
+      !isThisMonth(startDate) &&
+      !isThisMonth(subMonths(startDate, 1))
+    ) {
+      return resolve()
+    }
 
     const correctedTransactions = item.transactions.map((i) => {
       const transaction = transactionsObject[i.id]
