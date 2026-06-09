@@ -1,9 +1,7 @@
 import {
   addMonths,
   differenceInCalendarMonths,
-  isFuture,
   isSameDay,
-  isThisMonth,
   isValid,
   subMonths,
 } from 'date-fns'
@@ -17,6 +15,8 @@ import {
 } from '@/types'
 import { sortByDate } from '@/utils'
 import { UpdateRecurrenceTransactionListArgs } from './types'
+
+const RECURRENCE_MONTHS_AHEAD = 3
 
 export const firebaseDataSnapshotToRecurrenceList = (
   data: FirebaseDataSnapshot<RecurrentTransaction>
@@ -112,6 +112,10 @@ export const checkRecurrences = async ({
   resolve,
 }: CheckRecurrencesProps) => {
   const recurrencesToUpdate: UpdateRecurrenceTransactionListArgs[] = []
+  const recurrenceLimitDate = addMonths(new Date(), RECURRENCE_MONTHS_AHEAD)
+  const isAfterRecurrenceLimit = (date: Date) =>
+    differenceInCalendarMonths(date, recurrenceLimitDate) > 0
+
   const transactionsObject = transactionList.reduce(
     (acc: { [key: string]: TransactionModel }, item) => {
       acc[item.id] = item
@@ -126,13 +130,7 @@ export const checkRecurrences = async ({
   ) => {
     let transactionsChanged = false
     const startDate = new Date(item.startDate)
-    if (
-      isFuture(startDate) &&
-      !isThisMonth(startDate) &&
-      !isThisMonth(subMonths(startDate, 1))
-    ) {
-      return resolve()
-    }
+    if (isAfterRecurrenceLimit(startDate)) return resolve()
 
     const correctedTransactions = item.transactions.map((i) => {
       const transaction = transactionsObject[i.id]
@@ -150,7 +148,7 @@ export const checkRecurrences = async ({
     })
 
     const monthsPassed = differenceInCalendarMonths(
-      addMonths(new Date(), 1),
+      recurrenceLimitDate,
       startDate
     )
     const transactionsByDate = sortByDate(correctedTransactions)
@@ -224,13 +222,7 @@ export const checkRecurrences = async ({
       const date =
         datesLacking.shift() ||
         addMonths(latestTransactionDate, i).toISOString()
-      if (
-        isFuture(new Date(date)) &&
-        !isThisMonth(new Date(date)) &&
-        !isThisMonth(subMonths(new Date(date), 1))
-      ) {
-        break
-      }
+      if (isAfterRecurrenceLimit(new Date(date))) break
 
       const description = getDescriptionWithInstallments(
         item.description,
