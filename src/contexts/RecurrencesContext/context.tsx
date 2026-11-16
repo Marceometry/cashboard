@@ -3,12 +3,13 @@ import {
   ReactNode,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react'
 import { v4 as uuid } from 'uuid'
 import { formatTransaction, useAuth } from '@/contexts'
 import { useFirebaseContext, useTransactions } from '@/contexts'
-import { useApiCall, useLocalStorage } from '@/hooks'
+import { useApiCall, useLocalStorage, useToast } from '@/hooks'
 import {
   AddRecurrentTransaction,
   AddTransactionModel,
@@ -21,6 +22,7 @@ import {
 } from './types'
 import {
   checkRecurrences,
+  createRecurrenceAutoUpdateGuard,
   firebaseDataSnapshotToRecurrenceList,
   getDescriptionWithInstallments,
   isRecurrenceListInvalid,
@@ -37,6 +39,8 @@ export function RecurrencesContextProvider({
   children,
 }: RecurrencesContextProviderProps) {
   const storage = useLocalStorage()
+  const toast = useToast()
+  const autoUpdateGuard = useRef(createRecurrenceAutoUpdateGuard()).current
   const { user } = useAuth()
   const { call, isLoading, setIsLoading } = useApiCall()
   const {
@@ -183,10 +187,27 @@ export function RecurrencesContextProvider({
     if (isCheckingRecurrences) return
     setIsCheckingRecurrences(true)
     checkRecurrences({
-      recurrenceList,
+      recurrenceList: recurrenceList.filter(
+        (item) => !autoUpdateGuard.isBlocked(item.id)
+      ),
       transactionList,
       addTransaction,
-      updateRecurrenceTransactionList,
+      updateRecurrenceTransactionList: async (args) => {
+        if (!autoUpdateGuard.register(args.id)) {
+          const recurrence = recurrenceList.find((item) => item.id === args.id)
+          console.error(
+            'Atualização automática de recorrência bloqueada (possível loop)',
+            recurrence
+          )
+          toast(
+            `Atualização automática da recorrência "${recurrence?.description}" bloqueada por possível loop`,
+            'warning',
+            null
+          )
+          return
+        }
+        await updateRecurrenceTransactionList(args)
+      },
       resolve: () => setIsCheckingRecurrences(false),
     })
   }, [

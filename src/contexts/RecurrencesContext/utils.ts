@@ -23,7 +23,7 @@ export const firebaseDataSnapshotToRecurrenceList = (
 ) => {
   return Object.entries(data).map(([id, values]) => ({
     ...values,
-    transactions: values.transactions || [],
+    transactions: Object.values(values.transactions || {}).filter(Boolean),
     id,
   }))
 }
@@ -161,7 +161,9 @@ export const checkRecurrences = async ({
       if (difference > 1) {
         const dates = new Array(difference - 1)
           .fill('')
-          .map((_, index) => subMonths(lastDate, index + 1).toISOString())
+          .map((_, index) => subMonths(lastDate, index + 1))
+          .filter((date) => !isAfterRecurrenceLimit(date))
+          .map((date) => date.toISOString())
         return [...acc, ...dates]
       }
 
@@ -198,22 +200,38 @@ export const checkRecurrences = async ({
         return resolve()
       }
 
-      const date = addMonths(latestTransactionDate, 1).toISOString()
-      recurrencesToUpdate.push({
-        id: item.id,
-        transactions: [...correctedTransactions, { id: '', date }],
-        isActive: false,
-      })
+      const emptyDates = [...datesLacking]
+      for (
+        let i = 1;
+        correctedTransactions.length + emptyDates.length - 1 < monthsPassed;
+        i++
+      ) {
+        const date = addMonths(latestTransactionDate, i)
+        if (isAfterRecurrenceLimit(date)) break
+        emptyDates.push(date.toISOString())
+      }
+      if (installments) {
+        emptyDates.splice(installments - correctedTransactions.length)
+      }
+
+      if (emptyDates.length || transactionsChanged) {
+        recurrencesToUpdate.push({
+          id: item.id,
+          transactions: [
+            ...correctedTransactions,
+            ...emptyDates.map((date) => ({ id: '', date })),
+          ],
+          isActive: false,
+        })
+      }
       return resolve()
     }
 
     const transactions = correctedTransactions
     const validTransactions = transactions.filter((t) => !!t.id)
-    for (
-      let i = 1;
-      transactions.length - 1 < monthsPassed || !!datesLacking.length;
-      i++
-    ) {
+    const initialLength = transactions.length
+    let monthsAfterLatest = 0
+    while (transactions.length - 1 < monthsPassed || !!datesLacking.length) {
       if (installments && validTransactions.length >= installments) {
         isActive = false
         break
@@ -221,7 +239,7 @@ export const checkRecurrences = async ({
 
       const date =
         datesLacking.shift() ||
-        addMonths(latestTransactionDate, i).toISOString()
+        addMonths(latestTransactionDate, ++monthsAfterLatest).toISOString()
       if (isAfterRecurrenceLimit(new Date(date))) break
 
       const description = getDescriptionWithInstallments(
@@ -243,7 +261,14 @@ export const checkRecurrences = async ({
       }
     }
 
-    recurrencesToUpdate.push({ id: item.id, transactions, isActive })
+    // Só escreve se algo mudou: toda escrita dispara um novo check
+    if (
+      transactions.length !== initialLength ||
+      transactionsChanged ||
+      isActive !== item.isActive
+    ) {
+      recurrencesToUpdate.push({ id: item.id, transactions, isActive })
+    }
     resolve()
   }
 
@@ -255,4 +280,30 @@ export const checkRecurrences = async ({
   recurrencesToUpdate.forEach((item) => updateRecurrenceTransactionList(item))
 
   resolve()
+}
+
+const AUTO_UPDATE_LIMIT = 5
+const AUTO_UPDATE_WINDOW_MS = 60 * 1000
+
+export const createRecurrenceAutoUpdateGuard = (
+  limit = AUTO_UPDATE_LIMIT,
+  windowMs = AUTO_UPDATE_WINDOW_MS
+) => {
+  const updates: { [id: string]: number[] } = {}
+  const blocked = new Set<string>()
+
+  return {
+    isBlocked: (id: string) => blocked.has(id),
+    register: (id: string) => {
+      if (blocked.has(id)) return false
+      const now = Date.now()
+      const recent = (updates[id] || []).filter((t) => now - t < windowMs)
+      if (recent.length >= limit) {
+        blocked.add(id)
+        return false
+      }
+      updates[id] = [...recent, now]
+      return true
+    },
+  }
 }
